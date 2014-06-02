@@ -1,5 +1,5 @@
 % Run this file with
-%   run('/path/to/git/repo/matlab_config/startup-robot.m');
+%   run('/path/to/git/repo/matlab_config/startup_robot.m');
 
 matlab_dir = fileparts( mfilename('fullpath') );
 
@@ -26,5 +26,3 @@ end
 if exist(robotpath,'dir')
     run(fullfile(robotpath, 'startup_rvc.m'));
 end
-
-fprintf('Download VREP from http://www.coppeliarobotics.com/downloads.html\n');

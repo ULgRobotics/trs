@@ -1,4 +1,9 @@
 function pts = youbot_xyz_sensor(vrep, h, opmode)
+% Read from xyz sensor.
+
+% (C) Copyright Renaud Detry 2013.
+% Distributed under the GNU General Public License.
+% (See http://www.gnu.org/copyleft/gpl.html)
 
   % Again, the data comes in a funny format. Use the lines below to move the
   % data to a Matlab matrix

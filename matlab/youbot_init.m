@@ -1,4 +1,9 @@
 function handles = youbot_init(vrep, id)
+% Initialize youBot
+
+% (C) Copyright Renaud Detry 2013.
+% Distributed under the GNU General Public License.
+% (See http://www.gnu.org/copyleft/gpl.html)
 
 % Retrieve all handles, and stream arm and wheel joints, the robot's pose,
 % the Hokuyo, and the arm tip pose.

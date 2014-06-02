@@ -6,3 +6,6 @@ function cleanup_vrep(vrep, id)
   disp('Program ended');
 end
 
+% (C) Copyright Renaud Detry 2013.
+% Distributed under the GNU General Public License.
+% (See http://www.gnu.org/copyleft/gpl.html)

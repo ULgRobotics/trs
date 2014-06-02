@@ -1,4 +1,10 @@
 function vrchk(vrep, res, buffer)
+% Checks VREP return code. Set buffer to 1 if you are reading from a buffered
+% call.
+
+% (C) Copyright Renaud Detry 2013.
+% Distributed under the GNU General Public License.
+% (See http://www.gnu.org/copyleft/gpl.html)
 
   if (nargin < 3),
     buffer = false;

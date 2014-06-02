@@ -1,4 +1,9 @@
 function [scanned_points contacts] = youbot_hokuyo(vrep, h, opmode, trans)
+% Reads from Hokuyo sensor.
+
+% (C) Copyright Renaud Detry 2013.
+% Distributed under the GNU General Public License.
+% (See http://www.gnu.org/copyleft/gpl.html)
 
   pts1 = [];
   pts2 = [];

@@ -1,4 +1,9 @@
 function h = youbot_hokuyo_init(vrep, h)
+% Initialize Hokuyo sensor in VREP
+
+% (C) Copyright Renaud Detry 2013.
+% Distributed under the GNU General Public License.
+% (See http://www.gnu.org/copyleft/gpl.html)
 
   % Turn the Hokuyo on (constantly)
   res = vrep.simxSetIntegerSignal(h.id, 'handle_xy_sensor', 2, vrep.simx_opmode_oneshot);
