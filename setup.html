@@ -87,7 +87,7 @@ git clone https://github.com/ULgRobotics/trs.git</code>
         <ul>
           <li><code>remApi.m</code></li>
           <li><code>remoteApiProto.m</code></li>
-          <li><code>remoteApi.so</code> (if you use Linux) <strong>or</strong> <code>remoteApi.dll</code> (if you use Windows) <strong>or</strong> <code>remoteApi.dylib</code> (if you use a Mac)</li>
+          <li><code>remoteApi.so</code> (if you use Linux) <strong>or</strong> <code>remoteApi.dll</code> (if you use Windows) <strong>or</strong> <code>remoteApi.dylib</code> (if you use a Mac). <strong>If you have a choice between a 32-bit or 64-bit remoteApi, pick the one that corresponds to your Matlab install (32-bit Matlab or 64-bit Matlab). If you have 32-bit Matlab, pick the 32-bit remoteApi, even if your kernel is 64-bit.</strong></li>
         </ul>
         You will find these files in the directory containing the V-REP app. Look in the <code>programming/remoteApiBindings/lib/lib</code> and <code>programming/remoteApiBindings/matlab/matlab</code> subdirectories of the VREP app directory (although this can change from version to version). You must copy these files to the <code>youbot</code> directory within your copy of the GitHub repo. If you closely followed the instructions above, the <code>youbot</code> directory is at <code>~/trs/youbot</code> (Linux/Mac) or <code>C:/trs/youbot</code> (Windows).
       </li>
