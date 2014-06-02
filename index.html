@@ -12,7 +12,7 @@
 <body>
   <div class="page">
     <div id="topframe">
-      <img alt="" id="topimage" name="topimage" src="top-2.jpg">
+      <img alt="" id="topimage" src="top-2.jpg">
 
     
     </div>
@@ -48,7 +48,7 @@ Linux, OSX and Windows simply by uncompressing zip archive.</p>
 
 <p>The aim of this tutorial is to present an environment, based on V-REP and RTB, that allows students to control a robot from Matlab. The environment consists of a set of Matlab scripts, and a V-REP file modeling a mobile robot and a building floor. Running a single Matlab command establishes a connection between Matlab and V-REP. The user is then able to recover sensor data (images, scans, odometry), process those data, and send commands to the robot's actuators. The robot's sensors and actuators are accessed via Matlab functions:</p>
 
-<p><tt>vrep.simxSetJointTargetVelocity(id, wheel1, 10);</tt></p>
+<p><code>vrep.simxSetJointTargetVelocity(id, wheel1, 10);</code></p>
 
 <p>An understanding of the simulator itself is not required, as all the programming is done through the Matlab interface.</p>
 
@@ -63,14 +63,13 @@ Linux, OSX and Windows simply by uncompressing zip archive.</p>
   <p>The behavior of the youBot shown in this video is coded in Matlab in 500 lines of code. The youBot explores and maps its environment, and it detects and marks rounded baskets. The code runs in quasi-realtime on a standard laptop. Download this video in <a href="http://renaud-detry.net/teaching/info0948/private/raster/youbot.mp4">MP4/H.264</a> or <a href="http://renaud-detry.net/teaching/info0948/private/raster/youbot.webm">WebM/VP8</a>, or <a href="javascript: window.open('https://www.youtube.com/watch?v=bPSdZCewp7Y')">view it on Youtube</a>.</p>
 </div>
 
-<p>TRS provides a recipe for organizing a Master-level robotics project. The project consists in using a mobile robot to pickup groceries from a table and move them to different baskets distributed across a house. The project involves control, navigation, mapping, vision and manipulation. The recipe is composed of
+<p>TRS provides a recipe for organizing a Master-level robotics project. The project consists in using a mobile robot to pickup groceries from a table and move them to different baskets distributed across a house. The project involves control, navigation, mapping, vision and manipulation. The recipe is composed of:</p>
 <ul>
 <li>a page that explains how to <a href="setup.html">setup</a> a laptop to work on the project,</li>
 <li>a page that presents the <a href="project.html">project definition</a>: objectives, milestones, a description of the robot and the documentation of the Matlab functions that access the robot's sensors and actuators,</li>
 <li>a Matlab script that illustrates access the robot's sensors and actuators</li>
 <li>a V-REP model of a building floor, and a few Matlab scripts that make programming easier.</li>
 </ul>
-</p>
 
         <a id="use" name="use"></a>
         <h1>How to Use</h1>
