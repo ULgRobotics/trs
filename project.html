@@ -1,50 +1,53 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<!DOCTYPE html>
 
 <html>
 <head>
   <meta content="text/html; charset=utf-8" http-equiv="content-type">
   <link href="favicon.ico" rel="shortcut icon">
 
-  <title>AG&amp;M 2014 – Autonomous Grasping and Manipulation: An Open Challenge – ICRA Workshop</title>
+  <title>TRS: An Open-source Recipe for Teaching (and Learning) Robotics with a Simulator</title>
   <link href="style.css" rel="stylesheet">
-</head>
+  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script></head>
 
 <body>
   <div class="page">
     <div id="topframe">
-      <img alt="Source: http://en.wikipedia.org/wiki/File:Tokyo_odaiba.jpg" id="topimage" name="topimage" src="top-1.jpg">
+      <img alt="" id="topimage" src="top-2.jpg">
 
-      <div id="topdate">
-        Hong Kong, May 31 2014, at <a href="http://www.icra2014.com/">ICRA</a>
-      </div>
+    
     </div>
 
     <div class="heading_body">
-      <div style="text-align:left; font-size:120%;">
-        international workshop on
-      </div>
 
       <div style="text-align:left; font-size:160%;">
-        Autonomous Grasping and Manipulation: An Open Challenge
+        <strong>TRS:</strong> An Open-source Recipe for Teaching/Learning Robotics with a Simulator.
+      </div>
+      <div style="text-align:left; font-size:100%; padding-top: 1ex">
+        :: setup a laptop in 5 minutes,
+write a control, navigation, vision or manipulation program in 100 lines of code
       </div>
     </div>
 
     <div class="content_body">
       <div id="menu">
-        <a class="top" href="#mot">Motivation</a> <a href="#program">Program</a> <a href="#invited">Invited Speakers</a> <a href="#cfp">Call for Papers</a> <!-- <a href="#papers">Key Dates</a> <a class="submenu" href="#papers">Papers</a> <a class="submenu" href="#abstracts">Abstracts</a> <a class="submenu" href="#questions">Questions</a>--> <a href="#organizers">Organizers</a> <a class="bottom" href="#contact">Contact</a>
+        <a class="top" href="index.html">Back to Index</a>
+        <a class="top" href="#def">Definition</a>
+        <a href="#prog">Programming</a>
+        <a href="#doc">Documentation</a>
+        <a href="#api">API</a>
+        <a href="#mtips">Matlab Tips</a>
+        <a href="#ytips">YouBot Tips</a>
+        <a class="bottom" href="#shoot">Troubleshooting</a>
       </div>
 
       <div class="content">
       
-      <iframe width="560" height="315" src="http://www.youtube.com/embed/bPSdZCewp7Y?rel=0" frameborder="0" allowfullscreen></iframe>
-
-<h1>Project Definition</h1>
+        <a id="def" name="def"></a>
+        <h1 style="margin-top: 0">Project Definition</h1>
 
 <p>The goal of the project is to program a youBot to put away groceries. You have control of one youBot that can move around a virtual house. Groceries are waiting in the hall. You need to provide the youBot with a program that allows it to move the groceries to their appropriate storing locations.</p>
 
-<div class="figure" style="width: 640px">
-  <div><img style="border: 1px solid black;" src="raster/vrep-house.jpg" alt="house" /></div>
-</div>
+<div class="figure" style="width: 580px"><div><img style="border: 1px solid black; width: 560px" src="raster/vrep-house.jpg" alt="house" /></div></div>
 
 
 <p>Object are either cylindrical or box-shaped. The bases of boxes and cylinders are fixed, only their height varies. The base of box-like objects is 50mm by 50mm. The diameter of the base of cylinders is 50mm. The color of objects varies. Objects are initially placed on two tables facing the youBot's starting position. (The two tables are visible with the Hokuyo sensor from the youBot's starting position. No other cylindrical objects are within sight of the Hokuyo from the youBot's starting position.) One one table, objects are placed upright. On the other table, objects are not necessarily placed upright &ndash; they may be laid down or tilted.</p>
@@ -63,8 +66,8 @@
 
 <p>The goal of the project is to move each object to the appropriate basket. At most one object can be stored on the platform of the youBot. The image below illustrates the layout explained above. A V-REP file similar to the one on which projects will be tested is available in the Git repository (see directory <code>youbot</code>). Two training scenes are available at the moment. One of them does not have the landmark objects. This scene is faster to simulate.</p>
 
-<div class="figure" style="width: 660px">
-  <div><img style="border: 1px solid black;" src="raster/vrep-house-youbot2.jpg" alt="house" /></div>
+<div class="figure" style="width: 580px">
+  <div><img style="border: 1px solid black; width: 560px" src="raster/vrep-house-youbot2.jpg" alt="house" /></div>
 </div>
 
 
@@ -109,101 +112,76 @@
 <p><span style="color: red;">The deadline for submitting project <em>source code</em> is January 3, 2014 at 14:00.</span> Your code should be sent to me via email. The project will be evaluated in early January 2014. A short project report must be submitted the day of the exam. The report should (1) give an overview of your work, including a description of the milestones you've addressed (1 page), and (2) explain the core problems you've encountered, and how you solved them (about 3 pages).</p>
 
 
-<h1>Setting Things Up</h1>
+        <a id="prog" name="prog"></a>
+<h1>Programming the youBot</h1>
 
-<p>This section details the installation and configuration of the following items:</p>
-<ul>
-<li>Peter Corke's RVT toolbox,</li>
-<li>The V-REP simulator,</li>
-<li>The Matlab bindings for V-REP.</li>
-</ul>
+<p>First, follow the <a href="setup.html">setup procedure</a> to get your laptop ready.</p>
 
-<p>Before starting to install these programs, please take the time to read the tips below:</p>
+<p>Most of the youBot functionalities can be understood by browsing through the <a href="https://github.com/ULgRobotics/trs/blob/master/youbot/youbot.m">youBot example script</a>, which shows how to access to the sensors and actuators of the youBot.</p>
 
-<ul>
-
-  <li>The installation process slightly differs depending on your platform (Linux, Mac, Win), and your Matlab version. If you are working on Montefiore's lab machines (ms8xx.montefiore.ulg.ac.be), you can strictly follow the instructions given in boxes labeled <em>In the lab</em>. If your laptop runs Linux with 32-bit Matlab, you can follow the exact same instructions. Otherwise, you will need to slightly adapt the instructions to your setup.</li>
-
-  <li>If you are using Windows, you can pretty much follow the directives below. However, to ease the process, I suggest you install everything in <code>C:/info0948</code> instead of your home directory.<br>
-  In the instructions below, the tilde <code>~</code> character stands for the home directory. If you are using Windows, use <code>C:/</code> instead of <code>~</code>. If you decide to go against this recommendation, please make sure that the path where you install the project stuff does not contain spaces, accented characters, or other non-letter characters. Letters and numbers only please.</li>
-
-</ul>
-
-<h2>Install Procedure</h2>
-
-<p>The recommended procedure for setting up your computer is listed below:</p>
-
-<ol class="steps">
-
-  <li>
-    Download <a href="http://coppeliarobotics.com/downloads.html">V-REP PRO EDU</a>.
-    When you're done downloading VREP, unpack it, for instance in your home directory.
-  </li>
-  <li>
-    <a class="anchor" id="git"></a><p>Project-related files are published through Git. Download a Git client from the <a href="http://git-scm.com/downloads">git-scm.com</a> webiste. If you are unfamiliar with Git, <a href="http://www.sourcetreeapp.com">SourceTree</a> is a cool GUI for Mac and Windows.<br>Clone the Git repo <code>git@github.com:ULgRobotics/info0948.git</code> on your machine, for instance in your home directory. On a UNIX machine:</p>
-    <code class="block">cd ~
-git clone http://renaud-detry.net/teaching/info0948/private/rps.git</code>
-    <p><b>Do not modify files within that directory, as they may be updated server-side.</b> Remember to regularly pull from the Git repository to get the updates.</p>
-    <p>If you have trouble downloading the project files with Git, you can download a <a href="https://github.com/ULgRobotics/info0948/archive/master.zip">ZIP snapshot</a> of the current state of the Git repo. This snapshot is kept up-to-date, but <b>you must re-download it often to make sure you get all the updates to the project files</b>.</p>
-  </li>
-  
-  <li>
-    In Matlab, run the <code>startup_robot.m</code> file from the Git repository. If you cloned the Git repository in your home directory, run:
-    <code class="block">run('~/rps/matlab/startup_robot.m');</code>
-    <p>This line needs to be run every time Matlab restarts. You may want to add it to your Matlab startup file.</p>
-  </li>
-  
-  <li>
-Test that things work:
-    <ol>
-      <li>
-        In Matlab, type
-        <code class="block">code('rotx(1)', 'Matlab', 'matlab');</code>
-        If there is no error, P. Corke's toolbox is working. If there is an error, check the steps above and read the toolbox's <a href="http://petercorke.com/Robotics_Toolbox.html">install doc</a>.
-      </li>
-      
-      <li>
-        Then (still in Matlab), type
-        <code class="block">vrep=remApi('remoteApi', 'extApi.h');
-vrep.delete();", 'Matlab', 'matlab');</code>
-        <p>If there is no error, the Matlab bindings to V-REP are working! If there is an error, check the steps above, check the Troubleshooting section below, and read <a href="http://www.coppeliarobotics.com/helpFiles/en/remoteApiClientSide.htm">V-REP's Matlab bindings help</a>.</p>
-      </li>
-      <li>
-        Startup V-REP (Linux: <code>./vrep.sh</code> from within V-REP's directory), use the menu "File/Open Scene", and open <code>~/rps/youbot/house.ttt</code>. Hit "Start Simulation" in the Simulation menu. Then, back in Matlab, type
-        <code class="block">cd ~/rps/youbot
-youbot();"</code>
-        You should see the robot move in V-REP. Everything works!
-      </li>
-      
-    </ol>
-    
-  </li>  
+<p>The <a href="https://github.com/ULgRobotics/trs/blob/master/youbot/youbot.m">example script</a> is located in the directory <code>youbot</code> of the <a href="#git">course's Git repository</a>. To run the example:</p>
+<ol>
+<li>Open the file <code>house.ttt</code> in V-REP, and <!--The simulation should be run in realtime. Make sure that the menu <em>Simulation &gt; Real-time simulation</em> is checked,--> hit the <em>start simulation</em> button <img src="raster/simulation1.jpg" alt="start" class="txt">.</li>
+<li>In Matlab, cd to the <code>youbot</code> directory, and start the <code>youbot</code> script.</li>
 </ol>
 
-<h2>Troubleshooting in the Install Process:</h2>
+
+<p>The sections below provide more details about the youBot's sensors, actuators, and gripper.</p>
+
+<h2>Names of V-REP Components</h2>
+
+<p>The V-REP names of the youBot's components are listed below. You can get a programmatic handle to these components via the <a href="#simxGetObjectHandle">simxGetObjectHandle</a> method.</p>
 
 <ul>
-<li>
-If you get an error that contains <code>version `GLIBCXX_3.4.15' not found</code>, talk to me in class, or take a look at <a href="http://sgpsproject.sourceforge.net/JavierVGomez/index.php/Solving_issues_with_GLIBCXX_and_libstdc%2B%2B">this link</a>.
-</li>
+<li><code>youBot_ref</code>: A point on the rotation axis of the first arm joint.</li>
+<li><code>youBot_center</code>: the center of the youBot's frame.</li>
+<li><code>rollingJoint_fl</code>, <code>rollingJoint_rl</code>, <code>rollingJoint_rr</code>, <code>rollingJoint_fr</code>: the four wheel joints.</li>
+<li><code>rgbdSensor</code>: the box containing the depth and photometric cameras.</li>
+<li><code>xyzSensor</code>, <code>rgbSensor</code>, <code>fastHokuyo_sensor1</code>, <code>fastHokuyo_sensor2</code>: the depth and photometric cameras, and the two 120&ndash;degree Hokuyo sensors.</li>
 </ul>
 
-<h1>Troubleshooting V-REP</h1>
+<h2>Signals for Controlling the youBot's Sensors and Gripper</h2>
 
-<h2>Avoiding Mysteriously Dangerous Calls</h2>
+<p>The youBot's sensors can be turned on or off through following V-REP signals: <code>handle_xyz_sensor</code>, <code>handle_xy_sensor</code> and <code>handle_rgb_sensor</code>. (See for instance <a href="#simxSetIntegerSignal">simxSetIntegerSignal</a>.) The value of <code>handle_xyz_sensor</code> controls the depth camera:</p>
 
-<p>For a mysterious reason, calling</p>
-<?php code("res = vrep.simxReadVisionSensor(id, hokuyo1Handle, vrep.simx_opmode_buffer);", 'Matlab', 'matlab'); ?>
-<p>with only <b>one return value</b> crashes some versions of Matlab. Always use the multi-return call instead:</p>
-<?php code("[res det auxData auxPacketInfo] = vrep.simxReadVisionSensor(id, hokuyo1Handle, vrep.simx_opmode_buffer);", 'Matlab', 'matlab'); ?>
+<ul>
+<li><code>handle_xyz_sensor</code> set to 0 (or undefined): the depth camera is off.</li>
+<li><code>handle_xyz_sensor</code> set to 1: the depth camera is turned on, takes one shot, and is automatically turned off again.</li>
+<li><code>handle_xyz_sensor</code> set to 2: the depth camera is turned on, and stays on until the value of the signal is changed again.</li>
+</ul>
 
-<h2>V-REP Crashing at Startup, or Matlab Cannot Connect to VREP</h2>
+<p>The RGB camera is controlled in the same way with <code>handle_rgb_sensor</code>. The signal <code>handle_xy_sensor</code> controls <em>both</em> <code>fastHokuyo_sensor1</code> and <code>fastHokuyo_sensor2</code>.</p>
 
-<p>When VREP quits, the port that it was using to listen for connexions is not freed immediately. If your VREP crashes when you try to start it up, or if you cannot connect to VREP from matlab, quit VREP, wait a few dozen seconds, and try again.</p>
+<p>The three signals <code>handle_xyz_sensor</code>, <code>handle_xy_sensor</code> and <code>handle_rgb_sensor</code> only control whether V-REP is computing what the sensors see. Setting one of these signals to 1 or 2 will <b>not</b> make V-REP send the data over to Matlab. Whether and how the data is sent to Matlab is controlled via <a href="#simxReadVisionSensor">simxReadVisionSensor</a> or <a href="#simxGetVisionSensorImage2">simxGetVisionSensorImage2</a> and <a href="http://www.coppeliarobotics.com/helpFiles/en/remoteApiConstants.htm#operationModes">remote operation modes</a> (such as <em>streaming</em>, <em>oneshot</em>, etc.).
+
+<p>It is generally ok to leave the Hokuyo sensor continuously on, and ok to get its data with the <em> streaming</em> operation mode (see the <a href="https://github.com/ULgRobotics/trs/blob/master/youbot/youbot.m">example script</a>). The RGB and depth cameras however are  expensive to run. They slow down V-REP, and clog the network. It is advised to turn the two cameras on only when needed, by setting their signal to 1, and recovering the generated image or point cloud with the <em>oneshot</em> or <em>oneshot_wait</em> operation mode (see the <a href="https://github.com/ULgRobotics/trs/blob/master/youbot/youbot.m">example script</a>).</p>
+
+<p>The view angle of the depth camera and the RGB camera can be controlled via a signal named <code>rgbd_sensor_scan_angle</code>:</p>
+<code class="block">res = vrep.simxSetFloatSignal(id, 'rgbd_sensor_scan_angle', pi/8, vrep.simx_opmode_oneshot_wait); check(vrep, res);</code>
+<p>The default angle is <code>pi/4</code>.
+</p>
+
+<p>The <code>gripper_open</code> signal controls the gripper:</p>
+<ul>
+<li><code>gripper_open</code> set to 1 or unset: the gripper opens.</li>
+<li><code>gripper_open</code> set to 0: the gripper closes and applies a constant force inwards.</li>
+</ul>
+
+<p>The <code>km_mode</code> signal turns the robot's inverse kinematics mode on or off:</p>
+<ul>
+<li><code>km_mode</code> set to 0 or unset: the arm joints are in position-control mode. Use <a href="#simxSetJointTargetPosition">simxSetJointTargetPosition</a> to change the arm's configuration. </li>
+<li><code>km_mode</code> set to 1: activates a controller that attempts to move the tip of the gripper to the <em>position</em> of <code>youBot_gripperPositionTarget</code>. Use <a href="#simxSetObjectPosition">simxSetObjectPosition</a> on <code>youBot_gripperPositionTarget</code> to move the tip of the arm to a position in the youBot's frame.</li>
+<li><code>km_mode</code> set to 2: activates a controller that attempts to move the tip of the gripper to the position of <code>youBot_gripperPositionTarget</code>, and to partially align the gripper to the orientation of <code>youBot_gripperPositionTarget</code>. Since the youBot's arm has only five DOFs, it cannot reach any arbitrary orientation. This controller only changes the orientation of the gripper around the axis of the second/third/fourth joint. Use <a href="#simxSetObjectPosition">simxSetObjectPosition</a> on <code>youBot_gripperPositionTarget</code> to move the tip of the arm to a position in the youBot's frame, and <a href="#simxSetObjectOrientation">simxSetObjectOrientation</a> on <code>youBot_gripperOrientationTarget</code> to partially orient the tip of the arm to an angle in the frame of the first link of the arm. See example below for details.</li>
+</ul>
+
+
+<p>The <code>displaylasers</code> signal turns the V-REP laser display on or off. When <code>displaylasers</code> is set (whatever its value), V-REP displays red rays along the scanning lines of the Hokuyo, or red dots at the scanning points of the depth sensor. The only purpose served by this signal is illustration, and displaying the lasers slows V-REP down. You will generally want to keep this function off.</p>
 
 
 
-<?php write_title("doc", "Documentation And Useful Links"); ?>
+        <a id="doc" name="doc"></a>
+<h1>Documentation And Useful Links</h1>
+
 
 <p>The Robotics Toolbox's documentation is available <a href="http://petercorke.com/Robotics_Toolbox.html">here</a>.</p>
 
@@ -229,15 +207,9 @@ If you get an error that contains <code>version `GLIBCXX_3.4.15' not found</code
 <li><a href="http://meshlab.sourceforge.net">MeshLab</a> is an open-source graphical app for manipulating meshes. For instance, you can use it to inspect shapes from the V-REP environment. In V-REP, click on a shape and use the <em>Export as OBJ</em> menu to write the shape to a file. In MeshLab, you can for instance use the ruler tool <img src="raster/ruler.png" class="txt" alt="ruler" style="border: 1px solid black;"> to measure the length of the object.</li>
 </ul>
 
-<?php write_title("github", "Private GitHub Account"); ?>
 
-<p>You are encouraged to use a <a href="https://en.wikipedia.org/wiki/Revision_control">version control system</a> to centralize the code related to your group project. If you choose to do so, note that using a public VCS repository is not allowed. I can provide you with a free <em>private</em> <a href="http://github.com">GitHub</a> account. If you wish to get one, send me an email with:</p>
-<ul>
-<li>The name of your team</li>
-<li>The names of the members of the team</li>
-<li>The GitHub id's of the team members</li>
-</ul>
-<?php write_title("api", "V-REP Remote API: Authorized Calls"); ?>
+        <a id="api" name="api"></a>
+<h1>V-REP Remote API: Authorized Calls</h1>
 
 <p>In your project, you will be allowed to use only a subset of the V-REP API. Off-limits functions are, for instance, functions that change the environment (adding/removing/moving objects), functions that access information that would not be available to the robot in a real setup, or functions that move the robot in an unrealistic way.</p>
 
@@ -385,72 +357,22 @@ If you get an error that contains <code>version `GLIBCXX_3.4.15' not found</code
 <li class="vrep_denied"><a  href="remoteApiFunctionsPython.htm#simxUnpackInts" >simxUnpackInts</a><a class="anchor" id="simxUnpackInts"></a></li>
 </ul>
 
-<?php write_title("youbot", "YouBot's Sensors, Actuators, Gripper"); ?>
 
-<h2>Names of V-REP Components</h2>
-
-<p>The V-REP names of the youBot's components are listed below. You can get a programmatic handle to these components via the <a href="#simxGetObjectHandle">simxGetObjectHandle</a> method (see examples below).</p>
-
-<ul>
-<li><code>youBot_ref</code>: A point on the rotation axis of the first arm joint.</li>
-<li><code>youBot_center</code>: the center of the youBot's frame.</li>
-<li><code>rollingJoint_fl</code>, <code>rollingJoint_rl</code>, <code>rollingJoint_rr</code>, <code>rollingJoint_fr</code>: the four wheel joints.</li>
-<li><code>rgbdSensor</code>: the box containing the depth and photometric cameras.</li>
-<li><code>xyzSensor</code>, <code>rgbSensor</code>, <code>fastHokuyo_sensor1</code>, <code>fastHokuyo_sensor2</code>: the depth and photometric cameras, and the two 120&ndash;degree Hokuyo sensors.</li>
-</ul>
-
-<h2>Signals for Controlling the youBot's Sensors and Gripper</h2>
-
-<p>The youBot's sensors can be turned on or off through following V-REP signals: <code>handle_xyz_sensor</code>, <code>handle_xy_sensor</code> and <code>handle_rgb_sensor</code>. (See for instance <a href="#simxSetIntegerSignal">simxSetIntegerSignal</a>.) The value of <code>handle_xyz_sensor</code> controls the depth camera:</p>
-
-<ul>
-<li><code>handle_xyz_sensor</code> set to 0 (or undefined): the depth camera is off.</li>
-<li><code>handle_xyz_sensor</code> set to 1: the depth camera is turned on, takes one shot, and is automatically turned off again.</li>
-<li><code>handle_xyz_sensor</code> set to 2: the depth camera is turned on, and stays on until the value of the signal is changed again.</li>
-</ul>
-
-<p>The RGB camera is controlled in the same way with <code>handle_rgb_sensor</code>. The signal <code>handle_xy_sensor</code> controls <em>both</em> <code>fastHokuyo_sensor1</code> and <code>fastHokuyo_sensor2</code>.</p>
-
-<p>The three signals <code>handle_xyz_sensor</code>, <code>handle_xy_sensor</code> and <code>handle_rgb_sensor</code> only control whether V-REP is computing what the sensors see. Setting one of these signals to 1 or 2 will <b>not</b> make V-REP send the data over to Matlab. Whether and how the data is sent to Matlab is controlled via <a href="#simxReadVisionSensor">simxReadVisionSensor</a> or <a href="#simxGetVisionSensorImage2">simxGetVisionSensorImage2</a> and <a href="http://www.coppeliarobotics.com/helpFiles/en/remoteApiConstants.htm#operationModes">remote operation modes</a> (such as <em>streaming</em>, <em>oneshot</em>, etc.).
-
-<p>It is generally ok to leave the Hokuyo sensor continuously on, and ok to get its data with the <em> streaming</em> operation mode (see the <a href="#02">vision example</a> below). The RGB and depth cameras however are  expensive to run. They slow down V-REP, and clog the network. It is advised to turn the two cameras on only when needed, by setting their signal to 1, and recovering the generated image or point cloud with the <em>oneshot</em> or <em>oneshot_wait</em> operation mode (see the <a href="#02">vision example</a> below).</p>
-
-<p>The view angle of the depth camera and the RGB camera can be controlled via a signal named <code>rgbd_sensor_scan_angle</code>:</p>
-<?php code("res = vrep.simxSetFloatSignal(id, 'rgbd_sensor_scan_angle', pi/8, vrep.simx_opmode_oneshot_wait); check(vrep, res);", "Matlab", "matlab"); ?>
-<p>The default angle is <code>pi/4</code>.
-</p>
-
-<p>The <code>gripper_open</code> signal controls the gripper:</p>
-<ul>
-<li><code>gripper_open</code> set to 1 or unset: the gripper opens.</li>
-<li><code>gripper_open</code> set to 0: the gripper closes and applies a constant force inwards.</li>
-</ul>
-
-<p>The <code>km_mode</code> signal turns the robot's inverse kinematics mode on or off:</p>
-<ul>
-<li><code>km_mode</code> set to 0 or unset: the arm joints are in position-control mode. Use <a href="#simxSetJointTargetPosition">simxSetJointTargetPosition</a> to change the arm's configuration. </li>
-<li><code>km_mode</code> set to 1: activates a controller that attempts to move the tip of the gripper to the <em>position</em> of <code>youBot_gripperPositionTarget</code>. Use <a href="#simxSetObjectPosition">simxSetObjectPosition</a> on <code>youBot_gripperPositionTarget</code> to move the tip of the arm to a position in the youBot's frame.</li>
-<li><code>km_mode</code> set to 2: activates a controller that attempts to move the tip of the gripper to the position of <code>youBot_gripperPositionTarget</code>, and to partially align the gripper to the orientation of <code>youBot_gripperPositionTarget</code>. Since the youBot's arm has only five DOFs, it cannot reach any arbitrary orientation. This controller only changes the orientation of the gripper around the axis of the second/third/fourth joint. Use <a href="#simxSetObjectPosition">simxSetObjectPosition</a> on <code>youBot_gripperPositionTarget</code> to move the tip of the arm to a position in the youBot's frame, and <a href="#simxSetObjectOrientation">simxSetObjectOrientation</a> on <code>youBot_gripperOrientationTarget</code> to partially orient the tip of the arm to an angle in the frame of the first link of the arm. See example below for details.</li>
-</ul>
-
-
-<p>The <code>displaylasers</code> signal turns the V-REP laser display on or off. When <code>displaylasers</code> is set (whatever its value), V-REP displays red rays along the scanning lines of the Hokuyo, or red dots at the scanning points of the depth sensor. The only purpose served by this signal is illustration, and displaying the lasers slows V-REP down. You will generally want to keep this function off.</p>
-
-<?php write_title("matlab", "Matlab Tips"); ?>
+        <a id="mtips" name="mtips"></a>
+<h1>Matlab Tips</h1>
 
 <h2>Avoiding Loops</h2>
 
 <p>Matlab is an interpreted language. Despite recent progress in the JIT accelerator, running loops in Matlab is still <em>much</em> slower than running loops in native code. Since most Matlab functions rely on a C implementation of large loops, it is good practice to always prefer calling a function over writing a loop when handling large datatypes. In your project, the two datatypes that you need to handle with care are images and point clouds (from the RGB camera, or from the 2D/3D laser scanners). <b>Handling images and point clouds with Matlab functions or MEX functions instead of Matlab loops will often make your code 100 times faster.</b></p>
 
-<p>An example of the computational cost of flipping an image with a loop vs. a Matlab function is provided below.</p>
-
-<?php list_info0948_code('matlab_functions/test_loop_vs_native.m', 'test_loop_vs_native.m'); ?>
+<p>An example of the computational cost of flipping an image with a loop vs. a Matlab function is provided <a href="https://github.com/ULgRobotics/trs/blob/master/matlab/test_loop_vs_native.m">here</a>.</p>
 
 <h2>Running Code from Files</h2>
 
 <p>The Matlab JIT accelerator doesn't optimize code typed into the console. To verify this behavior, run the function above by typing <code>test_loop_vs_native</code> in the console, then by copy-pasting the contents of the <code>test_loop_vs_native</code> function directly into the console. As a result of this behavior, always run your code from <code>.m</code> files.</p>
 
-<?php write_title("youbot_tips", "YouBot Tips"); ?>
+        <a id="ytips" name="ytips"></a>
+<h1>YouBot Tips</h1>
 
 <h2>Unintentional Movements</h2>
 
@@ -470,22 +392,26 @@ There's plenty of functions in the Matlab Robot Toolbox that will help you with 
 <li>The Matlab <code>inpolygon</code> function</li>
 </ul>
 
-<?php write_title("01", "Youbot Example Script"); ?>
 
 
-<p>The example script is located in the directory <code>youbot</code> of the <a href="#git">course's Git repository</a>. To run the example:</p>
-<ol>
-<li>Open the file <code>house.ttt</code> in V-REP, and <!--The simulation should be run in realtime. Make sure that the menu <em>Simulation &gt; Real-time simulation</em> is checked,--> hit the <em>start simulation</em> button <img src="raster/simulation1.jpg" alt="start" class="txt">.</li>
-<li>In Matlab, cd to the <code>youbot</code> directory, and start the <code>youbot</code> script.</li>
-</ol>
 
-<p>This example show how to access to the sensors and actuators of the youBot.</p>
 
-<p>The code is listed below.</p>
+        <a id="shoot" name="shoot"></a>
+<h1>Troubleshooting V-REP</h1>
 
-<?php list_info0948_code('youbot/youbot.m', 'youbot.m'); ?>
+<h2>Avoiding Mysteriously Dangerous Calls</h2>
 
-<a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
+<p>For a mysterious reason, calling</p>
+<code class="block">res = vrep.simxReadVisionSensor(id, hokuyo1Handle, vrep.simx_opmode_buffer);</code>
+<p>with only <b>one return value</b> crashes some versions of Matlab. Always use the multi-return call instead:</p>
+<code class="block">[res det auxData auxPacketInfo] = vrep.simxReadVisionSensor(id, hokuyo1Handle, vrep.simx_opmode_buffer);</code>
+
+<h2>V-REP Crashing at Startup, or Matlab Cannot Connect to VREP</h2>
+
+<p>When VREP quits, the port that it was using to listen for connexions is not freed immediately. If your VREP crashes when you try to start it up, or if you cannot connect to VREP from matlab, quit VREP, wait a few dozen seconds, and try again.</p>
+
+
+
 
       </div>
 
@@ -497,7 +423,8 @@ There's plenty of functions in the Matlab Robot Toolbox that will help you with 
             </div>
 
             <div style="width: 50%; display: table-cell; text-align: right; vertical-align: bottom;">
-              Renaud Detry, Oliver Kroemer, Danica Kragic
+              &copy; Renaud Detry 2014<br>
+              This work is licensed under a <a href="http://creativecommons.org/licenses/by/4.0/" rel="license">Creative Commons Attribution 4.0 International License</a>.
             </div>
           </div>
         </div>

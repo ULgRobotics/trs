@@ -219,8 +219,8 @@ div.session dl {
 
 div.figure {
   border: thin silver solid;
-  margin: 1em;
-  padding: 1em;
+  margin: 0px;
+  padding: 10px;
   margin-left: auto;
   margin-right: auto;
 }
@@ -240,3 +240,61 @@ div.figure>p {
 video {
   border: 1px black solid;
 }
+
+code.block {
+  display: block;
+  margin-top: 1ex;
+  margin-bottom: 1ex;
+  border: 1px dashed black;
+  overflow-x: auto;
+  padding: 1ex;
+  white-space: pre;
+}
+
+
+
+li.vrep_allowed>a.api_selector {
+  padding-left: 4px;
+  border-left: 3px green solid;
+}
+
+li.vrep_denied>a.api_selector {
+  padding-left: 4px;
+  border-left: 3px red solid;
+  text-decoration:line-through;
+}
+
+li.vrep_denied {
+  display: none;
+}
+
+ul.vrep li {
+  margin-top: 2ex;
+}
+
+table.vrep {
+  margin-left: auto;
+  margin-right: auto;
+  border-collapse: collapse;
+  border-bottom: 2px black solid;
+  border-top: 2px black solid;
+  margin-top: 1em;
+  margin-bottom: 1em;
+}
+
+table.vrep th, table.vrep td {
+  padding: 1ex;
+  border-bottom: 1px black dotted;
+}
+
+table.vrep th {
+  border-bottom: 1px black solid;
+}
+
+code, tt {
+  margin: 0 2px;
+  padding: 0 5px;
+  border: 1px solid #eaeaea;
+  background-color: #f8f8f8;
+  border-radius: 3px; }
+

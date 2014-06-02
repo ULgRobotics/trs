@@ -1,119 +1,46 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<!DOCTYPE html>
 
 <html>
 <head>
   <meta content="text/html; charset=utf-8" http-equiv="content-type">
   <link href="favicon.ico" rel="shortcut icon">
 
-  <title>AG&amp;M 2014 – Autonomous Grasping and Manipulation: An Open Challenge – ICRA Workshop</title>
+  <title>TRS: An Open-source Recipe for Teaching (and Learning) Robotics with a Simulator</title>
   <link href="style.css" rel="stylesheet">
-</head>
+  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script></head>
 
 <body>
   <div class="page">
     <div id="topframe">
-      <img alt="Source: http://en.wikipedia.org/wiki/File:Tokyo_odaiba.jpg" id="topimage" name="topimage" src="top-1.jpg">
+      <img alt="" id="topimage" src="top-2.jpg">
 
-      <div id="topdate">
-        Hong Kong, May 31 2014, at <a href="http://www.icra2014.com/">ICRA</a>
-      </div>
+    
     </div>
 
     <div class="heading_body">
-      <div style="text-align:left; font-size:120%;">
-        international workshop on
-      </div>
 
       <div style="text-align:left; font-size:160%;">
-        Autonomous Grasping and Manipulation: An Open Challenge
+        <strong>TRS:</strong> An Open-source Recipe for Teaching/Learning Robotics with a Simulator.
+      </div>
+      <div style="text-align:left; font-size:100%; padding-top: 1ex">
+        :: setup a laptop in 5 minutes,
+write a control, navigation, vision or manipulation program in 100 lines of code
       </div>
     </div>
 
     <div class="content_body">
       <div id="menu">
-        <a class="top" href="#mot">Motivation</a> <a href="#program">Program</a> <a href="#invited">Invited Speakers</a> <a href="#cfp">Call for Papers</a> <!-- <a href="#papers">Key Dates</a> <a class="submenu" href="#papers">Papers</a> <a class="submenu" href="#abstracts">Abstracts</a> <a class="submenu" href="#questions">Questions</a>--> <a href="#organizers">Organizers</a> <a class="bottom" href="#contact">Contact</a>
+        <a class="top" href="index.html">Back to Index</a><a class="top" href="#set">Setup</a> <a href="#install">Install</a> <a class="bottom" href="#shoot">Troubleshoot</a>
       </div>
 
       <div class="content">
       
-      <iframe width="560" height="315" src="http://www.youtube.com/embed/bPSdZCewp7Y?rel=0" frameborder="0" allowfullscreen></iframe>
+        <a id="set" name="set"></a>
+        <h1 style="margin-top: 0">Setting Things Up</h1>
 
-<h1>Project Definition</h1>
-
-<p>The goal of the project is to program a youBot to put away groceries. You have control of one youBot that can move around a virtual house. Groceries are waiting in the hall. You need to provide the youBot with a program that allows it to move the groceries to their appropriate storing locations.</p>
-
-<div class="figure" style="width: 640px">
-  <div><img style="border: 1px solid black;" src="raster/vrep-house.jpg" alt="house" /></div>
-</div>
-
-
-<p>Object are either cylindrical or box-shaped. The bases of boxes and cylinders are fixed, only their height varies. The base of box-like objects is 50mm by 50mm. The diameter of the base of cylinders is 50mm. The color of objects varies. Objects are initially placed on two tables facing the youBot's starting position. (The two tables are visible with the Hokuyo sensor from the youBot's starting position. No other cylindrical objects are within sight of the Hokuyo from the youBot's starting position.) One one table, objects are placed upright. On the other table, objects are not necessarily placed upright &ndash; they may be laid down or tilted.</p>
-
-
-<p>The size of the house is fixed (see <code>house.ttt</code>). However, the youBot does not know the layout of the house a priori. All obstacles are high enough to be detectable with the Hokuyo sensor. There are not holes or open doors leading outside the house. There are five baskets around the house, whose location is not fixed, although they are always close to room/hallway corners. Baskets and tables are cylinders, 800mm in diameter, and 185mm in height. The tables and baskets are the only cylindrical objects resting on the floor. Next to each basket is a landmark  object (of approximately the same size as the youBot), that allows the youBot to identify the room in which it is located. For instance, one basket could be placed next to a bike (garage), or next to a computer (office). The youBot has access to a list of instructions consisting of pairs of object descriptors (green box, blue cylinder, ...) and images. Instructions are accessed via <code>load instructions.mat inst</code>. This structure follows the following schema:</p>
+<p>This page details the installation and configuration of the following items:</p>
 <ul>
-<li><code>inst(1).shape</code>: shape of the first object (either <code>box</code> or <code>cylinder</code>).</li>
-<li><code>inst(1).color</code>: color of the first object (R, G, B values).</li>
-<li><code>inst(1).picture</code>: path to an image of the landmark next to which is located the basket in which object 1 must go.</li>
-<li><code>inst(2).shape</code>: shape of the second object (either <code>box</code> or <code>cylinder</code>).</li>
-<li><code>inst(2).color</code>: color of the second object (R, G, B values).</li>
-<li><code>inst(2).picture</code>: path to an image of the landmark next to which is located the basket in which object 2 must go.</li>
-<li>...</li>
-</ul>
-
-<p>The goal of the project is to move each object to the appropriate basket. At most one object can be stored on the platform of the youBot. The image below illustrates the layout explained above. A V-REP file similar to the one on which projects will be tested is available in the Git repository (see directory <code>youbot</code>). Two training scenes are available at the moment. One of them does not have the landmark objects. This scene is faster to simulate.</p>
-
-<div class="figure" style="width: 660px">
-  <div><img style="border: 1px solid black;" src="raster/vrep-house-youbot2.jpg" alt="house" /></div>
-</div>
-
-
-
-
-<h2>Milestones</h2>
-
-<ol style="list-style-type: upper-alpha;">
-<li>Navigation: Building a map of the house (a map of the walls and other obstacles).
-  <ol>
-  <li>Using accurate localization (via <code>simxGetObjectPosition</code> on <code>youBot_ref</code> or <code>youBot_center</code>)</li>
-  <li>Without using <code>simxGetObjectPosition</code> on <code>youBot_ref</code> or <code>youBot_center</code>.</li>
-  </ol>
-</li>
-<li>Manipulation: Picking up objects and moving them to any room of the house (except the room where the objects start in) (not necessarily in a basket).
-  <ol>
-  <li>Moving only the objects from the first table (where objects stand upright), using V-REP IK. Objects can fall on the floor.</li>
-  <li>Moving all the objects (both talbes), using V-REP IK. Objects can fall on the floor.</li>
-  <li>Moving all the objects (both talbes), using V-REP IK. Objects <em>cannot</em> fall on the floor.</li>
-  <li>Moving all the objects (both talbes), <em>without</em> using V-REP IK. Objects <em>cannot</em> fall on the floor.</li>
-  </ol>
-</li>
-<li>Vision: Finding and identifying the baskets.
-  <ol>
-  <li>Finding the baskets and the tables.</li>
-  <li>Recognizing the landmark objects accompanying the baskets, based on the data from <code>instructions.mat</code>.</li>
-  </ol>
-</li>
-<li>Manipulation+Vision
-  <ol>
-  <li>Placing the objects into arbitrary baskets (as long as there is the same number of objects in each basket). (Requires at least B.1 and C.1.)</li>
-  <li>Placing the objects into the appropriate basket, as indicated by <code>instructions.mat</code>. (Requires at least B.1 and C.2.)</li>
-  </ol>
-</li>
-<li>Calibration: Computing the transformation between the frame of the vision sensor, and the frame of the robot. (Without <code>simxGetObjectOrientation</code> on <code>rgbdSensor</code>.)
-</li>
-<li><span style="color: red">Bonus Milestone: create a video of your work!</span> Ideally including a view from the simulator, and of the robot process (for instance the map being constructed). In VREP, the menu <em>Tools</em> has a <em>Video Recorder</em> option that allows you to save the simulator's image stream to disk.</li>
-</ol>
-
-<h2>Deadlines</h2>
-
-<p><span style="color: red;">The deadline for submitting project <em>source code</em> is January 3, 2014 at 14:00.</span> Your code should be sent to me via email. The project will be evaluated in early January 2014. A short project report must be submitted the day of the exam. The report should (1) give an overview of your work, including a description of the milestones you've addressed (1 page), and (2) explain the core problems you've encountered, and how you solved them (about 3 pages).</p>
-
-
-<h1>Setting Things Up</h1>
-
-<p>This section details the installation and configuration of the following items:</p>
-<ul>
-<li>Peter Corke's RVT toolbox,</li>
+<li>Peter Corke's RVC toolbox,</li>
 <li>The V-REP simulator,</li>
 <li>The Matlab bindings for V-REP.</li>
 </ul>
@@ -122,65 +49,78 @@
 
 <ul>
 
-  <li>The installation process slightly differs depending on your platform (Linux, Mac, Win), and your Matlab version. If you are working on Montefiore's lab machines (ms8xx.montefiore.ulg.ac.be), you can strictly follow the instructions given in boxes labeled <em>In the lab</em>. If your laptop runs Linux with 32-bit Matlab, you can follow the exact same instructions. Otherwise, you will need to slightly adapt the instructions to your setup.</li>
+  <li>The installation process slightly differs depending on your platform (Linux, Mac, Win), and your Matlab version. At each step of the install procedure, we provide a set of commands that are tailored for a 64-bit Linux machine. If you use a different setup, you will have to adapt these commands slightly.</li>
 
-  <li>If you are using Windows, you can pretty much follow the directives below. However, to ease the process, I suggest you install everything in <code>C:/info0948</code> instead of your home directory.<br>
+  <li>If you are using Windows, you can pretty much follow the directives below. However, to ease the process, I suggest you install everything in <code>C:/trs</code> instead of your home directory.<br>
   In the instructions below, the tilde <code>~</code> character stands for the home directory. If you are using Windows, use <code>C:/</code> instead of <code>~</code>. If you decide to go against this recommendation, please make sure that the path where you install the project stuff does not contain spaces, accented characters, or other non-letter characters. Letters and numbers only please.</li>
 
 </ul>
 
-<h2>Install Procedure</h2>
+        <a id="install" name="install"></a>
+<h1>Install Procedure</h1>
 
 <p>The recommended procedure for setting up your computer is listed below:</p>
 
 <ol class="steps">
 
   <li>
+    <a class="anchor" id="git"></a><p>Project-related files are published through Git. Download a Git client from the <a href="http://git-scm.com/downloads">git-scm.com</a> webiste. If you are unfamiliar with Git, <a href="http://www.sourcetreeapp.com">SourceTree</a> is a cool GUI for Mac and Windows.<br>Clone the Git repo <code>git@github.com:ULgRobotics/trs.git</code> on your machine, for instance in your home directory. On a UNIX machine:</p>
+    <code class="block">cd ~
+git clone git@github.com:ULgRobotics/trs.git</code>
+    <p><b>Do not modify files within that directory, as they may be updated server-side.</b> Remember to regularly pull from the Git repository to get the updates.</p>
+    <p>If you have trouble downloading the project files with Git, you can download a <a href="https://github.com/ULgRobotics/trs/archive/master.zip">ZIP snapshot</a> of the current state of the Git repo. This snapshot is kept up-to-date, but <b>you must re-download it often to make sure you get all the updates to the project files</b>.</p>
+  </li>
+  <li>
     Download <a href="http://coppeliarobotics.com/downloads.html">V-REP PRO EDU</a>.
     When you're done downloading VREP, unpack it, for instance in your home directory.
   </li>
   <li>
-    <a class="anchor" id="git"></a><p>Project-related files are published through Git. Download a Git client from the <a href="http://git-scm.com/downloads">git-scm.com</a> webiste. If you are unfamiliar with Git, <a href="http://www.sourcetreeapp.com">SourceTree</a> is a cool GUI for Mac and Windows.<br>Clone the Git repo <code>git@github.com:ULgRobotics/info0948.git</code> on your machine, for instance in your home directory. On a UNIX machine:</p>
-    <code class="block">cd ~
-git clone http://renaud-detry.net/teaching/info0948/private/rps.git</code>
-    <p><b>Do not modify files within that directory, as they may be updated server-side.</b> Remember to regularly pull from the Git repository to get the updates.</p>
-    <p>If you have trouble downloading the project files with Git, you can download a <a href="https://github.com/ULgRobotics/info0948/archive/master.zip">ZIP snapshot</a> of the current state of the Git repo. This snapshot is kept up-to-date, but <b>you must re-download it often to make sure you get all the updates to the project files</b>.</p>
-  </li>
-  
-  <li>
-    In Matlab, run the <code>startup_robot.m</code> file from the Git repository. If you cloned the Git repository in your home directory, run:
-    <code class="block">run('~/rps/matlab/startup_robot.m');</code>
-    <p>This line needs to be run every time Matlab restarts. You may want to add it to your Matlab startup file.</p>
-  </li>
-  
-  <li>
-Test that things work:
+    Install the VREP bindings for Matlab:
     <ol>
-      <li>
-        In Matlab, type
-        <code class="block">code('rotx(1)', 'Matlab', 'matlab');</code>
-        If there is no error, P. Corke's toolbox is working. If there is an error, check the steps above and read the toolbox's <a href="http://petercorke.com/Robotics_Toolbox.html">install doc</a>.
+      <li>You must copy three files from the directory of the V-REP app (downloaded at the previous step) to the directory named <code>youbot</code> within the GitHub repository. The three files you need to copy are named
+        <ul>
+          <li><code>remApi.m</code></li>
+          <li><code>remoteApiProto.m</code></li>
+          <li><code>remoteApi.so</code> (if you use Linux) <strong>or</strong> <code>remoteApi.dll</code> (if you use Windows) <strong>or</strong> <code>remoteApi.dylib</code> (if you use a Mac)</li>
+        </ul>
+        You will find these files in the directory containing the V-REP app. Look in the <code>programming/remoteApiBindings/lib/lib</code> and <code>programming/remoteApiBindings/matlab/matlab</code> subdirectories of the VREP app directory (although this can change from version to version). You must copy these files to the <code>youbot</code> directory within your copy of the GitHub repo. If you closely followed the instructions above, the <code>youbot</code> directory is at <code>~/trs/youbot</code> (Linux/Mac) or <code>C:/trs/youbot</code> (Windows).
       </li>
       
       <li>
-        Then (still in Matlab), type
-        <code class="block">vrep=remApi('remoteApi', 'extApi.h');
-vrep.delete();", 'Matlab', 'matlab');</code>
-        <p>If there is no error, the Matlab bindings to V-REP are working! If there is an error, check the steps above, check the Troubleshooting section below, and read <a href="http://www.coppeliarobotics.com/helpFiles/en/remoteApiClientSide.htm">V-REP's Matlab bindings help</a>.</p>
+        In Matlab, change to the <code>youbot</code> directory. On Linux/Mac:
+        <code class="block">cd ~/trs/youbot</code>
+        Then type
+        <code class="block">vrep=remApi('remoteApi');
+vrep.delete();</code>
+        <p>If there is no error, the Matlab bindings to V-REP are loaded! If there is an error, check the steps above, check the Troubleshooting section below, and read <a href="http://www.coppeliarobotics.com/helpFiles/en/remoteApiClientSide.htm">V-REP's Matlab bindings help</a>. The V-REP developers are actively supporting TRS. If you cannot solve this issue, post a question on the <a href="http://www.forum.coppeliarobotics.com">V-REP forums</a>.</p>
       </li>
       <li>
-        Startup V-REP (Linux: <code>./vrep.sh</code> from within V-REP's directory), use the menu "File/Open Scene", and open <code>~/rps/youbot/house.ttt</code>. Hit "Start Simulation" in the Simulation menu. Then, back in Matlab, type
-        <code class="block">cd ~/rps/youbot
-youbot();"</code>
-        You should see the robot move in V-REP. Everything works!
+        Startup V-REP (Linux: <code>./vrep.sh</code> from within V-REP's directory), use the menu "File/Open Scene", and open <code>~/trs/youbot/binding_test.ttt</code>. Hit "Start Simulation" in the Simulation menu. Then, back in Matlab, type
+        <code class="block">cd ~/trs/youbot
+binding_test();"</code>
+        If you see Matlab replying <em>Number of objects in the scene: 19</em>, everything works! If not, as recommended above, post a question on the <a href="http://www.forum.coppeliarobotics.com">V-REP forums</a>.
       </li>
       
     </ol>
     
   </li>  
+
+  
+  <li>
+    In Matlab, run the <code>startup_robot.m</code> file provided via the Git repository. If you cloned the Git repository in your home directory, run:
+    <code class="block">run('~/trs/matlab/startup_robot.m');</code>
+    <p>This line needs to be run every time Matlab restarts. You may want to add it to your Matlab startup file.</p>
+    <p><strong>Test that the RVC toolbox works:</strong> In Matlab, type
+        <code class="block">rotx(1)</code>
+        If there is no error, P. Corke's RVC toolbox is working! If there is an error, check the steps above and read the toolbox's <a href="http://petercorke.com/Robotics_Toolbox.html">install doc</a>.</p>
+
+  </li>
+  
+
 </ol>
 
-<h2>Troubleshooting in the Install Process:</h2>
+        <a id="shoot" name="shoot"></a>
+<h1>Troubleshooting</h1>
 
 <ul>
 <li>
@@ -188,304 +128,6 @@ If you get an error that contains <code>version `GLIBCXX_3.4.15' not found</code
 </li>
 </ul>
 
-<h1>Troubleshooting V-REP</h1>
-
-<h2>Avoiding Mysteriously Dangerous Calls</h2>
-
-<p>For a mysterious reason, calling</p>
-<?php code("res = vrep.simxReadVisionSensor(id, hokuyo1Handle, vrep.simx_opmode_buffer);", 'Matlab', 'matlab'); ?>
-<p>with only <b>one return value</b> crashes some versions of Matlab. Always use the multi-return call instead:</p>
-<?php code("[res det auxData auxPacketInfo] = vrep.simxReadVisionSensor(id, hokuyo1Handle, vrep.simx_opmode_buffer);", 'Matlab', 'matlab'); ?>
-
-<h2>V-REP Crashing at Startup, or Matlab Cannot Connect to VREP</h2>
-
-<p>When VREP quits, the port that it was using to listen for connexions is not freed immediately. If your VREP crashes when you try to start it up, or if you cannot connect to VREP from matlab, quit VREP, wait a few dozen seconds, and try again.</p>
-
-
-
-<?php write_title("doc", "Documentation And Useful Links"); ?>
-
-<p>The Robotics Toolbox's documentation is available <a href="http://petercorke.com/Robotics_Toolbox.html">here</a>.</p>
-
-<p>The documentation of the V-REP simulator is available <a href="http://www.v-rep.eu/helpFiles/index.html">here</a> (also available via the Help menu in V-REP). Within the doc, the two most important pages are:</p>
-<ul>
-<li>The <a href="http://www.v-rep.eu/helpFiles/en/simulation.htm">Simulation</a> and <a href="http://www.v-rep.eu/helpFiles/en/simulationPropertiesDialog.htm">Simulation settings dialog</a>, that explain how the simulator works.
-</li>
-<li>The <a href="http://www.v-rep.eu/helpFiles/en/remoteApiOverview.htm">Remote API</a>, that allows you to speak to V-REP through the network:
-  <ul>
-    <!--<li><a href="http://www.v-rep.eu/helpFiles/en/remoteApiClientSide.htm">Enabling the Remote API - client side</a></li>-->
-    <li><a href="http://www.v-rep.eu/helpFiles/en/remoteApiServerSide.htm">Enabling the Remote API - server side</a>: Read if you want to enable the <em>continuous</em> service, for instance to allow Matlab to start/stop the simulation. <b>Do not enable the <em>syncSimTrigger</em> option, as you will not be allowed to do so during the project evaluation.</b></li>
-    <li><a href="http://www.v-rep.eu/helpFiles/en/remoteApiModusOperandi.htm">Remote API modus operandi</a>: Explains  the network-related client-server issues.</li>
-    <li><a href="http://www.v-rep.eu/helpFiles/en/remoteApiConstants.htm">Remote API constants</a></li>
-    <li><a href="http://www.v-rep.eu/helpFiles/en/remoteApiFunctions.htm">Remote API functions (C/C++)</a></li>
-    <li><a href="http://www.v-rep.eu/helpFiles/en/remoteApiFunctionsPython.htm">Remote API functions (Python)</a></li>
-    <li><a href="http://www.v-rep.eu/helpFiles/en/remoteApiFunctionsMatlab.htm">Remote API functions (Matlab)</a></li>
-  </ul>
-</li>
-</ul>
-
-<p>Other useful tools:</p>
-<ul>
-<li><a href="http://meshlab.sourceforge.net">MeshLab</a> is an open-source graphical app for manipulating meshes. For instance, you can use it to inspect shapes from the V-REP environment. In V-REP, click on a shape and use the <em>Export as OBJ</em> menu to write the shape to a file. In MeshLab, you can for instance use the ruler tool <img src="raster/ruler.png" class="txt" alt="ruler" style="border: 1px solid black;"> to measure the length of the object.</li>
-</ul>
-
-<?php write_title("github", "Private GitHub Account"); ?>
-
-<p>You are encouraged to use a <a href="https://en.wikipedia.org/wiki/Revision_control">version control system</a> to centralize the code related to your group project. If you choose to do so, note that using a public VCS repository is not allowed. I can provide you with a free <em>private</em> <a href="http://github.com">GitHub</a> account. If you wish to get one, send me an email with:</p>
-<ul>
-<li>The name of your team</li>
-<li>The names of the members of the team</li>
-<li>The GitHub id's of the team members</li>
-</ul>
-<?php write_title("api", "V-REP Remote API: Authorized Calls"); ?>
-
-<p>In your project, you will be allowed to use only a subset of the V-REP API. Off-limits functions are, for instance, functions that change the environment (adding/removing/moving objects), functions that access information that would not be available to the robot in a real setup, or functions that move the robot in an unrealistic way.</p>
-
-<p>The list below shows the functions that are authorized, some with restrictions. I built this list conservatively. It will probably grow in the coming weeks. I'm open to your suggestions.</p>
-
-<p>Click here to <a href="javascript: $('.vrep_denied').show()">show</a>/<a href="javascript: $('.vrep_denied').hide()">hide</a> unauthorized functions. Note that, by default, functions not shown in the list are off-limits.</p>
-
-<ul class="vrep">
-<li class="vrep_allowed"><a class="anchor" id="simxAddStatusbarMessage"></a><a class="api_selector"  href="http://www.v-rep.eu/helpFiles/en/remoteApiFunctionsMatlab.htm#simxAddStatusbarMessage" >simxAddStatusbarMessage</a></li>
-<li class="vrep_denied"><a class="anchor" id="simxAppendStringSignal"></a><a class="api_selector"  href="http://www.v-rep.eu/helpFiles/en/remoteApiFunctionsMatlab.htm#simxAppendStringSignal" >simxAppendStringSignal</a></li>
-<li class="vrep_allowed"><a class="anchor" id="simxAuxiliaryConsoleClose"></a><a class="api_selector"  href="http://www.v-rep.eu/helpFiles/en/remoteApiFunctionsMatlab.htm#simxAuxiliaryConsoleClose" >simxAuxiliaryConsoleClose</a></li>
-<li class="vrep_allowed"><a class="anchor" id="simxAuxiliaryConsoleOpen"></a><a class="api_selector"  href="http://www.v-rep.eu/helpFiles/en/remoteApiFunctionsMatlab.htm#simxAuxiliaryConsoleOpen" >simxAuxiliaryConsoleOpen</a></li>
-<li class="vrep_allowed"><a class="anchor" id="simxAuxiliaryConsolePrint"></a><a class="api_selector"  href="http://www.v-rep.eu/helpFiles/en/remoteApiFunctionsMatlab.htm#simxAuxiliaryConsolePrint" >simxAuxiliaryConsolePrint</a></li>
-<li class="vrep_allowed"><a class="anchor" id="simxAuxiliaryConsoleShow"></a><a class="api_selector"  href="http://www.v-rep.eu/helpFiles/en/remoteApiFunctionsMatlab.htm#simxAuxiliaryConsoleShow" >simxAuxiliaryConsoleShow</a></li>
-<li class="vrep_denied"><a class="anchor" id="simxBreakForceSensor"></a><a class="api_selector"  href="http://www.v-rep.eu/helpFiles/en/remoteApiFunctionsMatlab.htm#simxBreakForceSensor" >simxBreakForceSensor</a></li>
-<li class="vrep_denied"><a class="anchor" id="simxClearFloatSignal"></a><a class="api_selector"  href="http://www.v-rep.eu/helpFiles/en/remoteApiFunctionsMatlab.htm#simxClearFloatSignal" >simxClearFloatSignal</a></li>
-<li class="vrep_allowed"><a class="anchor" id="simxClearIntegerSignal"></a><a class="api_selector"  href="http://www.v-rep.eu/helpFiles/en/remoteApiFunctionsMatlab.htm#simxClearIntegerSignal" >simxClearIntegerSignal</a><p>Only on the following signals: <code>displaylasers</code>, <code>handle_xyz_sensor</code>, <code>handle_xy_sensor</code>, <code>handle_rgb_sensor</code>, <code>gripper_open</code>, <code>km_mode</code>.</p></li>
-<li class="vrep_denied"><a class="anchor" id="simxClearStringSignal"></a><a class="api_selector"  href="http://www.v-rep.eu/helpFiles/en/remoteApiFunctionsMatlab.htm#simxClearStringSignal" >simxClearStringSignal</a></li>
-<li class="vrep_denied"><a class="anchor" id="simxCloseScene"></a><a class="api_selector"  href="http://www.v-rep.eu/helpFiles/en/remoteApiFunctionsMatlab.htm#simxCloseScene" >simxCloseScene</a></li>
-<li class="vrep_denied"><a class="anchor" id="simxCopyPasteObjects"></a><a class="api_selector"  href="http://www.v-rep.eu/helpFiles/en/remoteApiFunctionsMatlab.htm#simxCopyPasteObjects" >simxCopyPasteObjects</a></li>
-<li class="vrep_denied"><a class="anchor" id="simxCreateBuffer"></a><a class="api_selector"  href="http://www.v-rep.eu/helpFiles/en/remoteApiFunctionsMatlab.htm#simxCreateBuffer" >simxCreateBuffer</a></li>
-<li class="vrep_denied"><a class="anchor" id="simxCreateDummy"></a><a class="api_selector"  href="http://www.v-rep.eu/helpFiles/en/remoteApiFunctionsMatlab.htm#simxCreateDummy" >simxCreateDummy</a></li>
-<li class="vrep_denied"><a class="anchor" id="simxDisplayDialog"></a><a class="api_selector"  href="http://www.v-rep.eu/helpFiles/en/remoteApiFunctionsMatlab.htm#simxDisplayDialog" >simxDisplayDialog</a></li>
-<li class="vrep_denied"><a class="anchor" id="simxEndDialog"></a><a class="api_selector"  href="http://www.v-rep.eu/helpFiles/en/remoteApiFunctionsMatlab.htm#simxEndDialog" >simxEndDialog</a></li>
-<li class="vrep_denied"><a class="anchor" id="simxEraseFile"></a><a class="api_selector"  href="http://www.v-rep.eu/helpFiles/en/remoteApiFunctionsMatlab.htm#simxEraseFile" >simxEraseFile</a></li>
-<li class="vrep_allowed"><a class="anchor" id="simxFinish"></a><a class="api_selector"  href="http://www.v-rep.eu/helpFiles/en/remoteApiFunctionsMatlab.htm#simxFinish" >simxFinish</a></li>
-<li class="vrep_denied"><a class="anchor" id="simxGetAndClearStringSignal"></a><a class="api_selector"  href="http://www.v-rep.eu/helpFiles/en/remoteApiFunctionsMatlab.htm#simxGetAndClearStringSignal" >simxGetAndClearStringSignal</a></li>
-<li class="vrep_denied"><a class="anchor" id="simxGetArrayParameter"></a><a class="api_selector"  href="http://www.v-rep.eu/helpFiles/en/remoteApiFunctionsMatlab.htm#simxGetArrayParameter" >simxGetArrayParameter</a></li>
-<li class="vrep_denied"><a class="anchor" id="simxGetBooleanParameter"></a><a class="api_selector"  href="http://www.v-rep.eu/helpFiles/en/remoteApiFunctionsMatlab.htm#simxGetBooleanParameter" >simxGetBooleanParameter</a></li>
-<li class="vrep_denied"><a class="anchor" id="simxGetCollisionHandle"></a><a class="api_selector"  href="http://www.v-rep.eu/helpFiles/en/remoteApiFunctionsMatlab.htm#simxGetCollisionHandle" >simxGetCollisionHandle</a></li>
-<li class="vrep_allowed"><a class="anchor" id="simxGetConnectionId"></a><a class="api_selector"  href="http://www.v-rep.eu/helpFiles/en/remoteApiFunctionsMatlab.htm#simxGetConnectionId" >simxGetConnectionId</a></li>
-<li class="vrep_denied"><a class="anchor" id="simxGetDialogInput"></a><a class="api_selector"  href="http://www.v-rep.eu/helpFiles/en/remoteApiFunctionsMatlab.htm#simxGetDialogInput" >simxGetDialogInput</a></li>
-<li class="vrep_denied"><a class="anchor" id="simxGetDialogResult"></a><a class="api_selector"  href="http://www.v-rep.eu/helpFiles/en/remoteApiFunctionsMatlab.htm#simxGetDialogResult" >simxGetDialogResult</a></li>
-<li class="vrep_denied"><a class="anchor" id="simxGetDistanceHandle"></a><a class="api_selector"  href="http://www.v-rep.eu/helpFiles/en/remoteApiFunctionsMatlab.htm#simxGetDistanceHandle" >simxGetDistanceHandle</a></li>
-<li class="vrep_denied"><a class="anchor" id="simxGetFloatingParameter"></a><a class="api_selector"  href="http://www.v-rep.eu/helpFiles/en/remoteApiFunctionsMatlab.htm#simxGetFloatingParameter" >simxGetFloatingParameter</a></li>
-<li class="vrep_denied"><a class="anchor" id="simxGetFloatSignal"></a><a class="api_selector"  href="http://www.v-rep.eu/helpFiles/en/remoteApiFunctionsMatlab.htm#simxGetFloatSignal" >simxGetFloatSignal</a></li>
-<li class="vrep_denied"><a class="anchor" id="simxGetInMessageInfo"></a><a class="api_selector"  href="http://www.v-rep.eu/helpFiles/en/remoteApiFunctionsMatlab.htm#simxGetInMessageInfo" >simxGetInMessageInfo</a></li>
-<li class="vrep_denied"><a class="anchor" id="simxGetIntegerParameter"></a><a class="api_selector"  href="http://www.v-rep.eu/helpFiles/en/remoteApiFunctionsMatlab.htm#simxGetIntegerParameter" >simxGetIntegerParameter</a></li>
-<li class="vrep_allowed"><a class="anchor" id="simxGetIntegerSignal"></a><a class="api_selector"  href="http://www.v-rep.eu/helpFiles/en/remoteApiFunctionsMatlab.htm#simxGetIntegerSignal" >simxGetIntegerSignal</a><p>Only on the following signals: <code>displaylasers</code>, <code>handle_xyz_sensor</code>, <code>handle_xy_sensor</code>, <code>handle_rgb_sensor</code>, <code>gripper_open</code>, <code>km_mode</code>.</p></li>
-<li class="vrep_allowed"><a class="anchor" id="simxGetJointMatrix"></a><a class="api_selector"  href="http://www.v-rep.eu/helpFiles/en/remoteApiFunctionsMatlab.htm#simxGetJointMatrix" >simxGetJointMatrix</a><p>Only on the robot's joints.</p></li>
-<li class="vrep_allowed"><a class="anchor" id="simxGetJointPosition"></a><a class="api_selector"  href="http://www.v-rep.eu/helpFiles/en/remoteApiFunctionsMatlab.htm#simxGetJointPosition" >simxGetJointPosition</a><p>Only on the robot's joints.</p></li>
-<li class="vrep_allowed"><a class="anchor" id="simxGetLastCmdTime"></a><a class="api_selector"  href="http://www.v-rep.eu/helpFiles/en/remoteApiFunctionsMatlab.htm#simxGetLastCmdTime" >simxGetLastCmdTime</a></li>
-<li class="vrep_allowed"><a class="anchor" id="simxGetLastErrors"></a><a class="api_selector"  href="http://www.v-rep.eu/helpFiles/en/remoteApiFunctionsMatlab.htm#simxGetLastErrors" >simxGetLastErrors</a></li>
-<li class="vrep_denied"><a class="anchor" id="simxGetModelProperty"></a><a class="api_selector"  href="http://www.v-rep.eu/helpFiles/en/remoteApiFunctionsMatlab.htm#simxGetModelProperty" >simxGetModelProperty</a></li>
-<li class="vrep_denied"><a class="anchor" id="simxGetObjectChild"></a><a class="api_selector"  href="http://www.v-rep.eu/helpFiles/en/remoteApiFunctionsMatlab.htm#simxGetObjectChild" >simxGetObjectChild</a></li>
-<li class="vrep_denied"><a class="anchor" id="simxGetObjectFloatParameter"></a><a class="api_selector"  href="http://www.v-rep.eu/helpFiles/en/remoteApiFunctionsMatlab.htm#simxGetObjectFloatParameter" >simxGetObjectFloatParameter</a></li>
-<li class="vrep_denied"><a class="anchor" id="simxGetObjectGroupData"></a><a class="api_selector"  href="http://www.v-rep.eu/helpFiles/en/remoteApiFunctionsMatlab.htm#simxGetObjectGroupData" >simxGetObjectGroupData</a></li>
-<li class="vrep_allowed"><a class="anchor" id="simxGetObjectHandle"></a><a class="api_selector"  href="http://www.v-rep.eu/helpFiles/en/remoteApiFunctionsMatlab.htm#simxGetObjectHandle" >simxGetObjectHandle</a><p>Only for objects that are part of the robot.</p></li>
-<li class="vrep_denied"><a class="anchor" id="simxGetObjectIntParameter"></a><a class="api_selector"  href="http://www.v-rep.eu/helpFiles/en/remoteApiFunctionsMatlab.htm#simxGetObjectIntParameter" >simxGetObjectIntParameter</a></li>
-<li class="vrep_allowed"><a class="anchor" id="simxGetObjectOrientation"></a><a class="api_selector"  href="http://www.v-rep.eu/helpFiles/en/remoteApiFunctionsMatlab.htm#simxGetObjectOrientation" >simxGetObjectOrientation</a><p>
-  Only with the following arguments:</p>
-  <table class="vrep">
-  <tr><th>objectHandle</th><th>relativeToObjectHandle</th><th>Milestone</th></tr>
-  <tr><td>rgbdSensor</td><td>youBot_ref, youBot_center</td><td>all except E</td></tr>
-  <tr><td>xyzSensor</td><td>rgbdSensor</td><td>(any)</td></tr>
-  <tr><td>rgbSensor</td><td>rgbdSensor</td><td>(any)</td></tr>
-  <tr><td>fastHokuyo_sensor1</td><td>youBot_ref, youBot_center</td><td>(any)</td></tr>
-  <tr><td>fastHokuyo_sensor1</td><td>youBot_ref, youBot_center</td><td>(any)</td></tr>
-  <tr><td>youBot_ref, youBot_center</td><td>-1</td><td>all except A.2</td></tr>
-  <tr><td>youBot_gripperPositionTip</td><td>youBot_ref</td><td>all except B.4</td></tr>
-  <tr><td>youBot_gripperPositionTarget</td><td>youBot_ref</td><td>all except B.4</td></tr>
-  <tr><td>youBot_gripperOrientationTip</td><td>Rectangle22</td><td>all except B.4</td></tr>
-  <tr><td>youBot_gripperOrientationTarget</td><td>Rectangle22</td><td>all except B.4</td></tr>
-  </table>
-</li>
-<li class="vrep_denied"><a class="anchor" id="simxGetObjectParent"></a><a class="api_selector"  href="http://www.v-rep.eu/helpFiles/en/remoteApiFunctionsMatlab.htm#simxGetObjectParent" >simxGetObjectParent</a></li>
-<li class="vrep_allowed"><a class="anchor" id="simxGetObjectPosition"></a><a class="api_selector"  href="http://www.v-rep.eu/helpFiles/en/remoteApiFunctionsMatlab.htm#simxGetObjectPosition" >simxGetObjectPosition</a><p>See <a href="#simxGetObjectOrientation">simxGetObjectOrientation</a>.</p> 
-</li>
-<li class="vrep_denied"><a class="anchor" id="simxGetObjects"></a><a class="api_selector"  href="http://www.v-rep.eu/helpFiles/en/remoteApiFunctionsMatlab.htm#simxGetObjects" >simxGetObjects</a></li>
-<li class="vrep_denied"><a class="anchor" id="simxGetObjectSelection"></a><a class="api_selector"  href="http://www.v-rep.eu/helpFiles/en/remoteApiFunctionsMatlab.htm#simxGetObjectSelection" >simxGetObjectSelection</a></li>
-<li class="vrep_denied"><a class="anchor" id="simxGetOutMessageInfo"></a><a class="api_selector"  href="http://www.v-rep.eu/helpFiles/en/remoteApiFunctionsMatlab.htm#simxGetOutMessageInfo" >simxGetOutMessageInfo</a></li>
-<li class="vrep_allowed"><a class="anchor" id="simxGetPingTime"></a><a class="api_selector"  href="http://www.v-rep.eu/helpFiles/en/remoteApiFunctionsMatlab.htm#simxGetPingTime" >simxGetPingTime</a></li>
-<li class="vrep_denied"><a class="anchor" id="simxGetStringParameter"></a><a class="api_selector"  href="http://www.v-rep.eu/helpFiles/en/remoteApiFunctionsMatlab.htm#simxGetStringParameter" >simxGetStringParameter</a></li>
-<li class="vrep_denied"><a class="anchor" id="simxGetStringSignal"></a><a class="api_selector"  href="http://www.v-rep.eu/helpFiles/en/remoteApiFunctionsMatlab.htm#simxGetStringSignal" >simxGetStringSignal</a></li>
-<li class="vrep_denied"><a class="anchor" id="simxGetUIButtonProperty"></a><a class="api_selector"  href="http://www.v-rep.eu/helpFiles/en/remoteApiFunctionsMatlab.htm#simxGetUIButtonProperty" >simxGetUIButtonProperty</a></li>
-<li class="vrep_denied"><a class="anchor" id="simxGetUIEventButton"></a><a class="api_selector"  href="http://www.v-rep.eu/helpFiles/en/remoteApiFunctionsMatlab.htm#simxGetUIEventButton" >simxGetUIEventButton</a></li>
-<li class="vrep_denied"><a class="anchor" id="simxGetUIHandle"></a><a class="api_selector"  href="http://www.v-rep.eu/helpFiles/en/remoteApiFunctionsMatlab.htm#simxGetUIHandle" >simxGetUIHandle</a></li>
-<li class="vrep_denied"><a class="anchor" id="simxGetUISlider"></a><a class="api_selector"  href="http://www.v-rep.eu/helpFiles/en/remoteApiFunctionsMatlab.htm#simxGetUISlider" >simxGetUISlider</a></li>
-<li class="vrep_allowed"><a class="anchor" id="simxGetVisionSensorDepthBuffer"></a><a class="api_selector"  href="http://www.v-rep.eu/helpFiles/en/remoteApiFunctionsMatlab.htm#simxGetVisionSensorDepthBuffer" >simxGetVisionSensorDepthBuffer</a></li>
-<li class="vrep_allowed"><a class="anchor" id="simxGetVisionSensorImage"></a><a class="api_selector"  href="http://www.v-rep.eu/helpFiles/en/remoteApiFunctionsMatlab.htm#simxGetVisionSensorImage" >simxGetVisionSensorImage</a></li>
-<li class="vrep_allowed"><a class="anchor" id="simxGetVisionSensorImage2"></a><a class="api_selector"  href="http://www.v-rep.eu/helpFiles/en/remoteApiFunctionsMatlab.htm#simxGetVisionSensorImage2" >simxGetVisionSensorImage2</a></li>
-<li class="vrep_denied"><a class="anchor" id="simxJointGetForce"></a><a class="api_selector"  href="http://www.v-rep.eu/helpFiles/en/remoteApiFunctionsMatlab.htm#simxJointGetForce" >simxJointGetForce</a></li>
-<li class="vrep_denied"><a class="anchor" id="simxLoadModel"></a><a class="api_selector"  href="http://www.v-rep.eu/helpFiles/en/remoteApiFunctionsMatlab.htm#simxLoadModel" >simxLoadModel</a></li>
-<li class="vrep_denied"><a class="anchor" id="simxLoadScene"></a><a class="api_selector"  href="http://www.v-rep.eu/helpFiles/en/remoteApiFunctionsMatlab.htm#simxLoadScene" >simxLoadScene</a></li>
-<li class="vrep_denied"><a class="anchor" id="simxLoadUI"></a><a class="api_selector"  href="http://www.v-rep.eu/helpFiles/en/remoteApiFunctionsMatlab.htm#simxLoadUI" >simxLoadUI</a></li>
-<li class="vrep_denied"><a  href="remoteApiFunctionsPython.htm#simxPackFloats" >simxPackFloats</a><a class="anchor" id="simxPackFloats"></a></li>
-<li class="vrep_denied"><a  href="remoteApiFunctionsPython.htm#simxPackInts" >simxPackInts</a><a class="anchor" id="simxPackInts"></a></li>
-<li class="vrep_denied"><a class="anchor" id="simxPauseCommunication"></a><a class="api_selector"  href="http://www.v-rep.eu/helpFiles/en/remoteApiFunctionsMatlab.htm#simxPauseCommunication" >simxPauseCommunication</a></li>
-<li class="vrep_denied"><a class="anchor" id="simxPauseSimulation"></a><a class="api_selector"  href="http://www.v-rep.eu/helpFiles/en/remoteApiFunctionsMatlab.htm#simxPauseSimulation" >simxPauseSimulation</a></li>
-<li class="vrep_denied"><a class="anchor" id="simxQuery"></a><a class="api_selector"  href="http://www.v-rep.eu/helpFiles/en/remoteApiFunctionsMatlab.htm#simxQuery" >simxQuery</a></li>
-<li class="vrep_denied"><a class="anchor" id="simxReadCollision"></a><a class="api_selector"  href="http://www.v-rep.eu/helpFiles/en/remoteApiFunctionsMatlab.htm#simxReadCollision" >simxReadCollision</a></li>
-<li class="vrep_denied"><a class="anchor" id="simxReadDistance"></a><a class="api_selector"  href="http://www.v-rep.eu/helpFiles/en/remoteApiFunctionsMatlab.htm#simxReadDistance" >simxReadDistance</a></li>
-<li class="vrep_denied"><a class="anchor" id="simxReadForceSensor"></a><a class="api_selector"  href="http://www.v-rep.eu/helpFiles/en/remoteApiFunctionsMatlab.htm#simxReadForceSensor" >simxReadForceSensor</a></li>
-<li class="vrep_denied"><a class="anchor" id="simxReadProximitySensor"></a><a class="api_selector"  href="http://www.v-rep.eu/helpFiles/en/remoteApiFunctionsMatlab.htm#simxReadProximitySensor" >simxReadProximitySensor</a></li>
-<li class="vrep_allowed"><a class="anchor" id="simxReadVisionSensor"></a><a class="api_selector"  href="http://www.v-rep.eu/helpFiles/en/remoteApiFunctionsMatlab.htm#simxReadVisionSensor" >simxReadVisionSensor</a></li>
-<li class="vrep_allowed"><a class="anchor" id="simxReleaseBuffer"></a><a class="api_selector"  href="http://www.v-rep.eu/helpFiles/en/remoteApiFunctionsMatlab.htm#simxReleaseBuffer" >simxReleaseBuffer</a></li>
-<li class="vrep_denied"><a class="anchor" id="simxRemoveObject"></a><a class="api_selector"  href="http://www.v-rep.eu/helpFiles/en/remoteApiFunctionsMatlab.htm#simxRemoveObject" >simxRemoveObject</a></li>
-<li class="vrep_denied"><a class="anchor" id="simxRemoveUI"></a><a class="api_selector"  href="http://www.v-rep.eu/helpFiles/en/remoteApiFunctionsMatlab.htm#simxRemoveUI" >simxRemoveUI</a></li>
-<li class="vrep_denied"><a class="anchor" id="simxRMLPosition"></a><a class="api_selector"  href="http://www.v-rep.eu/helpFiles/en/remoteApiFunctionsMatlab.htm#simxRMLPosition" >simxRMLPosition</a></li>
-<li class="vrep_denied"><a class="anchor" id="simxRMLVelocity"></a><a class="api_selector"  href="http://www.v-rep.eu/helpFiles/en/remoteApiFunctionsMatlab.htm#simxRMLVelocity" >simxRMLVelocity</a></li>
-<li class="vrep_denied"><a class="anchor" id="simxSetArrayParameter"></a><a class="api_selector"  href="http://www.v-rep.eu/helpFiles/en/remoteApiFunctionsMatlab.htm#simxSetArrayParameter" >simxSetArrayParameter</a></li>
-<li class="vrep_denied"><a class="anchor" id="simxSetBooleanParameter"></a><a class="api_selector"  href="http://www.v-rep.eu/helpFiles/en/remoteApiFunctionsMatlab.htm#simxSetBooleanParameter" >simxSetBooleanParameter</a></li>
-<li class="vrep_denied"><a class="anchor" id="simxSetFloatingParameter"></a><a class="api_selector"  href="http://www.v-rep.eu/helpFiles/en/remoteApiFunctionsMatlab.htm#simxSetFloatingParameter" >simxSetFloatingParameter</a></li>
-<li class="vrep_denied"><a class="anchor" id="simxSetFloatSignal"></a><a class="api_selector"  href="http://www.v-rep.eu/helpFiles/en/remoteApiFunctionsMatlab.htm#simxSetFloatSignal" >simxSetFloatSignal</a></li>
-<li class="vrep_denied"><a class="anchor" id="simxSetIntegerParameter"></a><a class="api_selector"  href="http://www.v-rep.eu/helpFiles/en/remoteApiFunctionsMatlab.htm#simxSetIntegerParameter" >simxSetIntegerParameter</a></li>
-<li class="vrep_allowed"><a class="anchor" id="simxSetIntegerSignal"></a><a class="api_selector"  href="http://www.v-rep.eu/helpFiles/en/remoteApiFunctionsMatlab.htm#simxSetIntegerSignal" >simxSetIntegerSignal</a><p>Only on the following signals: <code>displaylasers</code>, <code>handle_xyz_sensor</code>, <code>handle_xy_sensor</code>, <code>handle_rgb_sensor</code>, <code>gripper_open</code>, <code>km_mode</code>.</p></li>
-<li class="vrep_denied"><a class="anchor" id="simxSetJointForce"></a><a class="api_selector"  href="http://www.v-rep.eu/helpFiles/en/remoteApiFunctionsMatlab.htm#simxSetJointForce" >simxSetJointForce</a></li>
-<li class="vrep_denied"><a class="anchor" id="simxSetJointPosition"></a><a class="api_selector"  href="http://www.v-rep.eu/helpFiles/en/remoteApiFunctionsMatlab.htm#simxSetJointPosition" >simxSetJointPosition</a></li>
-<li class="vrep_allowed"><a class="anchor" id="simxSetJointTargetPosition"></a><a class="api_selector"  href="http://www.v-rep.eu/helpFiles/en/remoteApiFunctionsMatlab.htm#simxSetJointTargetPosition" >simxSetJointTargetPosition</a><p>
-  Only with the following joints: <code>youBotArmJoint*</code>.</p></li>
-<li class="vrep_allowed"><a class="anchor" id="simxSetJointTargetVelocity"></a><a class="api_selector"  href="http://www.v-rep.eu/helpFiles/en/remoteApiFunctionsMatlab.htm#simxSetJointTargetVelocity" >simxSetJointTargetVelocity</a><p>Only on the following joints: <code>rollingJoint_*</code>.</li>
-<li class="vrep_denied"><a class="anchor" id="simxSetModelProperty"></a><a class="api_selector"  href="http://www.v-rep.eu/helpFiles/en/remoteApiFunctionsMatlab.htm#simxSetModelProperty" >simxSetModelProperty</a></li>
-<li class="vrep_denied"><a class="anchor" id="simxSetObjectFloatParameter"></a><a class="api_selector"  href="http://www.v-rep.eu/helpFiles/en/remoteApiFunctionsMatlab.htm#simxSetObjectFloatParameter" >simxSetObjectFloatParameter</a></li>
-<li class="vrep_denied"><a class="anchor" id="simxSetObjectIntParameter"></a><a class="api_selector"  href="http://www.v-rep.eu/helpFiles/en/remoteApiFunctionsMatlab.htm#simxSetObjectIntParameter" >simxSetObjectIntParameter</a></li>
-<li class="vrep_allowed"><a class="anchor" id="simxSetObjectOrientation"></a><a class="api_selector"  href="http://www.v-rep.eu/helpFiles/en/remoteApiFunctionsMatlab.htm#simxSetObjectOrientation" >simxSetObjectOrientation</a><p>
-  Only with the following arguments:</p>
-  <table class="vrep">
-  <tr><th>objectHandle</th><th>relativeToObjectHandle</th><th>eulerAngles</th><th>Milestone</th></tr>
-  <tr><td>rgbdSensor</td><td>youBot_ref, youBot_center</td><td>[0, 0, *]</td><td>(any)</td></tr>
-  <tr><td>youBot_gripperOrientationTarget</td><td>Rectangle22</td><td>(any)</td><td>all except B.4</td></tr>
-  </table>
-</li>
-<li class="vrep_denied"><a class="anchor" id="simxSetObjectParent"></a><a class="api_selector"  href="http://www.v-rep.eu/helpFiles/en/remoteApiFunctionsMatlab.htm#simxSetObjectParent" >simxSetObjectParent</a></li>
-<li class="vrep_allowed"><a class="anchor" id="simxSetObjectPosition"></a><a class="api_selector"  href="http://www.v-rep.eu/helpFiles/en/remoteApiFunctionsMatlab.htm#simxSetObjectPosition" >simxSetObjectPosition</a><p>
-  Only with the following arguments:</p>
-  <table class="vrep">
-  <tr><th>objectHandle</th><th>relativeToObjectHandle</th><th>Milestone</th></tr>
-  <tr><td>youBot_gripperPositionTarget</td><td>youBot_ref</td><td>all except B.4</td></tr>
-  </table>
-</li>
-<li class="vrep_denied"><a class="anchor" id="simxSetObjectSelection"></a><a class="api_selector"  href="http://www.v-rep.eu/helpFiles/en/remoteApiFunctionsMatlab.htm#simxSetObjectSelection" >simxSetObjectSelection</a></li>
-<li class="vrep_denied"><a class="anchor" id="simxSetSphericalJointMatrix"></a><a class="api_selector"  href="http://www.v-rep.eu/helpFiles/en/remoteApiFunctionsMatlab.htm#simxSetSphericalJointMatrix" >simxSetSphericalJointMatrix</a></li>
-<li class="vrep_denied"><a class="anchor" id="simxSetStringSignal"></a><a class="api_selector"  href="http://www.v-rep.eu/helpFiles/en/remoteApiFunctionsMatlab.htm#simxSetStringSignal" >simxSetStringSignal</a></li>
-<li class="vrep_denied"><a class="anchor" id="simxSetUIButtonLabel"></a><a class="api_selector"  href="http://www.v-rep.eu/helpFiles/en/remoteApiFunctionsMatlab.htm#simxSetUIButtonLabel" >simxSetUIButtonLabel</a></li>
-<li class="vrep_denied"><a class="anchor" id="simxSetUIButtonProperty"></a><a class="api_selector"  href="http://www.v-rep.eu/helpFiles/en/remoteApiFunctionsMatlab.htm#simxSetUIButtonProperty" >simxSetUIButtonProperty</a></li>
-<li class="vrep_denied"><a class="anchor" id="simxSetUISlider"></a><a class="api_selector"  href="http://www.v-rep.eu/helpFiles/en/remoteApiFunctionsMatlab.htm#simxSetUISlider" >simxSetUISlider</a></li>
-<li class="vrep_denied"><a class="anchor" id="simxSetVisionSensorImage"></a><a class="api_selector"  href="http://www.v-rep.eu/helpFiles/en/remoteApiFunctionsMatlab.htm#simxSetVisionSensorImage" >simxSetVisionSensorImage</a></li>
-<li class="vrep_allowed"><a class="anchor" id="simxStart"></a><a class="api_selector"  href="http://www.v-rep.eu/helpFiles/en/remoteApiFunctionsMatlab.htm#simxStart" >simxStart</a></li>
-<li class="vrep_allowed"><a class="anchor" id="simxStartSimulation"></a><a class="api_selector"  href="http://www.v-rep.eu/helpFiles/en/remoteApiFunctionsMatlab.htm#simxStartSimulation" >simxStartSimulation</a></li>
-<li class="vrep_allowed"><a class="anchor" id="simxStopSimulation"></a><a class="api_selector"  href="http://www.v-rep.eu/helpFiles/en/remoteApiFunctionsMatlab.htm#simxStopSimulation" >simxStopSimulation</a></li>
-<li class="vrep_denied"><a class="anchor" id="simxSynchronous"></a><a class="api_selector"  href="http://www.v-rep.eu/helpFiles/en/remoteApiFunctionsMatlab.htm#simxSynchronous" >simxSynchronous</a></li>
-<li class="vrep_denied"><a class="anchor" id="simxSynchronousTrigger"></a><a class="api_selector"  href="http://www.v-rep.eu/helpFiles/en/remoteApiFunctionsMatlab.htm#simxSynchronousTrigger" >simxSynchronousTrigger</a></li>
-<li class="vrep_denied"><a class="anchor" id="simxTransferFile"></a><a class="api_selector"  href="http://www.v-rep.eu/helpFiles/en/remoteApiFunctionsMatlab.htm#simxTransferFile" >simxTransferFile</a></li>
-<li class="vrep_denied"><a  href="remoteApiFunctionsPython.htm#simxUnpackFloats" >simxUnpackFloats</a><a class="anchor" id="simxUnpackFloats"></a></li>
-<li class="vrep_denied"><a  href="remoteApiFunctionsPython.htm#simxUnpackInts" >simxUnpackInts</a><a class="anchor" id="simxUnpackInts"></a></li>
-</ul>
-
-<?php write_title("youbot", "YouBot's Sensors, Actuators, Gripper"); ?>
-
-<h2>Names of V-REP Components</h2>
-
-<p>The V-REP names of the youBot's components are listed below. You can get a programmatic handle to these components via the <a href="#simxGetObjectHandle">simxGetObjectHandle</a> method (see examples below).</p>
-
-<ul>
-<li><code>youBot_ref</code>: A point on the rotation axis of the first arm joint.</li>
-<li><code>youBot_center</code>: the center of the youBot's frame.</li>
-<li><code>rollingJoint_fl</code>, <code>rollingJoint_rl</code>, <code>rollingJoint_rr</code>, <code>rollingJoint_fr</code>: the four wheel joints.</li>
-<li><code>rgbdSensor</code>: the box containing the depth and photometric cameras.</li>
-<li><code>xyzSensor</code>, <code>rgbSensor</code>, <code>fastHokuyo_sensor1</code>, <code>fastHokuyo_sensor2</code>: the depth and photometric cameras, and the two 120&ndash;degree Hokuyo sensors.</li>
-</ul>
-
-<h2>Signals for Controlling the youBot's Sensors and Gripper</h2>
-
-<p>The youBot's sensors can be turned on or off through following V-REP signals: <code>handle_xyz_sensor</code>, <code>handle_xy_sensor</code> and <code>handle_rgb_sensor</code>. (See for instance <a href="#simxSetIntegerSignal">simxSetIntegerSignal</a>.) The value of <code>handle_xyz_sensor</code> controls the depth camera:</p>
-
-<ul>
-<li><code>handle_xyz_sensor</code> set to 0 (or undefined): the depth camera is off.</li>
-<li><code>handle_xyz_sensor</code> set to 1: the depth camera is turned on, takes one shot, and is automatically turned off again.</li>
-<li><code>handle_xyz_sensor</code> set to 2: the depth camera is turned on, and stays on until the value of the signal is changed again.</li>
-</ul>
-
-<p>The RGB camera is controlled in the same way with <code>handle_rgb_sensor</code>. The signal <code>handle_xy_sensor</code> controls <em>both</em> <code>fastHokuyo_sensor1</code> and <code>fastHokuyo_sensor2</code>.</p>
-
-<p>The three signals <code>handle_xyz_sensor</code>, <code>handle_xy_sensor</code> and <code>handle_rgb_sensor</code> only control whether V-REP is computing what the sensors see. Setting one of these signals to 1 or 2 will <b>not</b> make V-REP send the data over to Matlab. Whether and how the data is sent to Matlab is controlled via <a href="#simxReadVisionSensor">simxReadVisionSensor</a> or <a href="#simxGetVisionSensorImage2">simxGetVisionSensorImage2</a> and <a href="http://www.coppeliarobotics.com/helpFiles/en/remoteApiConstants.htm#operationModes">remote operation modes</a> (such as <em>streaming</em>, <em>oneshot</em>, etc.).
-
-<p>It is generally ok to leave the Hokuyo sensor continuously on, and ok to get its data with the <em> streaming</em> operation mode (see the <a href="#02">vision example</a> below). The RGB and depth cameras however are  expensive to run. They slow down V-REP, and clog the network. It is advised to turn the two cameras on only when needed, by setting their signal to 1, and recovering the generated image or point cloud with the <em>oneshot</em> or <em>oneshot_wait</em> operation mode (see the <a href="#02">vision example</a> below).</p>
-
-<p>The view angle of the depth camera and the RGB camera can be controlled via a signal named <code>rgbd_sensor_scan_angle</code>:</p>
-<?php code("res = vrep.simxSetFloatSignal(id, 'rgbd_sensor_scan_angle', pi/8, vrep.simx_opmode_oneshot_wait); check(vrep, res);", "Matlab", "matlab"); ?>
-<p>The default angle is <code>pi/4</code>.
-</p>
-
-<p>The <code>gripper_open</code> signal controls the gripper:</p>
-<ul>
-<li><code>gripper_open</code> set to 1 or unset: the gripper opens.</li>
-<li><code>gripper_open</code> set to 0: the gripper closes and applies a constant force inwards.</li>
-</ul>
-
-<p>The <code>km_mode</code> signal turns the robot's inverse kinematics mode on or off:</p>
-<ul>
-<li><code>km_mode</code> set to 0 or unset: the arm joints are in position-control mode. Use <a href="#simxSetJointTargetPosition">simxSetJointTargetPosition</a> to change the arm's configuration. </li>
-<li><code>km_mode</code> set to 1: activates a controller that attempts to move the tip of the gripper to the <em>position</em> of <code>youBot_gripperPositionTarget</code>. Use <a href="#simxSetObjectPosition">simxSetObjectPosition</a> on <code>youBot_gripperPositionTarget</code> to move the tip of the arm to a position in the youBot's frame.</li>
-<li><code>km_mode</code> set to 2: activates a controller that attempts to move the tip of the gripper to the position of <code>youBot_gripperPositionTarget</code>, and to partially align the gripper to the orientation of <code>youBot_gripperPositionTarget</code>. Since the youBot's arm has only five DOFs, it cannot reach any arbitrary orientation. This controller only changes the orientation of the gripper around the axis of the second/third/fourth joint. Use <a href="#simxSetObjectPosition">simxSetObjectPosition</a> on <code>youBot_gripperPositionTarget</code> to move the tip of the arm to a position in the youBot's frame, and <a href="#simxSetObjectOrientation">simxSetObjectOrientation</a> on <code>youBot_gripperOrientationTarget</code> to partially orient the tip of the arm to an angle in the frame of the first link of the arm. See example below for details.</li>
-</ul>
-
-
-<p>The <code>displaylasers</code> signal turns the V-REP laser display on or off. When <code>displaylasers</code> is set (whatever its value), V-REP displays red rays along the scanning lines of the Hokuyo, or red dots at the scanning points of the depth sensor. The only purpose served by this signal is illustration, and displaying the lasers slows V-REP down. You will generally want to keep this function off.</p>
-
-<?php write_title("matlab", "Matlab Tips"); ?>
-
-<h2>Avoiding Loops</h2>
-
-<p>Matlab is an interpreted language. Despite recent progress in the JIT accelerator, running loops in Matlab is still <em>much</em> slower than running loops in native code. Since most Matlab functions rely on a C implementation of large loops, it is good practice to always prefer calling a function over writing a loop when handling large datatypes. In your project, the two datatypes that you need to handle with care are images and point clouds (from the RGB camera, or from the 2D/3D laser scanners). <b>Handling images and point clouds with Matlab functions or MEX functions instead of Matlab loops will often make your code 100 times faster.</b></p>
-
-<p>An example of the computational cost of flipping an image with a loop vs. a Matlab function is provided below.</p>
-
-<?php list_info0948_code('matlab_functions/test_loop_vs_native.m', 'test_loop_vs_native.m'); ?>
-
-<h2>Running Code from Files</h2>
-
-<p>The Matlab JIT accelerator doesn't optimize code typed into the console. To verify this behavior, run the function above by typing <code>test_loop_vs_native</code> in the console, then by copy-pasting the contents of the <code>test_loop_vs_native</code> function directly into the console. As a result of this behavior, always run your code from <code>.m</code> files.</p>
-
-<?php write_title("youbot_tips", "YouBot Tips"); ?>
-
-<h2>Unintentional Movements</h2>
-
-<p>V-REP does a pretty good job of simulating the real world. This can sometimes lead to unexpected problems. For instance, if no input is given to the wheels and the arm is swung back and front, the robot will move back and forth (slightly). In the third example below, you can verify that the final robot position is about a centimeter further than the initial position.</p>
-
-<h2>Physics Engine</h2>
-
-We recommend using the ODE engine.
-
-<h2>Use the Toolbox!</h2>
-
-There's plenty of functions in the Matlab Robot Toolbox that will help you with high-level algorithms (path planning, vision, ...), but also low-level computations (pose transformation, angle distance, ...). Don't forget to use them!
-
-<h2>Useful Functions/Tools</h2>
-
-<ul>
-<li>The Matlab <code>inpolygon</code> function</li>
-</ul>
-
-<?php write_title("01", "Youbot Example Script"); ?>
-
-
-<p>The example script is located in the directory <code>youbot</code> of the <a href="#git">course's Git repository</a>. To run the example:</p>
-<ol>
-<li>Open the file <code>house.ttt</code> in V-REP, and <!--The simulation should be run in realtime. Make sure that the menu <em>Simulation &gt; Real-time simulation</em> is checked,--> hit the <em>start simulation</em> button <img src="raster/simulation1.jpg" alt="start" class="txt">.</li>
-<li>In Matlab, cd to the <code>youbot</code> directory, and start the <code>youbot</code> script.</li>
-</ol>
-
-<p>This example show how to access to the sensors and actuators of the youBot.</p>
-
-<p>The code is listed below.</p>
-
-<?php list_info0948_code('youbot/youbot.m', 'youbot.m'); ?>
-
-<a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
 
       </div>
 
@@ -497,7 +139,8 @@ There's plenty of functions in the Matlab Robot Toolbox that will help you with 
             </div>
 
             <div style="width: 50%; display: table-cell; text-align: right; vertical-align: bottom;">
-              Renaud Detry, Oliver Kroemer, Danica Kragic
+              &copy; Renaud Detry 2014<br>
+              This work is licensed under a <a href="http://creativecommons.org/licenses/by/4.0/" rel="license">Creative Commons Attribution 4.0 International License</a>.
             </div>
           </div>
         </div>
