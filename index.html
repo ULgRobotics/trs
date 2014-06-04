@@ -25,7 +25,7 @@
 
     <div class="content_body">
       <div id="menu">
-        <a class="top" href="index.html">TRS</a> <a class="submenu" href="index.html#mot">Motivation</a> <a class="submenu" href="index.html#get">What You Get</a> <a class="submenu" href="index.html#use">How to Use</a> <a class="submenu" href="index.html#contact">Contact</a> <a href="setup.html">Setup</a> <a class="submenu" href="setup.html#com">Components</a> <a class="submenu" href="setup.html#install">Install</a> <a class="submenu" class="bottom" href="setup.html#shoot">Troubleshoot</a> <a href="project.html">Project</a> <a class="submenu" href="project.html#def">Definition</a>
+        <a class="top" href="index.html">TRS</a> <a class="submenu" href="index.html#mot">Motivation</a> <a class="submenu" href="index.html#get">What You Get</a> <a class="submenu" href="index.html#use">How to Use</a> <a class="submenu" href="index.html#contact">Authors</a> <a href="setup.html">Setup</a> <a class="submenu" href="setup.html#com">Components</a> <a class="submenu" href="setup.html#install">Install</a> <a class="submenu" class="bottom" href="setup.html#shoot">Troubleshoot</a> <a href="project.html">Project</a> <a class="submenu" href="project.html#def">Definition</a>
         <a class="submenu" href="project.html#prog">Programming</a>
         <a class="submenu" href="project.html#doc">Documentation</a>
         <a class="submenu" href="project.html#api">API</a>
@@ -39,15 +39,15 @@
 
         <h1 style="margin-top: 0">Motivation</h1>
 
-        <p style="font-weight: bold">TRS is a cross-platform robot development and simulation environment that can be installed in five minutes and that allows students to write control, navigation, vision or manipulation algorithms in a hundred lines of Matlab or Python code. The tutorial relies on the V-REP robot simulator, and on the Matlab Robotics Toolbox (RTB). The key feature of this combination is its ease of use – both tools are trivial to install.</p>
+        <p style="font-weight: bold">TRS is an open-source recipe for organizing a master-level robotics project. It relies on a cross-platform robot development and simulation environment that can be installed in five minutes and that allows students to write control, navigation, vision or manipulation algorithms in a hundred lines of Matlab or Python code. TRS contains a project structure (documentation, objectives, milestones), and the software skeleton for running the project (simulator models, Matlab code examples, install instructions). It is freely available and extendable.</p>
 
-        <p>Because working with hardware is time-consuming, many Master-level and PhD-level robotics courses leave hardware issues aside, to give the students time to study theoretical concepts and information-processing algorithms. Unfortunately, hardware-free courses often come with no hands-on exercises, which impedes learning. This tutorial discusses one solution to this problem: allowing students to gain practical experience in a simulated environment. Open-source simulators have existed for a long time, but their limited ease-of-use made them impractical for teaching. Ease of use is crucial in teaching: The software must be robust, multi-platform, and its installation has to be trivial. <a href="http://www.coppeliarobotics.com">V-REP</a>, the simulator on which this tutorial is based, can be installed on Linux, OSX and Windows simply by uncompressing zip archive.</p>
+        <p>Because working with hardware is time-consuming, many Master-level and PhD-level robotics courses leave hardware issues aside, to give the students time to study theoretical concepts and information-processing algorithms. Unfortunately, hardware-free courses often come with no hands-on exercises, which impedes learning. Here, we consider one solution to this problem: allowing students to gain practical experience in a simulated environment. Open-source simulators have existed for a long time, but their limited ease-of-use made them impractical for teaching. Ease of use is crucial in teaching: The software must be robust, multi-platform, and its installation has to be trivial. <a href="http://www.coppeliarobotics.com">V-REP</a>, the simulator on which TRS is based, can be installed on Linux, OSX and Windows simply by uncompressing zip archive.</p>
 
-        <p>Software development is another major challenge in robot development. This tutorial is based on the <a href="http://petercorke.com/Robotics_Toolbox.html">Robotics Toolbox for MATLAB</a> (RTB), a library of robot-oriented software building blocks. Its Matlab implementation makes it accessible to branches of engineering where fluency in C++ is not expected.</p>
+        <p>Software development is another major challenge in robot development. TRS is based on the <a href="http://petercorke.com/Robotics_Toolbox.html">Robotics Toolbox for MATLAB</a> (RTB), a library of robot-oriented software building blocks. Its Matlab implementation makes it accessible to branches of engineering where fluency in C++ is not expected.</p>
 
-        <p>The aim of this tutorial is to present an environment, based on V-REP and RTB, that allows students to control a robot from Matlab. The environment consists of a set of Matlab scripts, and a V-REP file modeling a mobile robot and a building floor. Running a single Matlab command establishes a connection between Matlab and V-REP. The user is then able to recover sensor data (images, scans, odometry), process those data, and send commands to the robot's actuators. The robot's sensors and actuators are accessed via Matlab functions:</p>
+        <p>TRS is an environment, based on V-REP and RTB, that allows students to control a robot from Matlab. The environment consists of a set of Matlab scripts, and a V-REP file modeling a mobile robot and a building floor. Running a single Matlab command establishes a connection between Matlab and V-REP. The user is then able to recover sensor data (images, scans, odometry), process those data, and send commands to the robot's actuators. The robot's sensors and actuators are accessed via Matlab functions:</p>
 
-        <p><code>vrep.simxSetJointTargetVelocity(id, wheel1, 10);</code></p>
+        <p><code class="block">vrep.simxSetJointTargetVelocity(id, wheel1, 10);</code></p>
 
         <p>An understanding of the simulator itself is not required, as all the programming is done through the Matlab interface.</p>
 
@@ -80,11 +80,11 @@
 
         <p>The TRS recipe is freely distributed via a <a href="https://github.com/ULgRobotics/trs">GitHub repository</a> (<code>https://github.com/ULgRobotics/trs.git</code>). The code and the V-REP models are in the <a href="https://github.com/ULgRobotics/trs/tree/master">master branch</a>), and the doc is in the <a href="https://github.com/ULgRobotics/trs/tree/gh-pages">gh-pages</a> branch. The page that you are reading now is generated by the GitHub Pages service from the <a href="https://github.com/ULgRobotics/trs/tree/gh-pages">gh-pages</a> branch — in other words, everything you see on this website can be obtained by cloning the whole TRS repository. By cloning the repository, you can quickly adapt both the code and the web doc to your own likings.</p>
 
-        <p>All of the TRS material (code and documentation) are published under open licenses. The code is published under GPL, and the documentation (the pages published on this website) are CC. These licenses allow anyone to copy, improve, and hopefully contribute back, to provide robotics students with an excellent learning experience.</p><a id="contact" name="contact"></a>
+        <p>All of the TRS material (code and documentation) is published under open licenses. The code is published under GPL, and the documentation (the pages published on this website) are CC. These licenses allow anyone to copy, improve, and hopefully contribute back, to provide robotics students with an excellent learning experience.</p><a id="contact" name="contact"></a>
 
-        <h1>Contact</h1>
+        <h1>Authors</h1>
 
-        <p><a href="http://renaud-detry.net/">Renaud Detry</a>, <em>University of Liege, Belgium</em></p>
+        <p>TRS was put together by <a href="http://renaud-detry.net/">Renaud Detry</a> for a <a href="http://renaud-detry.net/teaching/info0948/">course taught at the University of Liège</a>, with lots of help from <a href="http://coppeliarobotics.com">Coppelia Robotics</a> and <a href="http://petercorke.com">Peter Corke</a>.</p>
       </div>
 
       <div class="trailer_body">
