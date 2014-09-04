@@ -12,10 +12,6 @@ if ~exist(robotpath,'dir') & ~exist('rtbdemo'),
   if isempty(dodownload) | dodownload ~= 'n',
     files = { 'contrib.zip',  'contrib2.zip',  'vision-3.3.zip', 'robot-9.8.zip' };
     for i = 1:4,
-      %[ zippath, success ]  = urlwrite(sprintf('http://renaud-detry.net/teaching/info0948/data/%s', files{i}), files{i});
-      %if ~success,
-      %  error(sprintf('Cannot download %s.', files{i}));
-      %end
       fprintf('Downloading %s...\n', files{i});
       unzip(sprintf('http://renaud-detry.net/teaching/info0948/data/%s', files{i}));
       fprintf('Downloading %s: done.\n', files{i});

@@ -1,5 +1,8 @@
 function h = youbot_hokuyo_init(vrep, h)
 % Initialize Hokuyo sensor in VREP
+% This function starts the Hokuyo sensor, and it computes the transformations
+% between the Hokuyo frame and the youBot reference frame h.ref.
+% These transformations are stored in h.hokuyo1Trans and h.hokuyo2Trans
 
 % (C) Copyright Renaud Detry 2013.
 % Distributed under the GNU General Public License.
@@ -31,8 +34,8 @@ function h = youbot_hokuyo_init(vrep, h)
   %  pause(1/20);
   %end
 
-  % Compute the transformations between the two Hokuyo subsensors and the Hokuyo
-  % frame
+  % Compute the transformations between the two Hokuyo subsensors and the youBot
+  % ref frame h.ref
   h.hokuyo1Trans = transl(h.hokuyo1Pos) * trotx(h.hokuyo1Euler(1)) * troty(h.hokuyo1Euler(2)) * trotz(h.hokuyo1Euler(3));
   h.hokuyo2Trans = transl(h.hokuyo2Pos) * trotx(h.hokuyo2Euler(1)) * troty(h.hokuyo2Euler(2)) * trotz(h.hokuyo2Euler(3));
 
