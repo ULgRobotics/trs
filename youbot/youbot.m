@@ -6,6 +6,7 @@ function youbot()
 % (See http://www.gnu.org/copyleft/gpl.html)
 
 disp('Program started');
+%Use the following line if you had to recompile remoteApi
 %vrep = remApi('remoteApi', 'extApi.h');
 vrep=remApi('remoteApi');
 vrep.simxFinish(-1);
