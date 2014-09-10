@@ -22,7 +22,7 @@ fprintf('Connection %d to remote API server open.\n', id);
 % Make sure we close the connexion whenever the script is interrupted.
 cleanupObj = onCleanup(@() cleanup_vrep(vrep, id));
 
-% This will only works in "continuous remote API server service"
+% This will only work in "continuous remote API server service"
 % See http://www.v-rep.eu/helpFiles/en/remoteApiServerSide.htm
 res = vrep.simxStartSimulation(id, vrep.simx_opmode_oneshot_wait);
 % We're not checking the error code - if vrep is not run in continuous remote
@@ -32,11 +32,11 @@ res = vrep.simxStartSimulation(id, vrep.simx_opmode_oneshot_wait);
 % Retrieve all handles, and stream arm and wheel joints, the robot's pose,
 % the Hokuyo, and the arm tip pose.
 h = youbot_init(vrep, id);
-
 h = youbot_hokuyo_init(vrep, h);
 
 % Let a few cycles pass to make sure there's a value waiting for us next time
-% we try to get a joint angle or the robot pose with the simx_opmode_buffer option.
+% we try to get a joint angle or the robot pose with the simx_opmode_buffer
+% option.
 pause(.2);
 
 % Constants:
