@@ -52,7 +52,7 @@ write a control, navigation, vision or manipulation program in 100 lines of code
 <p>Object are either cylindrical or box-shaped. The bases of boxes and cylinders are fixed, only their height varies. The base of box-like objects is 50mm by 50mm. The diameter of the base of cylinders is 50mm. The color of objects varies. Objects are initially placed on two tables facing the youBot's starting position. (The two tables are visible with the Hokuyo sensor from the youBot's starting position. No other cylindrical objects are within sight of the Hokuyo from the youBot's starting position.) One one table, objects are placed upright. On the other table, objects are not necessarily placed upright &ndash; they may be laid down or tilted.</p>
 
 
-<p>The size of the house is fixed (see <code>house.ttt</code>). However, the youBot does not know the layout of the house a priori. All obstacles are high enough to be detectable with the Hokuyo sensor. There are not holes or open doors leading outside the house. There are five baskets around the house, whose location is not fixed, although they are always close to room/hallway corners. Baskets and tables are cylinders, 800mm in diameter, and 185mm in height. The tables and baskets are the only cylindrical objects resting on the floor. Next to each basket is a landmark  object (of approximately the same size as the youBot), that allows the youBot to identify the room in which it is located. For instance, one basket could be placed next to a bike (garage), or next to a computer (office). The youBot has access to a list of instructions consisting of pairs of object descriptors (green box, blue cylinder, ...) and images. Instructions are accessed via <code>load instructions.mat inst</code>. This structure follows the following schema:</p>
+<p>The size of the house is fixed (see <code>house.ttt</code>). However, the youBot does not know the layout of the house a priori. All obstacles are high enough to be detectable with the Hokuyo sensor. There are no holes or open doors leading outside the house. There are five baskets around the house, whose location is not fixed, although they are always close to room/hallway corners. Baskets and tables are cylinders, 800mm in diameter, and 185mm in height. The tables and baskets are the only cylindrical objects resting on the floor. Next to each basket is a landmark  object (of approximately the same size as the youBot), that allows the youBot to identify the room in which it is located. For instance, one basket could be placed next to a bike (garage), or next to a computer (office). The youBot has access to a list of instructions consisting of pairs of object descriptors (green box, blue cylinder, ...) and images. Instructions are accessed via <code>load instructions.mat inst</code>. This structure follows the following schema:</p>
 <ul>
 <li><code>inst(1).shape</code>: shape of the first object (either <code>box</code> or <code>cylinder</code>).</li>
 <li><code>inst(1).color</code>: color of the first object (R, G, B values).</li>
@@ -63,7 +63,7 @@ write a control, navigation, vision or manipulation program in 100 lines of code
 <li>...</li>
 </ul>
 
-<p>The goal of the project is to move each object to the appropriate basket. At most one object can be stored on the platform of the youBot. The image below illustrates the layout explained above. A V-REP file similar to the one on which projects will be tested is available in the Git repository (see directory <code>youbot</code>). Two training scenes are available at the moment. One of them does not have the landmark objects. This scene is faster to simulate.</p>
+<p>The goal of the project is to move each object to the appropriate basket. At most one object can be stored on the platform of the youBot. The image below illustrates the layout explained above. A V-REP file similar to the one on which projects will be tested is available in the Git repository (see directory <code>youbot</code>).</p>
 
 <div class="figure" style="width: 580px">
   <div><img style="border: 1px solid black; width: 560px" src="raster/vrep-house-youbot2.jpg" alt="house" /></div>
@@ -84,9 +84,9 @@ write a control, navigation, vision or manipulation program in 100 lines of code
 <li>Manipulation: Picking up objects and moving them to any room of the house (except the room where the objects start in) (not necessarily in a basket).
   <ol>
   <li>Moving only the objects from the first table (where objects stand upright), using V-REP IK. Objects can fall on the floor.</li>
-  <li>Moving all the objects (both talbes), using V-REP IK. Objects can fall on the floor.</li>
-  <li>Moving all the objects (both talbes), using V-REP IK. Objects <em>cannot</em> fall on the floor.</li>
-  <li>Moving all the objects (both talbes), <em>without</em> using V-REP IK. Objects <em>cannot</em> fall on the floor.</li>
+  <li>Moving all the objects (both tables), using V-REP IK. Objects can fall on the floor.</li>
+  <li>Moving all the objects (both tables), using V-REP IK. Objects <em>cannot</em> fall on the floor.</li>
+  <li>Moving all the objects (both tables), <em>without</em> using V-REP IK. Objects <em>cannot</em> fall on the floor.</li>
   </ol>
 </li>
 <li>Vision: Finding and identifying the baskets.
