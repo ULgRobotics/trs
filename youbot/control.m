@@ -90,6 +90,8 @@ traj = dx.path([ij(youbotPos(1)) ; ij(youbotPos(2))])';
 traj = [ xy(traj(1,:)); xy(traj(2,:)) ];
 % traj = [ x1 x2 x3 ...;
 %          y1 y2 y3 ... ];
+save('traj', 'traj');
+%load('traj'); % In case DXform does not work, load trajectory.
 
 res = vrep.simxSynchronous(h.id, true); vrchk(vrep, res);
 t = 0;
