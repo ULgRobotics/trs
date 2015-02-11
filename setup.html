@@ -30,7 +30,7 @@ write a control, navigation, vision or manipulation program in 100 lines of code
 
     <div class="content_body">
       <div id="menu">
-        <a class="top" href="index.html">TRS</a> <a class="submenu" href="index.html#mot">Motivation</a> <a class="submenu" href="index.html#get">What You Get</a> <a class="submenu" href="index.html#use">How to Use</a> <a class="submenu" href="index.html#contact">Contact</a> <a href="setup.html">Setup</a> <a class="submenu" href="setup.html#com">Components</a> <a class="submenu" href="setup.html#install">Install</a> <a class="submenu" class="bottom" href="setup.html#shoot">Troubleshoot</a> <a href="project.html">Project</a> <a class="submenu" href="project.html#def">Definition</a>
+        <a class="top" href="index.html">TRS</a> <a class="submenu" href="index.html#events">Events</a> <a class="submenu" href="index.html#mot">Motivation</a> <a class="submenu" href="index.html#get">What You Get</a> <a class="submenu" href="index.html#use">How to Use</a> <a class="submenu" href="index.html#contact">Authors</a> <a href="setup.html">Setup</a> <a class="submenu" href="setup.html#com">Components</a> <a class="submenu" href="setup.html#install">Install</a> <a class="submenu" class="bottom" href="setup.html#shoot">Troubleshoot</a> <a href="project.html">Project</a> <a class="submenu" href="project.html#def">Definition</a>
         <a class="submenu" href="project.html#prog">Programming</a>
         <a class="submenu" href="project.html#doc">Documentation</a>
         <a class="submenu" href="project.html#api">API</a>
@@ -57,11 +57,11 @@ TRS requires a fairly recent version of Matlab. Matlab versions older than 2011 
 
 <h2>Notes</h2>
 
-<p>Before starting to install these programs, please take the time to read the tips below:</p>
+<p>Before installing VREP and RVC, please take the time to read the tips below:</p>
 
 <ul>
 
-  <li>The installation process slightly differs depending on your platform (Linux, Mac, Win), and your Matlab version. At each step of the install procedure, we provide a set of commands that are tailored for a 64-bit Linux machine. If you use a different setup, you will have to adapt these commands slightly.</li>
+  <li>The installation process needs to be slightly adapted to your platform (Linux, Mac, Win), and to your Matlab version. At each step of the install procedure, I provide a set of commands that are tailored to a 64-bit Linux machine. If you use a different setup, you may have to adapt these commands.</li>
 
   <li>If you are using Windows, you can pretty much follow the directives below. However, to ease the process, I suggest you install everything in <code>C:/trs</code> instead of your home directory.<br>
   In the instructions below, the tilde <code>~</code> character stands for the home directory. If you are using Windows, use <code>C:/</code> instead of <code>~</code>. If you decide to go against this recommendation, please make sure that the path where you install the project stuff does not contain spaces, accented characters, or other non-letter characters. Letters and numbers only please.</li>
@@ -76,11 +76,11 @@ TRS requires a fairly recent version of Matlab. Matlab versions older than 2011 
 <ol class="steps">
 
   <li>
-    <a class="anchor" id="git"></a><p>Project-related files are published through Git. Download a Git client from the <a href="http://git-scm.com/downloads">git-scm.com</a> webiste. If you are unfamiliar with Git, <a href="http://www.sourcetreeapp.com">SourceTree</a> is a cool GUI for Mac and Windows.<br>Clone the Git repo <code>https://github.com/ULgRobotics/trs.git</code> on your machine, for instance in your home directory. On a UNIX machine:</p>
+    <a class="anchor" id="git"></a><p>Project-related files are published through Git. Download a Git client from the <a href="http://git-scm.com/downloads">git-scm.com</a> webiste. If you are unfamiliar with Git, <a href="http://www.sourcetreeapp.com">SourceTree</a> is a cool GUI for Mac and Windows.<br>Clone the Git repo <code>https://github.com/ULgRobotics/trs.git</code> onto your machine, for instance in your home directory. On a UNIX machine:</p>
     <code class="block">cd ~
 git clone https://github.com/ULgRobotics/trs.git</code>
-    <p><b>Do not modify files within that directory, as they may be updated server-side.</b> Remember to regularly pull from the Git repository to get the updates.</p>
-    <p>If you have trouble downloading the project files with Git, you can download a <a href="https://github.com/ULgRobotics/trs/archive/master.zip">ZIP snapshot</a> of the current state of the Git repo. This snapshot is kept up-to-date, but <b>you must re-download it often to make sure you get all the updates to the project files</b>.</p>
+    <p><b>Do not modify the files within that directory, as they may be updated by me server-side.</b> Remember to regularly pull from the Git repository to get updates.</p>
+    <p>If you have trouble downloading the project files with Git, you can download a <a href="https://github.com/ULgRobotics/trs/archive/master.zip">ZIP snapshot</a> of the current state of the Git repo. The ZIP file behind this link is kept up-to-date, but <b>you must re-download it often to make sure you get all the updates to the project files</b>.</p>
   </li>
   <li>
     Download <a href="http://coppeliarobotics.com/downloads.html">V-REP PRO EDU</a>.
@@ -89,7 +89,7 @@ git clone https://github.com/ULgRobotics/trs.git</code>
   <li>
     Install the VREP bindings for Matlab:
     <ol>
-      <li>You must copy three files from the directory of the V-REP app (downloaded at the previous step) to the directory named <code>youbot</code> within the GitHub repository. The three files you need to copy are named
+      <li>You must copy three files from the directory of the V-REP app (downloaded at the previous step) to the directory named <code>youbot</code> within your local copy of the GitHub repository. The three files you need to copy are named
         <ul>
           <li><code>remApi.m</code></li>
           <li><code>remoteApiProto.m</code></li>
