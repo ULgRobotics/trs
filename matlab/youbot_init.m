@@ -15,8 +15,18 @@ wheelJoints = [-1,-1,-1,-1]; % front left, rear left, rear right, front right
 [res wheelJoints(2)] = vrep.simxGetObjectHandle(id, 'rollingJoint_rl', vrep.simx_opmode_oneshot_wait); vrchk(vrep, res);
 [res wheelJoints(3)] = vrep.simxGetObjectHandle(id, 'rollingJoint_rr', vrep.simx_opmode_oneshot_wait); vrchk(vrep, res);
 [res wheelJoints(4)] = vrep.simxGetObjectHandle(id, 'rollingJoint_fr', vrep.simx_opmode_oneshot_wait); vrchk(vrep, res);
+for i = 1:4,
+  vrep.simxSetJointTargetVelocity(id, wheelJoints(i),...
+                                  0,...
+                                  vrep.simx_opmode_oneshot); vrchk(vrep, res);
+end
 
 handles.wheelJoints = wheelJoints;
+
+handles.previousForwBackVel = 0;
+handles.previousLeftRightVel = 0;
+handles.previousRotVel = 0;
+
 
 % The Hokuyo sensor is implemented with two planar sensors that each cover 120 degrees:
 [res hokuyo1] = vrep.simxGetObjectHandle(id, 'fastHokuyo_sensor1', vrep.simx_opmode_oneshot_wait); vrchk(vrep, res);
@@ -101,5 +111,7 @@ res = vrep.simxGetObjectOrientation(id, otip, r22, vrep.simx_opmode_streaming); 
 for i = 1:5,
   res = vrep.simxGetJointPosition(id, armJoints(i), vrep.simx_opmode_streaming); vrchk(vrep, res, true);
 end
+
+vrep.simxGetPingTime(id); % make sure that all streaming data has reached the client at least once
 
 end
