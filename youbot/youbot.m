@@ -1,4 +1,4 @@
-function youbot_photo()
+function youbot()
     % youbot Illustrates the V-REP Matlab bindings.
 
     % (C) Copyright Renaud Detry 2013, Thibaut Cuvelier 2017.
@@ -13,6 +13,10 @@ function youbot_photo()
     vrep=remApi('remoteApi');
     vrep.simxFinish(-1);
     id = vrep.simxStart('127.0.0.1', 19997, true, true, 2000, 5);
+    
+    % If you get an error like: 
+    %   Remote API function call returned with error code: 64. Explanation: simxStart was not yet called.
+    % Make sure your code is within a function! You cannot call V-REP from a script. 
 
     if id < 0
         disp('Failed connecting to remote API server. Exiting.');
@@ -180,8 +184,7 @@ function youbot_photo()
           vrchk(vrep, res);
           
           % Ask the sensor to turn itself on, take A SINGLE 3D IMAGE, and turn itself off again. 
-          res = vrep.simxSetIntegerSignal(id, 'handle_xyz_sensor', 1,...
-                                         vrep.simx_opmode_oneshot_wait);
+          res = vrep.simxSetIntegerSignal(id, 'handle_xyz_sensor', 1, vrep.simx_opmode_oneshot_wait);
           vrchk(vrep, res);
 
           % Then use the depth sensor. 
