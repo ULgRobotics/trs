@@ -13,6 +13,10 @@ function youbot_photo()
     vrep=remApi('remoteApi');
     vrep.simxFinish(-1);
     id = vrep.simxStart('127.0.0.1', 19997, true, true, 2000, 5);
+    
+    % If you get an error like: 
+    %   Remote API function call returned with error code: 64. Explanation: simxStart was not yet called.
+    % Make sure your code is within a function! You cannot call V-REP from a script. 
 
     if id < 0
         disp('Failed connecting to remote API server. Exiting.');
@@ -28,9 +32,8 @@ function youbot_photo()
     % See http://www.v-rep.eu/helpFiles/en/remoteApiServerSide.htm
     vrep.simxStartSimulation(id, vrep.simx_opmode_oneshot_wait);
 
-    % Retrieve all handles, and stream arm and wheel joints, the robot's pose, the Hokuyo, and the arm tip pose.
+    % Retrieve all handles.
     h = youbot_init(vrep, id);
-    h = youbot_hokuyo_init(vrep, h);
 
     % Make sure everything is settled before we start. 
     pause(2);

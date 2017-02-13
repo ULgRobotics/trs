@@ -59,7 +59,7 @@ function youbot()
     % We move the arm to a preset pose. 
     pickupJoints = [90 * pi / 180, 19.6 * pi / 180, 113 * pi / 180, - 41 * pi / 180, 0];
 
-% Parameters for controlling the youBot's wheels: at each iteration, those values will be set for the wheels. 
+    % Parameters for controlling the youBot's wheels: at each iteration, those values will be set for the wheels. 
     % They are adapted at each iteration by the code. 
     forwBackVel = 0;
     leftRightVel = 0;
@@ -171,61 +171,62 @@ function youbot()
             end
             prevLoc = youbotPos(1);
         elseif strcmp(fsm, 'snapshot')
-          %% Read data from the range camera
-          % Reading a 3D image costs a lot to VREP (it has to simulate the image). It
-          % also requires a lot of bandwidth, and processing a 3D point cloud (for
-          % instance, to find one of the boxes or cylinders that the robot has to
-          % grasp) will take a long time in MATLAB. In general, you will only want to
-          % capture a 3D image at specific times, for instance when you believe you're
-          % facing one of the tables.
+            %% Read data from the range camera
+            % Reading a 3D image costs a lot to VREP (it has to simulate the image). It
+            % also requires a lot of bandwidth, and processing a 3D point cloud (for
+            % instance, to find one of the boxes or cylinders that the robot has to
+            % grasp) will take a long time in MATLAB. In general, you will only want to
+            % capture a 3D image at specific times, for instance when you believe you're
+            % facing one of the tables.
 
-          % Reduce the view angle to better see the objects. 
-          res = vrep.simxSetFloatSignal(id, 'rgbd_sensor_scan_angle', pi / 8, vrep.simx_opmode_oneshot_wait);
-          vrchk(vrep, res);
-          
-          % Ask the sensor to turn itself on, take A SINGLE 3D IMAGE, and turn itself off again. 
-          res = vrep.simxSetIntegerSignal(id, 'handle_xyz_sensor', 1, vrep.simx_opmode_oneshot_wait);
-          vrchk(vrep, res);
+            % Reduce the view angle to better see the objects. 
+            res = vrep.simxSetFloatSignal(id, 'rgbd_sensor_scan_angle', pi / 8, vrep.simx_opmode_oneshot_wait);
+            vrchk(vrep, res);
 
-          % Then use the depth sensor. 
-          fprintf('Capturing point cloud...\n');
-          pts = youbot_xyz_sensor(vrep, h, vrep.simx_opmode_oneshot_wait);
-          % Each column of pts has [x;y;z;distancetosensor]. 
-          % Here, we only keep points within 1 meter, to focus on the table. 
-          pts = pts(1:3, pts(4, :) < 1);
-          
-          if plotData
-              subplot(223)
-              plot3(pts(1, :), pts(2, :), pts(3, :), '*');
-              axis equal;
-              view([-169 -46]);
-          end
+            % Ask the sensor to turn itself on, take A SINGLE 3D IMAGE, and turn itself off again. 
+            res = vrep.simxSetIntegerSignal(id, 'handle_xyz_sensor', 1, vrep.simx_opmode_oneshot_wait);
+            vrchk(vrep, res);
 
-          % Save the pointcloud to pc.xyz. (This file can be displayed with meshlab.sf.net.)
-          fileID = fopen('pc.xyz','w');
-          fprintf(fileID,'%f %f %f\n',pts);
-          fclose(fileID);
-          fprintf('Read %i 3D points, saved to pc.xyz.\n', max(size(pts)));
+            % Then use the depth sensor. 
+            fprintf('Capturing point cloud...\n');
+            pts = youbot_xyz_sensor(vrep, h, vrep.simx_opmode_oneshot_wait);
+            % Each column of pts has [x;y;z;distancetosensor]. However, plot3 does not have the same frame of reference! 
+            % To get a correct plot, you should invert the y and z dimensions. 
+            % Here, we only keep points within 1 meter, to focus on the table. 
+            pts = pts(1:3, pts(4, :) < 1);
 
-          %% Read data from the RGB camera
-          % This is very similar to reading from the 3D camera. The comments in the 3D camera section directly apply 
-          % to this section.
+            if plotData
+                subplot(223)
+                plot3(pts(1, :), pts(2, :), pts(3, :), '*');
+                axis equal;
+                view([-169 -46]);
+            end
 
-          res = vrep.simxSetIntegerSignal(id, 'handle_rgb_sensor', 1, vrep.simx_opmode_oneshot_wait);
-          vrchk(vrep, res);
-          fprintf('Capturing image...\n');
-          [res, resolution, image] = vrep.simxGetVisionSensorImage2(id, h.rgbSensor, 0, vrep.simx_opmode_oneshot_wait);
-          vrchk(vrep, res);
-          fprintf('Captured %i pixels (%i x %i).\n', resolution(1) * resolution(2), resolution(1), resolution(2));
-          
-          if plotData
-              subplot(224)
-              imshow(image);
-              drawnow;
-          end
-          
-          % Next state. 
-          fsm = 'extend';
+            % Save the pointcloud to pc.xyz. (This file can be displayed with meshlab.sf.net.)
+            fileID = fopen('pc.xyz','w');
+            fprintf(fileID,'%f %f %f\n',pts);
+            fclose(fileID);
+            fprintf('Read %i 3D points, saved to pc.xyz.\n', max(size(pts)));
+
+            %% Read data from the RGB camera
+            % This is very similar to reading from the 3D camera. The comments in the 3D camera section directly apply 
+            % to this section.
+
+            res = vrep.simxSetIntegerSignal(id, 'handle_rgb_sensor', 1, vrep.simx_opmode_oneshot_wait);
+            vrchk(vrep, res);
+            fprintf('Capturing image...\n');
+            [res, resolution, image] = vrep.simxGetVisionSensorImage2(id, h.rgbSensor, 0, vrep.simx_opmode_oneshot_wait);
+            vrchk(vrep, res);
+            fprintf('Captured %i pixels (%i x %i).\n', resolution(1) * resolution(2), resolution(1), resolution(2));
+
+            if plotData
+                subplot(224)
+                imshow(image);
+                drawnow;
+            end
+
+            % Next state. 
+            fsm = 'extend';
         elseif strcmp(fsm, 'extend')
             %% Move the arm to face the object. TODO MATHIEU
             % Get the arm position. 
