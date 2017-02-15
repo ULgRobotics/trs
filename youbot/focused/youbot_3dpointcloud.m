@@ -6,11 +6,11 @@ function youbot_3dpointcloud()
     % (See http://www.gnu.org/copyleft/gpl.html)
    
     %% Initiate the connection to the simulator. 
-    
+     
     disp('Program started');
     % Use the following line if you had to recompile remoteApi
     %vrep = remApi('remoteApi', 'extApi.h');
-    vrep=remApi('remoteApi');
+    vrep = remApi('remoteApi');
     vrep.simxFinish(-1);
     id = vrep.simxStart('127.0.0.1', 19997, true, true, 2000, 5);
     
@@ -40,12 +40,10 @@ function youbot_3dpointcloud()
     pause(2);
         
     %% Read data from the range camera
-    % Reading a 3D image costs a lot to VREP (it has to simulate the image). It
-    % also requires a lot of bandwidth, and processing a 3D point cloud (for
-    % instance, to find one of the boxes or cylinders that the robot has to
-    % grasp) will take a long time in MATLAB. In general, you will only want to
-    % capture a 3D image at specific times, for instance when you believe you're
-    % facing one of the tables.
+    % Reading a 3D image costs a lot to VREP (it has to simulate the image). It also requires a lot of bandwidth, 
+    % and processing a 3D point cloud (for instance, to find one of the boxes or cylinders that the robot has to
+    % grasp) will take a long time in MATLAB. In general, you will only want to capture a 3D image at specific times, 
+    % for instance when you believe you're facing one of the tables.
 
     % Reduce the view angle to better see the objects. 
     res = vrep.simxSetFloatSignal(id, 'rgbd_sensor_scan_angle', pi / 8, vrep.simx_opmode_oneshot_wait);
@@ -58,9 +56,10 @@ function youbot_3dpointcloud()
     % Then use the depth sensor. 
     fprintf('Capturing point cloud...\n');
     pts = youbot_xyz_sensor(vrep, h, vrep.simx_opmode_oneshot_wait);
-    % Each column of pts has [x;y;z;distancetosensor]. However, plot3 does not have the same frame of reference! 
-    % To get a correct plot, you should invert the y and z dimensions. 
+    % Each column of pts has [x;y;z;distancetosensor]. However, plot3 does not have the same frame of reference as 
+    % the output data. To get a correct plot, you should invert the y and z dimensions. 
 
+    % Plot all the points. 
     figure;
     plot3(pts(1, :), pts(2, :), pts(3, :), '*');
     
@@ -69,7 +68,7 @@ function youbot_3dpointcloud()
     ptsWall = pts(1:3, pts(4, :) >= 1.87);
     plot3(ptsWall(1, :), ptsWall(3, :), ptsWall(2, :), '.r');
 
-    % Save the pointcloud to pc.xyz. (This file can be displayed with meshlab.sf.net.)
+    % Save the pointcloud to pc.xyz. (This file can be displayed with http://www.meshlab.net/.)
     fileID = fopen('pc.xyz','w');
     fprintf(fileID,'%f %f %f\n',pts);
     fclose(fileID);

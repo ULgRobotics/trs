@@ -42,8 +42,12 @@ function youbot_photo()
     % Reading an image costs a lot to VREP (it has to simulate the image). It also requires a lot of bandwidth, 
     % and processing an image will take a long time in MATLAB. In general, you will only want to capture 
     % an image at specific times, for instance when you believe you're facing one of the tables or a basket.
+    
+    % Ask the sensor to turn itself on, take A SINGLE IMAGE, and turn itself off again. 
     res = vrep.simxSetIntegerSignal(id, 'handle_rgb_sensor', 1, vrep.simx_opmode_oneshot_wait);
     vrchk(vrep, res);
+    
+    % Then use the sensor. 
     fprintf('Capturing image...\n');
     [res, resolution, image] = vrep.simxGetVisionSensorImage2(id, h.rgbSensor, 0, vrep.simx_opmode_oneshot_wait);
     vrchk(vrep, res);

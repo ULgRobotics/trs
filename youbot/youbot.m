@@ -10,7 +10,7 @@ function youbot()
     disp('Program started');
     % Use the following line if you had to recompile remoteApi
     %vrep = remApi('remoteApi', 'extApi.h');
-    vrep=remApi('remoteApi');
+    vrep = remApi('remoteApi');
     vrep.simxFinish(-1);
     id = vrep.simxStart('127.0.0.1', 19997, true, true, 2000, 5);
     
@@ -115,31 +115,33 @@ function youbot()
 
         %% Plot something if required. 
         if plotData
-          % Read data from the Hokuyo sensor.
-          [pts, contacts] = youbot_hokuyo(vrep, h, vrep.simx_opmode_buffer);
+            % Read data from the Hokuyo sensor.
+            [pts, contacts] = youbot_hokuyo(vrep, h, vrep.simx_opmode_buffer);
 
-          % Select the points in the mesh [x, Y] that are visible, as returned by the Hokuyo. 
-          in = inpolygon(X, Y, [h.hokuyo1Pos(1), pts(1,:), h.hokuyo2Pos(1)],...
-                        [h.hokuyo1Pos(2), pts(2,:), h.hokuyo2Pos(2)]);
+            % Select the points in the mesh [X, Y] that are visible, as returned by the Hokuyo. 
+            in = inpolygon(X, Y, [h.hokuyo1Pos(1), pts(1, :), h.hokuyo2Pos(1)],...
+                          [h.hokuyo1Pos(2), pts(2, :), h.hokuyo2Pos(2)]);
 
-          % Plot those points. 
-          subplot(211)
-          plot(X(in), Y(in), '.g',...
-              pts(1,contacts), pts(2,contacts), '*r',...
-              [h.hokuyo1Pos(1), pts(1, :), h.hokuyo2Pos(1)], [h.hokuyo1Pos(2), pts(2, :), h.hokuyo2Pos(2)], 'r',...
-              0, 0, 'ob',...
-              h.hokuyo1Pos(1), h.hokuyo1Pos(2), 'or',...
-              h.hokuyo2Pos(1), h.hokuyo2Pos(2), 'or');
-          axis([-5.5, 5.5, -5.5, 2.5]);
-          axis equal;
-          drawnow;
+            % Plot those points. Green dots: the visible area for the Hokuyo. Red starts: the obstacles. Red lines: the
+            % visibility range from the Hokuyo sensor. 
+            % The youBot is indicated with two dots: the blue one corresponds to the rear, the red one to the Hokuyo
+            % sensor position. 
+            subplot(211)
+            plot(X(in), Y(in), '.g',...
+                 pts(1, contacts), pts(2, contacts), '*r',...
+                 [h.hokuyo1Pos(1), pts(1, :), h.hokuyo2Pos(1)], [h.hokuyo1Pos(2), pts(2, :), h.hokuyo2Pos(2)], 'r',...
+                 0, 0, 'ob',...
+                 h.hokuyo1Pos(1), h.hokuyo1Pos(2), 'or',...
+                 h.hokuyo2Pos(1), h.hokuyo2Pos(2), 'or');
+            axis([-5.5, 5.5, -5.5, 2.5]);
+            axis equal;
+            drawnow;
         end
         angl = -pi/2;
 
         %% Apply the state machine. 
         if strcmp(fsm, 'rotate')
-            %% First, rotate the robot to go to one table. 
-            % The rotation velocity depends on the difference between the current angle and the target. 
+            %% First, rotate the robot to go to one table.             % The rotation velocity depends on the difference between the current angle and the target. 
             rotVel = angdiff(angl, youbotEuler(3));
             
             % When the rotation is done (with a sufficiently high precision), move on to the next state. 
@@ -179,7 +181,8 @@ function youbot()
             % capture a 3D image at specific times, for instance when you believe you're
             % facing one of the tables.
 
-            % Reduce the view angle to better see the objects. 
+            % Reduce the view angle to better see the objects. Indeed, the number of rays the Hokuyo sends is limited;
+            % if this number is used on a smaller angle, then the resolution is better. 
             res = vrep.simxSetFloatSignal(id, 'rgbd_sensor_scan_angle', pi / 8, vrep.simx_opmode_oneshot_wait);
             vrchk(vrep, res);
 
@@ -190,19 +193,20 @@ function youbot()
             % Then use the depth sensor. 
             fprintf('Capturing point cloud...\n');
             pts = youbot_xyz_sensor(vrep, h, vrep.simx_opmode_oneshot_wait);
-            % Each column of pts has [x;y;z;distancetosensor]. However, plot3 does not have the same frame of reference! 
-            % To get a correct plot, you should invert the y and z dimensions. 
+            % Each column of pts has [x;y;z;distancetosensor]. However, plot3 does not have the same frame of reference as 
+            % the output data. To get a correct plot, you should invert the y and z dimensions. 
+    
             % Here, we only keep points within 1 meter, to focus on the table. 
             pts = pts(1:3, pts(4, :) < 1);
 
             if plotData
                 subplot(223)
-                plot3(pts(1, :), pts(2, :), pts(3, :), '*');
+                plot3(pts(1, :), pts(3, :), pts(2, :), '*');
                 axis equal;
                 view([-169 -46]);
             end
 
-            % Save the pointcloud to pc.xyz. (This file can be displayed with meshlab.sf.net.)
+            % Save the pointcloud to pc.xyz. (This file can be displayed with http://www.meshlab.net/.)
             fileID = fopen('pc.xyz','w');
             fprintf(fileID,'%f %f %f\n',pts);
             fclose(fileID);
