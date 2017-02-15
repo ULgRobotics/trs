@@ -1,7 +1,7 @@
 function youbot()
     % youbot Illustrates the V-REP Matlab bindings.
 
-    % (C) Copyright Renaud Detry 2013, Thibaut Cuvelier 2017, Mathieu Baijot 2017.
+    % (C) Copyright Renaud Detry 2013, Thibaut Cuvelier 2017.
     % Distributed under the GNU General Public License.
     % (See http://www.gnu.org/copyleft/gpl.html)
    
@@ -265,8 +265,7 @@ function youbot()
         elseif strcmp(fsm, 'grasp')
             %% Grasp the object by closing the gripper on it.
             % Close the gripper. Please pay attention that it is not
-            % possible to determine the force to apply and object will
-            % sometime slips from the gripper !
+            % possible to determine the force
             res = vrep.simxSetIntegerSignal(id, 'gripper_open', 0, vrep.simx_opmode_oneshot_wait);
             vrchk(vrep, res);
             pause(2);
@@ -276,7 +275,7 @@ function youbot()
             vrchk(vrep, res);
             fsm = 'backoff';
         elseif strcmp(fsm, 'backoff')
-            %% Go back to rest position.
+            %% Go back to rest position. TODO MATHIEU
             % Set each joint to their original angle. 
             for i = 1:5
                 res = vrep.simxSetJointTargetPosition(id, h.armJoints(i), startingJoints(i), vrep.simx_opmode_oneshot);
