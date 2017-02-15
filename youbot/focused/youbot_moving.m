@@ -11,7 +11,7 @@ function youbot_moving()
     disp('Program started');
     % Use the following line if you had to recompile remoteApi
     %vrep = remApi('remoteApi', 'extApi.h');
-    vrep=remApi('remoteApi');
+    vrep = remApi('remoteApi');
     vrep.simxFinish(-1);
     id = vrep.simxStart('127.0.0.1', 19997, true, true, 2000, 5);
     
@@ -79,8 +79,8 @@ function youbot_moving()
             % Make the robot drive with a constant speed 
             forwBackVel = -1;
             
-            % And stop when the robot is close to the position "6.5"
-            if (youbotPos(2) + 6.5 < .001)
+            % Stop when the robot is close to the position 6.5. 
+            if youbotPos(2) + 6.5 < .001
                 forwBackVel = 0;
                 fsm = 'lin_forwBack';
             end
@@ -88,34 +88,38 @@ function youbot_moving()
         elseif strcmp(fsm, 'lin_forwBack');
             % A speed which is a function of the distance to the destination
             % can also be used
-            forwBackVel = -2*(youbotPos(2) + 4.5);
-            % Stop when the robot is close to the position "4.5"
-            if (abs(youbotPos(2) + 4.5) < .001)
+            forwBackVel = - 2 * (youbotPos(2) + 4.5);
+            
+            % Stop when the robot is close to the position 4.5. 
+            if abs(youbotPos(2) + 4.5) < .001
                 forwBackVel = 0;
                 fsm = 'LeftRight';
             end
             
         elseif strcmp(fsm, 'LeftRight');
-            % Move to the side
-            leftRightVel = -2*(youbotPos(1) + 4.5);
-            % And stop at position 4.5
-            if (abs(youbotPos(1) + 4.5) < .001)
+            % Move to the side. 
+            leftRightVel = - 2 * (youbotPos(1) + 4.5);
+            
+            % Stop at position 4.5
+            if abs(youbotPos(1) + 4.5) < .001
                 leftRightVel = 0;
                 fsm = 'Rot';
             end
             
         elseif strcmp(fsm, 'Rot');
-            % Make a rotation
-            rotVel = angdiff(-pi/2, youbotEuler(3));
-            % And stop when the robot is at an angle close to "-pi/2"
-            if (abs(angdiff(-pi/2, youbotEuler(3))) < .1/180*pi)
+            % Rotate. 
+            rotVel = angdiff(- pi / 2, youbotEuler(3));
+            
+            % Stop when the robot is at an angle close to -pi/2. 
+            if abs(angdiff(- pi / 2, youbotEuler(3))) < .1 / 180 * pi
                 rotVel = 0;
                 fsm = 'finished';
-            end;
+            end
             
         elseif strcmp(fsm, 'finished'),
             pause(3);
-            break;
+            break
+            
         else
             error(sprintf('Unknown state %s.', fsm));
         end
@@ -123,9 +127,9 @@ function youbot_moving()
         % Update wheel velocities for each loop
         h = youbot_drive(vrep, h, forwBackVel, leftRightVel, rotVel);
 
-        % Make sure that we do not go faster that the simulator
+        % Make sure that we do not go faster that the simulator. 
         elapsed = toc;
-        timeleft = timestep-elapsed;
+        timeleft = timestep - elapsed;
         if (timeleft > 0),
           pause(min(timeleft, .01));
         end

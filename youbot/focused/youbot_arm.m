@@ -11,7 +11,7 @@ function youbot_armMoving()
     disp('Program started');
     % Use the following line if you had to recompile remoteApi
     %vrep = remApi('remoteApi', 'extApi.h');
-    vrep=remApi('remoteApi');
+    vrep = remApi('remoteApi');
     vrep.simxFinish(-1);
     id = vrep.simxStart('127.0.0.1', 19997, true, true, 2000, 5);
     

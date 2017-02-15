@@ -240,7 +240,7 @@ function youbot()
             [res, tpos] = vrep.simxGetObjectPosition(id, h.ptip, h.armRef, vrep.simx_opmode_buffer);
             vrchk(vrep, res, true);
             
-            % If the arm has reach the wanted position, move on to the next state. 
+            % If the arm has reached the wanted position, move on to the next state. 
             if norm(tpos - [0.3259 -0.0010 0.2951]) < .002
                 % Set the inverse kinematics (IK) mode to position AND orientation. 
                 res = vrep.simxSetIntegerSignal(id, 'km_mode', 2, vrep.simx_opmode_oneshot_wait);
@@ -248,7 +248,7 @@ function youbot()
                 fsm = 'reachout';
             end
         elseif strcmp(fsm, 'reachout')
-            %% Do something.
+            %% Move the gripper tip along a line so that it faces the object with the right angle.
             % Get the arm tip position. (It is driven only by this position, except if IK is disabled.)
             [res, tpos] = vrep.simxGetObjectPosition(id, h.ptip, h.armRef, vrep.simx_opmode_buffer);
             vrchk(vrep, res, true);
@@ -264,9 +264,8 @@ function youbot()
             vrchk(vrep, res, true);
         elseif strcmp(fsm, 'grasp')
             %% Grasp the object by closing the gripper on it.
-            % Close the gripper. Please pay attention that it is not
-            % possible to determine the force to apply and object will
-            % sometime slips from the gripper !
+            % Close the gripper. Please pay attention that it is not possible to determine the force to apply and 
+            % object will sometimes slips from the gripper!
             res = vrep.simxSetIntegerSignal(id, 'gripper_open', 0, vrep.simx_opmode_oneshot_wait);
             vrchk(vrep, res);
             pause(2);
@@ -306,7 +305,7 @@ function youbot()
         % Update wheel velocities using the global values (whatever the state is). 
         h = youbot_drive(vrep, h, forwBackVel, leftRightVel, rotVel);
 
-        % Make sure that we do not go faster that the simulator (each iteration must take 50 ms.)
+        % Make sure that we do not go faster that the simulator (each iteration must take 50 ms). 
         elapsed = toc;
         timeleft = timestep - elapsed;
         if timeleft > 0
