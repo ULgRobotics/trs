@@ -14,3 +14,6 @@ if you want to). You must adapt the paths in the file before using it.
 
 `binding_test.m` and `binding_test.ttt` can be used for testing your installation, but their failure does not automatically mean 
 your installation went berserk. 
+
+Before running `youbot.m`, *don't forget to run `../matlab/startup_robot.m`* at least once! This script performs some installation 
+steps, but also sets MATLAB's path so that the simulator API is available. 
