@@ -33,6 +33,8 @@ function youbot()
     vrep.simxStartSimulation(id, vrep.simx_opmode_oneshot_wait);
 
     % Retrieve all handles, and stream arm and wheel joints, the robot's pose, the Hokuyo, and the arm tip pose.
+    % The tip corresponds to the point between the two tongs of the gripper (for more details, see later or in the 
+    % file focused/youbot_arm.m). 
     h = youbot_init(vrep, id);
     h = youbot_hokuyo_init(vrep, h);
 
@@ -42,6 +44,7 @@ function youbot()
     pause(.2);
 
     %% Youbot constants
+    % The time step the simulator is using (your code should run close to it). 
     timestep = .05;
 
     % Minimum and maximum angles for all joints. Only useful to implement custom IK. 
@@ -51,7 +54,7 @@ function youbot()
                       -1.7802357673645, 1.7802357673645;
                       -1.5707963705063, 1.5707963705063 ];
 
-    % Definition of the starting pose of the arm.
+    % Definition of the starting pose of the arm (the angle to impose at each joint to be in the rest position).
     startingJoints = [0, 30.91 * pi / 180, 52.42 * pi / 180, 72.68 * pi / 180, 0];
 
     %% Preset values for the demo. 
@@ -70,7 +73,7 @@ function youbot()
 
     % Set the arm to its starting configuration. 
     res = vrep.simxPauseCommunication(id, true); % Send order to the simulator through vrep object. 
-    vrchk(vrep, res); % Check the return value and exit in case of error. 
+    vrchk(vrep, res); % Check the return value from the previous V-REP call (res) and exit in case of error.
     for i = 1:5
         res = vrep.simxSetJointTargetPosition(id, h.armJoints(i), startingJoints(i), vrep.simx_opmode_oneshot);
         vrchk(vrep, res, true);
@@ -116,12 +119,18 @@ function youbot()
 
         %% Plot something if required. 
         if plotData
-            % Read data from the Hokuyo sensor.
+            % Read data from the depth sensor, more often called the Hokuyo (if you want to be more precise about 
+            % the way you control the sensor, see later for the details about this line or the file 
+            % focused/youbot_3dpointcloud.m).
+            % This function returns the set of points the Hokuyo saw in pts. contacts indicates, for each point, if it
+            % corresponds to an obstacle (the ray the Hokuyo sent was interrupted by an obstacle, and was not allowed to
+            % go to infinity without being stopped). 
             [pts, contacts] = youbot_hokuyo(vrep, h, vrep.simx_opmode_buffer);
 
             % Select the points in the mesh [X, Y] that are visible, as returned by the Hokuyo. 
-            in = inpolygon(X, Y, [h.hokuyo1Pos(1), pts(1, :), h.hokuyo2Pos(1)],...
-                          [h.hokuyo1Pos(2), pts(2, :), h.hokuyo2Pos(2)]);
+            in = inpolygon(X, Y,...
+                           [h.hokuyo1Pos(1), pts(1, :), h.hokuyo2Pos(1)],...
+                           [h.hokuyo1Pos(2), pts(2, :), h.hokuyo2Pos(2)]);
 
             % Plot those points. Green dots: the visible area for the Hokuyo. Red starts: the obstacles. Red lines: the
             % visibility range from the Hokuyo sensor. 
@@ -176,25 +185,34 @@ function youbot()
             end
             prevLoc = youbotPos(1);
         elseif strcmp(fsm, 'snapshot')
-            %% Read data from the range camera
-            % Reading a 3D image costs a lot to VREP (it has to simulate the image). It
-            % also requires a lot of bandwidth, and processing a 3D point cloud (for
-            % instance, to find one of the boxes or cylinders that the robot has to
-            % grasp) will take a long time in MATLAB. In general, you will only want to
-            % capture a 3D image at specific times, for instance when you believe you're
-            % facing one of the tables.
+            %% Read data from the depth camera (Hokuyo)
+            % Reading a 3D image costs a lot to VREP (it has to simulate the image). It also requires a lot of 
+            % bandwidth, and processing a 3D point cloud (for instance, to find one of the boxes or cylinders that 
+            % the robot has to grasp) will take a long time in MATLAB. In general, you will only want to capture a 3D 
+            % image at specific times, for instance when you believe you're facing one of the tables.
 
-            % Reduce the view angle to better see the objects. Indeed, the number of rays the Hokuyo sends is limited;
-            % if this number is used on a smaller angle, then the resolution is better. 
+            % Reduce the view angle to pi/8 in order to better see the objects. Do it only once. 
+            % ^^^^^^     ^^^^^^^^^^    ^^^^                                     ^^^^^^^^^^^^^^^ 
+            % simxSetFloatSignal                                                simx_opmode_oneshot_wait
+            %            |
+            %            rgbd_sensor_scan_angle
+            % The depth camera has a limited number of rays that gather information. If this number is concentrated 
+            % on a smaller angle, the resolution is better. pi/8 has been determined by experimentation. 
             res = vrep.simxSetFloatSignal(id, 'rgbd_sensor_scan_angle', pi / 8, vrep.simx_opmode_oneshot_wait);
             vrchk(vrep, res);
 
-            % Ask the sensor to turn itself on, take A SINGLE 3D IMAGE, and turn itself off again. 
+            % Ask the sensor to turn itself on, take A SINGLE POINT CLOUD, and turn itself off again. 
+            % ^^^     ^^^^^^                ^^       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+            % simxSetIntegerSignal          1        simx_opmode_oneshot_wait
+            %         |
+            %         handle_xyz_sensor
             res = vrep.simxSetIntegerSignal(id, 'handle_xyz_sensor', 1, vrep.simx_opmode_oneshot_wait);
             vrchk(vrep, res);
 
-            % Then use the depth sensor. 
-            fprintf('Capturing point cloud...\n');
+            % Then retrieve the last point cloud the depth sensor took.
+            % If you were to try to capture multiple images in a row, try other values than 
+            % vrep.simx_opmode_oneshot_wait. 
+            fprintf('Capturing a point cloud...\n');
             pts = youbot_xyz_sensor(vrep, h, vrep.simx_opmode_oneshot_wait);
             % Each column of pts has [x;y;z;distancetosensor]. However, plot3 does not have the same frame of reference as 
             % the output data. To get a correct plot, you should invert the y and z dimensions. 
@@ -209,23 +227,37 @@ function youbot()
                 view([-169 -46]);
             end
 
-            % Save the pointcloud to pc.xyz. (This file can be displayed with http://www.meshlab.net/.)
+            % Save the point cloud to pc.xyz. (This file can be displayed with http://www.meshlab.net/.)
             fileID = fopen('pc.xyz','w');
-            fprintf(fileID,'%f %f %f\n',pts);
+            fprintf(fileID,'%f %f %f\n', pts);
             fclose(fileID);
             fprintf('Read %i 3D points, saved to pc.xyz.\n', max(size(pts)));
 
             %% Read data from the RGB camera
-            % This is very similar to reading from the 3D camera. The comments in the 3D camera section directly apply 
-            % to this section.
+            % This starts the robot's camera to take a 2D picture of what the robot can see. 
+            % Reading an image costs a lot to VREP (it has to simulate the image). It also requires a lot of bandwidth, 
+            % and processing an image will take a long time in MATLAB. In general, you will only want to capture 
+            % an image at specific times, for instance when you believe you're facing one of the tables or a basket.
 
+            % Ask the sensor to turn itself on, take A SINGLE IMAGE, and turn itself off again. 
+            % ^^^     ^^^^^^                ^^       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+            % simxSetIntegerSignal          1        simx_opmode_oneshot_wait
+            %         |
+            %         handle_rgb_sensor
             res = vrep.simxSetIntegerSignal(id, 'handle_rgb_sensor', 1, vrep.simx_opmode_oneshot_wait);
             vrchk(vrep, res);
+            
+            % Then retrieve the last picture the camera took. The image must be in RGB (not gray scale). 
+            %      ^^^^^^^^^^^^^^^^^^^^^^^^^     ^^^^^^                            ^^^
+            %      simxGetVisionSensorImage2     h.rgbSensor                       0
+            % If you were to try to capture multiple images in a row, try other values than 
+            % vrep.simx_opmode_oneshot_wait. 
             fprintf('Capturing image...\n');
             [res, resolution, image] = vrep.simxGetVisionSensorImage2(id, h.rgbSensor, 0, vrep.simx_opmode_oneshot_wait);
             vrchk(vrep, res);
             fprintf('Captured %i pixels (%i x %i).\n', resolution(1) * resolution(2), resolution(1), resolution(2));
 
+            % Finally, show the image. 
             if plotData
                 subplot(224)
                 imshow(image);
@@ -265,9 +297,11 @@ function youbot()
         elseif strcmp(fsm, 'grasp')
             %% Grasp the object by closing the gripper on it.
             % Close the gripper. Please pay attention that it is not possible to determine the force to apply and 
-            % object will sometimes slips from the gripper!
+            % the object will sometimes slip from the gripper!
             res = vrep.simxSetIntegerSignal(id, 'gripper_open', 0, vrep.simx_opmode_oneshot_wait);
             vrchk(vrep, res);
+            
+            % Make MATLAB wait for the gripper to be closed. This value was determined by experiments. 
             pause(2);
             
             % Disable IK; this is used at the next state to move the joints manually. 

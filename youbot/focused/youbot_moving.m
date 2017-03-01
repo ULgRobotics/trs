@@ -1,6 +1,5 @@
 function youbot_moving()
-    % The aim of this code is to show small examples of controlling the
-    % displacement of the robot in V REP
+    % The aim of this code is to show small examples of controlling the displacement of the robot in V-REP. 
 
     % (C) Copyright Renaud Detry 2013, Mathieu Baijot 2017.
     % Distributed under the GNU General Public License.
@@ -37,10 +36,10 @@ function youbot_moving()
     h = youbot_init(vrep, id);
     h = youbot_hokuyo_init(vrep, h);
 
-    % Make sure everything is settled before we start. 
+    % Make sure everything is settled before we start (wait for the simulation to start). 
     pause(.2);
 
-    % Youbot constants
+    % The time step the simulator is using (your code should run close to it). 
     timestep = .05;
 
     %% Preset values for the demo. 
@@ -50,8 +49,6 @@ function youbot_moving()
     forwBackVel = 0;
     leftRightVel = 0;
     rotVel = 0;
-    prevOri = 0; 
-    prevLoc = 0;
 
     % Make sure everything is settled before we start. 
     pause(2);
@@ -69,12 +66,12 @@ function youbot_moving()
     
         % Get the position and the orientation of the robot. 
         [res, youbotPos] = vrep.simxGetObjectPosition(id, h.ref, -1, vrep.simx_opmode_buffer);
-        vrchk(vrep, res, true);
+        vrchk(vrep, res, true); % Check the return value from the previous V-REP call (res) and exit in case of error.
         [res, youbotEuler] = vrep.simxGetObjectOrientation(id, h.ref, -1, vrep.simx_opmode_buffer);
         vrchk(vrep, res, true);
 
         %% Apply the state machine. 
-        if strcmp(fsm, 'cst_forwBack');
+        if strcmp(fsm, 'cst_forwBack')
             
             % Make the robot drive with a constant speed 
             forwBackVel = -1;
@@ -85,7 +82,7 @@ function youbot_moving()
                 fsm = 'lin_forwBack';
             end
             
-        elseif strcmp(fsm, 'lin_forwBack');
+        elseif strcmp(fsm, 'lin_forwBack')
             % A speed which is a function of the distance to the destination
             % can also be used
             forwBackVel = - 2 * (youbotPos(2) + 4.5);
@@ -96,7 +93,7 @@ function youbot_moving()
                 fsm = 'LeftRight';
             end
             
-        elseif strcmp(fsm, 'LeftRight');
+        elseif strcmp(fsm, 'LeftRight')
             % Move to the side. 
             leftRightVel = - 2 * (youbotPos(1) + 4.5);
             
@@ -106,7 +103,7 @@ function youbot_moving()
                 fsm = 'Rot';
             end
             
-        elseif strcmp(fsm, 'Rot');
+        elseif strcmp(fsm, 'Rot')
             % Rotate. 
             rotVel = angdiff(- pi / 2, youbotEuler(3));
             
@@ -116,12 +113,12 @@ function youbot_moving()
                 fsm = 'finished';
             end
             
-        elseif strcmp(fsm, 'finished'),
+        elseif strcmp(fsm, 'finished')
             pause(3);
             break
             
         else
-            error(sprintf('Unknown state %s.', fsm));
+            error('Unknown state %s.', fsm)
         end
 
         % Update wheel velocities for each loop
@@ -130,7 +127,7 @@ function youbot_moving()
         % Make sure that we do not go faster that the simulator. 
         elapsed = toc;
         timeleft = timestep - elapsed;
-        if (timeleft > 0),
+        if (timeleft > 0)
           pause(min(timeleft, .01));
         end
     end
