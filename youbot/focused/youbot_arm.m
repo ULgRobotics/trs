@@ -1,5 +1,5 @@
 function youbot_arm()
-    % The aim of this code is to show small examples of controlling the armn of the robot in V-REP. 
+    % The aim of this code is to show small examples of controlling the arm of the robot in V-REP. 
 
     % (C) Copyright Renaud Detry 2013, Mathieu Baijot 2017.
     % Distributed under the GNU General Public License.
@@ -170,5 +170,4 @@ function youbot_arm()
         end
     end
 
-end % main function
-   
+end 

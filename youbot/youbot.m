@@ -38,9 +38,8 @@ function youbot()
     h = youbot_init(vrep, id);
     h = youbot_hokuyo_init(vrep, h);
 
-    % Let a few cycles pass to make sure there's a value waiting for us next time
-    % we try to get a joint angle or the robot pose with the simx_opmode_buffer
-    % option.
+    % Let a few cycles pass to make sure there's a value waiting for us next time we try to get a joint angle or 
+    % the robot pose with the simx_opmode_buffer option.
     pause(.2);
 
     %% Youbot constants
@@ -60,43 +59,48 @@ function youbot()
     %% Preset values for the demo. 
     disp('Starting robot');
     
-    % Define the preset pickup pose. 
+    % Define the preset pickup pose for this demo. 
     pickupJoints = [90 * pi / 180, 19.6 * pi / 180, 113 * pi / 180, - 41 * pi / 180, 0];
 
     % Parameters for controlling the youBot's wheels: at each iteration, those values will be set for the wheels. 
     % They are adapted at each iteration by the code. 
-    forwBackVel = 0;
-    leftRightVel = 0;
-    rotVel = 0;
-    prevOri = 0; 
-    prevLoc = 0;
+    forwBackVel = 0; % Move straight ahead. 
+    rightVel = 0; % Go sideways. 
+    rotateRightVel = 0; % Rotate. 
+    prevOrientation = 0; % Previous angle to goal (easy way to have a condition on the robot's angular speed). 
+    prevPosition = 0; % Previous distance to goal (easy way to have a condition on the robot's speed). 
 
     % Set the arm to its starting configuration. 
     res = vrep.simxPauseCommunication(id, true); % Send order to the simulator through vrep object. 
     vrchk(vrep, res); % Check the return value from the previous V-REP call (res) and exit in case of error.
+    
     for i = 1:5
         res = vrep.simxSetJointTargetPosition(id, h.armJoints(i), startingJoints(i), vrep.simx_opmode_oneshot);
         vrchk(vrep, res, true);
     end
+    
     res = vrep.simxPauseCommunication(id, false); 
     vrchk(vrep, res);
 
     % Initialise the plot. 
     plotData = true;
     if plotData
+        % Prepare the plot area to receive three plots: what the Hokuyo sees at the top (2D map), the point cloud and 
+        % the image of what is in front of the robot at the bottom. 
         subplot(211);
         drawnow;
         
         % Create a 2D mesh of points, stored in the vectors X and Y. This will be used to display the area the robot can
         % see, by selecting the points within this mesh that are within the visibility range. 
-        [X, Y] = meshgrid(-5:.25:5, -5.5:.25:2.5);
-        X = reshape(X, 1, []);
+        [X, Y] = meshgrid(-5:.25:5, -5.5:.25:2.5); % Values selected for the area the robot will explore for this demo. 
+        X = reshape(X, 1, []); % Make a vector of the matrix X. 
         Y = reshape(Y, 1, []);
     end
 
     % Make sure everything is settled before we start. 
     pause(2);
 
+    % Retrieve the position of the gripper. 
     [res, homeGripperPosition] = vrep.simxGetObjectPosition(id, h.ptip, h.armRef, vrep.simx_opmode_buffer);
     vrchk(vrep, res, true);
     
@@ -108,7 +112,7 @@ function youbot()
         tic % See end of loop to see why it's useful. 
         
         if vrep.simxGetConnectionId(id) == -1
-          error('Lost connection to remote API.');
+            error('Lost connection to remote API.');
         end
     
         % Get the position and the orientation of the robot. 
@@ -127,7 +131,8 @@ function youbot()
             % go to infinity without being stopped). 
             [pts, contacts] = youbot_hokuyo(vrep, h, vrep.simx_opmode_buffer);
 
-            % Select the points in the mesh [X, Y] that are visible, as returned by the Hokuyo. 
+            % Select the points in the mesh [X, Y] that are visible, as returned by the Hokuyo (it returns the area that
+            % is visible, but the visualisation draws a series of points that are within this visible area). 
             in = inpolygon(X, Y,...
                            [h.hokuyo1Pos(1), pts(1, :), h.hokuyo2Pos(1)],...
                            [h.hokuyo1Pos(2), pts(2, :), h.hokuyo2Pos(2)]);
@@ -151,30 +156,34 @@ function youbot()
 
         %% Apply the state machine. 
         if strcmp(fsm, 'rotate')
-            %% First, rotate the robot to go to one table.             % The rotation velocity depends on the difference between the current angle and the target. 
-            rotVel = angdiff(angl, youbotEuler(3));
+            %% First, rotate the robot to go to one table.             
+            % The rotation velocity depends on the difference between the current angle and the target. 
+            rotateRightVel = angdiff(angl, youbotEuler(3));
             
             % When the rotation is done (with a sufficiently high precision), move on to the next state. 
             if (abs(angdiff(angl, youbotEuler(3))) < .1 / 180 * pi) && ...
-                    (abs(angdiff(prevOri, youbotEuler(3))) < .01 / 180 * pi)
-                rotVel = 0;
+                    (abs(angdiff(prevOrientation, youbotEuler(3))) < .01 / 180 * pi)
+                rotateRightVel = 0;
                 fsm = 'drive';
             end
             
-            prevOri = youbotEuler(3);
+            prevOrientation = youbotEuler(3);
         elseif strcmp(fsm, 'drive')
-            %% Then, make it move straight ahead until it reaches the table. 
+            %% Then, make it move straight ahead until it reaches the table (x = 3.167 m). 
             % The further the robot, the faster it drives. (Only check for the first dimension.)
-            forwBackVel = -(youbotPos(1) + 3.167);
+            % For the project, you should not use a predefined value, but rather compute it from your map. 
+            forwBackVel = - (youbotPos(1) + 3.167);
 
             % If the robot is sufficiently close and its speed is sufficiently low, stop it and move its arm to 
             % a specific location before moving on to the next state.
-            if (youbotPos(1) + 3.167 < .001) && (abs(youbotPos(1) - prevLoc) < .001)
+            if (youbotPos(1) + 3.167 < .001) && (abs(youbotPos(1) - prevPosition) < .001)
                 forwBackVel = 0;
                 
-                % Change the orientation of the camera
-                vrep.simxSetObjectOrientation(id, h.rgbdCasing, h.ref, [0 0 pi/4], vrep.simx_opmode_oneshot);
-                % Move the arm to the preset pose.
+                % Change the orientation of the camera to focus on the table (preparation for next state). 
+                vrep.simxSetObjectOrientation(id, h.rgbdCasing, h.ref, [0, 0, pi/4], vrep.simx_opmode_oneshot);
+                
+                % Move the arm to the preset pose pickupJoints (only useful for this demo; you should compute it based
+                % on the object to grasp). 
                 for i = 1:5
                     res = vrep.simxSetJointTargetPosition(id, h.armJoints(i), pickupJoints(i),...
                                                           vrep.simx_opmode_oneshot);
@@ -183,7 +192,7 @@ function youbot()
 
                 fsm = 'snapshot';
             end
-            prevLoc = youbotPos(1);
+            prevPosition = youbotPos(1);
         elseif strcmp(fsm, 'snapshot')
             %% Read data from the depth camera (Hokuyo)
             % Reading a 3D image costs a lot to VREP (it has to simulate the image). It also requires a lot of 
@@ -273,7 +282,8 @@ function youbot()
             vrchk(vrep, res, true);
             
             % If the arm has reached the wanted position, move on to the next state. 
-            if norm(tpos - [0.3259 -0.0010 0.2951]) < .002
+            % Once again, your code should compute this based on the object to grasp. 
+            if norm(tpos - [0.3259, -0.0010, 0.2951]) < .002
                 % Set the inverse kinematics (IK) mode to position AND orientation. 
                 res = vrep.simxSetIntegerSignal(id, 'km_mode', 2, vrep.simx_opmode_oneshot_wait);
                 vrchk(vrep, res, true);
@@ -281,22 +291,25 @@ function youbot()
             end
         elseif strcmp(fsm, 'reachout')
             %% Move the gripper tip along a line so that it faces the object with the right angle.
-            % Get the arm tip position. (It is driven only by this position, except if IK is disabled.)
+            % Get the arm tip position. The arm is driven only by the position of the tip, not by the angles of 
+            % the joints, except if IK is disabled.
+            % Following the line ensures the arm attacks the object with the right angle. 
             [res, tpos] = vrep.simxGetObjectPosition(id, h.ptip, h.armRef, vrep.simx_opmode_buffer);
             vrchk(vrep, res, true);
 
-            % If the tip is at the right position, go on to the next state. 
+            % If the tip is at the right position, go on to the next state. Again, this value should be computed based
+            % on the object to grasp and on the robot's position. 
             if tpos(1) > .39
                 fsm = 'grasp';
             end
 
-            % Move the tip to the next position (it moves along a line). 
+            % Move the tip to the next position along the line. 
             tpos(1) = tpos(1) + .01;
             res = vrep.simxSetObjectPosition(id, h.ptarget, h.armRef, tpos, vrep.simx_opmode_oneshot);
             vrchk(vrep, res, true);
         elseif strcmp(fsm, 'grasp')
             %% Grasp the object by closing the gripper on it.
-            % Close the gripper. Please pay attention that it is not possible to determine the force to apply and 
+            % Close the gripper. Please pay attention that it is not possible to adjust the force to apply:  
             % the object will sometimes slip from the gripper!
             res = vrep.simxSetIntegerSignal(id, 'gripper_open', 0, vrep.simx_opmode_oneshot_wait);
             vrchk(vrep, res);
@@ -310,17 +323,18 @@ function youbot()
             fsm = 'backoff';
         elseif strcmp(fsm, 'backoff')
             %% Go back to rest position.
-            % Set each joint to their original angle. 
+            % Set each joint to their original angle, as given by startingJoints. Please note that this operation is not
+            % instantaneous, it takes a few iterations of the code for the arm to reach the requested pose. 
             for i = 1:5
                 res = vrep.simxSetJointTargetPosition(id, h.armJoints(i), startingJoints(i), vrep.simx_opmode_oneshot);
                 vrchk(vrep, res, true);
             end
             
-            % Get the gripper position and check whether it is at destination.
+            % Get the gripper position and check whether it is at destination (the original position).
             [res, tpos] = vrep.simxGetObjectPosition(id, h.ptip, h.armRef, vrep.simx_opmode_buffer);
             vrchk(vrep, res, true);
             if norm(tpos - homeGripperPosition) < .02
-                % Open the gripper. 
+                % Open the gripper when the arm is above its base. 
                 res = vrep.simxSetIntegerSignal(id, 'gripper_open', 1, vrep.simx_opmode_oneshot_wait);
                 vrchk(vrep, res);
             end
@@ -337,9 +351,9 @@ function youbot()
         end
 
         % Update wheel velocities using the global values (whatever the state is). 
-        h = youbot_drive(vrep, h, forwBackVel, leftRightVel, rotVel);
+        h = youbot_drive(vrep, h, forwBackVel, rightVel, rotateRightVel);
 
-        % Make sure that we do not go faster that the simulator (each iteration must take 50 ms). 
+        % Make sure that we do not go faster than the physics simulation (each iteration must take roughly 50 ms). 
         elapsed = toc;
         timeleft = timestep - elapsed;
         if timeleft > 0

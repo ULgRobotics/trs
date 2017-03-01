@@ -1,4 +1,4 @@
-function youbot_moving()
+function youbot()
     % The aim of this code is to show small examples of controlling the displacement of the robot in V-REP. 
 
     % (C) Copyright Renaud Detry 2013, Mathieu Baijot 2017.
@@ -46,15 +46,16 @@ function youbot_moving()
     
     % Parameters for controlling the youBot's wheels: at each iteration, those values will be set for the wheels. 
     % They are adapted at each iteration by the code. 
-    forwBackVel = 0;
-    leftRightVel = 0;
-    rotVel = 0;
+    forwBackVel = 0; % Move straight ahead. 
+    rightVel = 0; % Go sideways. 
+    rotateRightVel = 0; % Rotate. 
 
     % Make sure everything is settled before we start. 
     pause(2);
     
     % First state of state machine
-    fsm = 'cst_forwBack';
+    fsm = 'forward';
+    fprintf('Switching to state: %s\n', fsm);
 
     %% Start the demo. 
     while true
@@ -71,60 +72,80 @@ function youbot_moving()
         vrchk(vrep, res, true);
 
         %% Apply the state machine. 
-        if strcmp(fsm, 'cst_forwBack')
+        if strcmp(fsm, 'forward')
             
-            % Make the robot drive with a constant speed 
+            % Make the robot drive with a constant speed (very simple controller, likely to overshoot). 
+            % The speed is - 1 m/s, the sign indicating the direction to follow. Please note that the robot has
+            % limitations and cannot reach an infinite speed. 
             forwBackVel = -1;
             
-            % Stop when the robot is close to the position 6.5. 
-            if youbotPos(2) + 6.5 < .001
-                forwBackVel = 0;
-                fsm = 'lin_forwBack';
+            % Stop when the robot is close to y = - 6.5. The tolerance has been determined by experiments: if it is too
+            % small, the condition will never be met (the robot position is updated every 50 ms); if it is too large,
+            % then the robot is not close enough to the position (which may be a problem if it has to pick an object,
+            % for example). 
+            if abs(youbotPos(2) + 6.5) < .01
+                forwBackVel = 0; % Stop the robot. 
+                fsm = 'backward';
+                fprintf('Switching to state: %s\n', fsm);
             end
             
-        elseif strcmp(fsm, 'lin_forwBack')
-            % A speed which is a function of the distance to the destination
-            % can also be used
+        elseif strcmp(fsm, 'backward')
+            % A speed which is a function of the distance to the destination can also be used. This is useful to avoid
+            % overshooting: with this controller, the speed decreases when the robot approaches the goal. 
+            % Here, the goal is to reach y = -4.5. 
             forwBackVel = - 2 * (youbotPos(2) + 4.5);
+            %             ^^^   ^^^^^^^^^^^^^^^^^^^^
+            %             |     distance to goal
+            %             influences the maximum speed
             
-            % Stop when the robot is close to the position 4.5. 
-            if abs(youbotPos(2) + 4.5) < .001
-                forwBackVel = 0;
-                fsm = 'LeftRight';
+            % Stop when the robot is close to y = 4.5. 
+            if abs(youbotPos(2) + 4.5) < .01
+                forwBackVel = 0; % Stop the robot. 
+                fsm = 'right';
+                fprintf('Switching to state: %s\n', fsm);
             end
             
-        elseif strcmp(fsm, 'LeftRight')
-            % Move to the side. 
-            leftRightVel = - 2 * (youbotPos(1) + 4.5);
+        elseif strcmp(fsm, 'right')
+            % Move sideways, again with a proportional controller (goal: x = - 4.5). 
+            rightVel = - 2 * (youbotPos(1) + 4.5);
             
-            % Stop at position 4.5
-            if abs(youbotPos(1) + 4.5) < .001
-                leftRightVel = 0;
-                fsm = 'Rot';
+            % Stop at x = - 4.5
+            if abs(youbotPos(1) + 4.5) < .01
+                rightVel = 0; % Stop the robot. 
+                fsm = 'rotateRight';
+                fprintf('Switching to state: %s\n', fsm);
             end
             
-        elseif strcmp(fsm, 'Rot')
-            % Rotate. 
-            rotVel = angdiff(- pi / 2, youbotEuler(3));
+        elseif strcmp(fsm, 'rotateRight')
+            % Rotate until the robot has an angle of -pi/2 (measured with respect to the world's reference frame). 
+            % Again, use a proportional controller. In case of overshoot, the angle difference will change sign, 
+            % and the robot will correctly find its way back (e.g.: the angular speed is positive, the robot overshoots, 
+            % the anguler speed becomes negative). 
+            % youbotEuler(3) is the rotation around the vertical axis. 
+            rotateRightVel = angdiff(- pi / 2, youbotEuler(3)); % angdiff ensures the difference is between -pi and pi. 
             
             % Stop when the robot is at an angle close to -pi/2. 
-            if abs(angdiff(- pi / 2, youbotEuler(3))) < .1 / 180 * pi
-                rotVel = 0;
+            if abs(angdiff(- pi / 2, youbotEuler(3))) < .002
+                rotateRightVel = 0;
                 fsm = 'finished';
+                fprintf('Switching to state: %s\n', fsm);
             end
             
         elseif strcmp(fsm, 'finished')
             pause(3);
             break
-            
         else
             error('Unknown state %s.', fsm)
         end
 
-        % Update wheel velocities for each loop
-        h = youbot_drive(vrep, h, forwBackVel, leftRightVel, rotVel);
+        % Update wheel velocities. 
+        h = youbot_drive(vrep, h, forwBackVel, rightVel, rotateRightVel);
+        
+        % What happens if you do not update the velocities? The simulator always considers the last speed you gave it,
+        % until you set a new velocity. If you perform computations for several seconds in a row without updating the
+        % speeds, the robot will continue to move --- even if it bumps into a wall. 
 
-        % Make sure that we do not go faster that the simulator. 
+        % Make sure that we do not go faster than the physics simulation (it is useless to go faster). 
         elapsed = toc;
         timeleft = timestep - elapsed;
         if (timeleft > 0)
@@ -132,5 +153,4 @@ function youbot_moving()
         end
     end
 
-end % main function
-   
+end 
