@@ -12,4 +12,5 @@ they start the simulation, initialise the relevant objects, create an infinite l
 The following scripts also show some tricks about plotting data in MATLAB; they are not linked to the previous scripts: 
 
   * `plot_matrix.m`: plot a matrix (such as a map)
+  * `plot_multiple.m`: deal with multiple windows
  
