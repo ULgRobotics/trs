@@ -8,3 +8,8 @@ This folder contains multiple small sample scripts, each of them doing something
   
 These scripts are supposed to replace `youbot.m`, in the parent folder, in that they should stand on their own: 
 they start the simulation, initialise the relevant objects, create an infinite loop if required, etc. 
+
+The following scripts also show some tricks about plotting data in MATLAB; they are not linked to the previous scripts: 
+
+  * `plot_matrix.m`: plot a matrix (such as a map)
+ 
