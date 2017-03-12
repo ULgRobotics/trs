@@ -2,6 +2,7 @@ This folder contains multiple small sample scripts, each of them doing something
 
   * `youbot_photo.m`: take a 2D picture (standard RGB sensor)
   * `youbot_3dpointcloud.m`: take a 3D point cloud (Hokuyo sensor)
+  * `youbot_frames.m`: take a 3D point cloud (Hokuyo sensor) and move it to the global reference frame (not the one of the robot)
   * `youbot_moving.m`: move the robot around
   * `youbot_arm.m`: move the robot's arm
   

@@ -90,7 +90,8 @@ function youbot_3dpointcloud()
     fprintf('Read %i 3D points, saved to pc.xyz.\n', max(size(pts)));
     
     % Also have a look to the function youbot_hokuyo, used in the main youbot function. It is simpler to use than what
-    % this script showed, but with fewer functionalities. 
+    % this script showed, but with fewer functionalities. This function is also used in the next focused example,
+    % youbot_frames.m. 
 
 end % main function
    
