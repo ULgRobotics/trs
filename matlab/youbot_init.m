@@ -20,8 +20,9 @@ function handles = youbot_init(vrep, id)
         vrep.simxSetJointTargetVelocity(id, wheelJoints(i), 0, vrep.simx_opmode_oneshot); 
         vrchk(vrep, res);
     end
-    
     handles.wheelJoints = wheelJoints;
+    
+    % Have a look at youbot_drive for these values. 
     handles.previousForwBackVel = 0;
     handles.previousLeftRightVel = 0;
     handles.previousRotVel = 0;
