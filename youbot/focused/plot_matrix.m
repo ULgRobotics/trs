@@ -6,8 +6,8 @@
 % To store larger elements, you could use 'uint8' (unsigned integer, 8 bits) or 'int8' (signed integer, 8 bits). 
 map = ones(64, 64, 'logical'); % At first, no cell is accessible. 
 map(20:40, 20:40) = 0; % Dig a rectangle in it. 
-map(30, 25:35) = 1; % Draw two walls. 
-map(25:35, 28) = 1;
+map(30, 25:35) = 1; % Draw three walls. 
+map(25:35, [25, 35]) = 1;
 
 % With this representation, the contour function can be used to draw the map. 
 figure('name', 'contour'); 

@@ -1,8 +1,8 @@
 % Prepare a map to draw and a few other points. 
 map = ones(64, 64, 'logical'); 
 map(20:40, 20:40) = 0; 
-map(30, 25:35) = 1; 
-map(25:35, 28) = 1;
+map(30, 25:35) = 1;  
+map(25:35, [25, 35]) = 1;
 
 youbot = [21, 24];
 nextPoint = [24, 24];
