@@ -37,15 +37,15 @@ function h = youbot_drive(vrep, h, forwBackVel, leftRightVel, rotVel)
     
     % Ensure the accelerations are within the acceptable physical range. 
     if abs(df) > maxV * accelF
-        df = abs(df) * (maxV * accelF) / df;
+        df = sign(df) * maxV * accelF; 
     end
     
     if abs(ds) > maxV * accelF
-        ds = abs(ds) * (maxV * accelF) / ds;
+        ds = sign(ds) * maxV * accelF; 
     end
     
     if abs(dr) > maxVRot * accelF
-        dr = abs(dr) * (maxVRot * accelF) / dr;
+        dr = sign(dr) * maxVRot * accelF;
     end
     
     %% Update the robot velocities. 
