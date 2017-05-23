@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
 <head>
   <meta content="text/html; charset=utf-8" http-equiv="content-type">
   <link href="favicon.ico" rel="shortcut icon">
@@ -30,7 +30,19 @@ write a control, navigation, vision or manipulation program in 100 lines of code
 
     <div class="content_body">
       <div id="menu">
-        <a class="top" href="index.html">TRS</a> <a class="submenu" href="index.html#events">Events</a> <a class="submenu" href="index.html#mot">Motivation</a> <a class="submenu" href="index.html#get">What You Get</a> <a class="submenu" href="index.html#use">How to Use</a> <a class="submenu" href="index.html#contact">Authors</a> <a href="setup.html">Setup</a> <a class="submenu" href="setup.html#com">Components</a> <a class="submenu" href="setup.html#install">Install</a> <a class="submenu" class="bottom" href="setup.html#shoot">Troubleshoot</a> <a href="project.html">Project</a> <a class="submenu" href="project.html#def">Definition</a>
+        <a class="top" href="index.html">TRS</a>
+        <a class="submenu" href="index.html#events">Events</a>
+        <a class="submenu" href="index.html#mot">Motivation</a>
+        <a class="submenu" href="index.html#get">What You Get</a>
+        <a class="submenu" href="index.html#use">How to Use</a>
+        <a class="submenu" href="index.html#contact">Authors</a>
+        <a href="setup.html">Setup</a>
+        <a class="submenu" href="setup.html#com">Components</a>
+        <a class="submenu" href="setup.html#install">Install</a>
+        <a class="submenu" href="setup.html#simulator">Simulator</a>
+        <a class="submenu" href="setup.html#shoot">Troubleshoot</a>
+        <a href="project.html">Project</a>
+        <a class="submenu" href="project.html#def">Definition</a>
         <a class="submenu" href="project.html#prog">Programming</a>
         <a class="submenu" href="project.html#doc">Documentation</a>
         <a class="submenu" href="project.html#api">API</a>
@@ -42,7 +54,7 @@ write a control, navigation, vision or manipulation program in 100 lines of code
       <div class="content">
         <img style="float: right;" src="http://renaud-detry.net/raster/ulg-logo82.jpg" alt="ULg" />
       
-        <a id="set" name="set"></a>
+        <a id="set"></a>
         <h1 style="margin-top: 0">Components</h1>
 
 <p>This page details the installation and configuration of the following items:</p>
@@ -69,7 +81,7 @@ TRS requires a fairly recent version of MATLAB. MATLAB versions older than 2011 
 
 </ul>
 
-        <a id="install" name="install"></a>
+        <a id="install"></a>
 <h1>Install Procedure</h1>
 
 <p>The recommended procedure for setting up your computer is listed below:</p>
@@ -125,19 +137,34 @@ vrep.delete();</code>
 
   
   <li>
-    In MATLAB, run the <code>startup_robot.m</code> file provided via the Git repository. If you cloned the Git repository in your home directory (<code>~</code> under Linux and macOS), run:
-    <code class="block">run('~/trs/matlab/startup_robot.m');</code>
-    <p><strong>This line needs to be run every time MATLAB restarts</strong>. You may want to add it to your MATLAB startup file. This first first checks whether P. Corke's RVC toolbox is downloaded (and downloads it if it's not), and then updates MATLAB's path so that it can find the toolbox functions and the V-REP binding. 
+    <p>In MATLAB, run the <code>startup_robot.m</code> file provided via the Git repository. If you cloned the Git repository in your home directory (<code>~</code> under Linux and macOS), run:
+    <code class="block">run('~/trs/matlab/startup_robot.m');</code></p>
+    <p><strong>This line needs to be run every time MATLAB restarts</strong>. You may want to add it to your MATLAB startup file. This first first checks whether P. Corke's RVC toolbox is downloaded (and downloads it if it's not), and then updates MATLAB's path so that it can find the toolbox functions and the V-REP binding. </p>
     <p><strong>Test that the RVC toolbox works:</strong> In MATLAB, type
         <code class="block">rotx(1)</code>
-        If there is no error, P. Corke's RVC toolbox is working! If there is an error, check the steps above and read the toolbox's <a href="http://petercorke.com/Robotics_Toolbox.html">install doc</a>.</p>
+        If there is no error, P. Corke's RVC toolbox is working! If there is an error, check the steps above and read the toolbox' <a href="http://petercorke.com/Robotics_Toolbox.html">install documentation</a>.</p>
 
   </li>
   
 
 </ol>
 
-        <a id="shoot" name="shoot"></a>
+        <a id="simulator"></a>
+<h1>Discovering the simulator</h1>
+
+<p>Here are a few videos to help you get familiar with the simulator. </p>
+<div style="margin: 0 auto; width: 560px;">
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/6Oq55YYLwQs" allowfullscreen="allowfullscreen"></iframe>
+    <p><a href="http://www.montefiore.ulg.ac.be/~tcuvelier/files/info0948-2016/V-REP%20overall.mp4">Back-up link</a></p>
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/SgUfqFveJwQ" allowfullscreen="allowfullscreen"></iframe>
+    <p><a href="http://www.montefiore.ulg.ac.be/~tcuvelier/files/info0948-2016/V-REP%20simulation.mp4">Back-up link</a></p>
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/FRN_Gj_lSqU" allowfullscreen="allowfullscreen"></iframe>
+    <p><a href="http://www.montefiore.ulg.ac.be/~tcuvelier/files/info0948-2016/V-REP%20camera.mp4">Back-up link</a></p>
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/O8HNW9cXY6Q" allowfullscreen="allowfullscreen"></iframe>
+    <p><a href="http://www.montefiore.ulg.ac.be/~tcuvelier/files/info0948-2016/V-REP%20objects.mp4">Back-up link</a></p>
+</div>
+
+        <a id="shoot"></a>
 <h1>Troubleshooting</h1>
 
 <ul>

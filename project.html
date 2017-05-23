@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
 <head>
   <meta content="text/html; charset=utf-8" http-equiv="content-type">
   <link href="favicon.ico" rel="shortcut icon">
@@ -30,11 +30,23 @@ write a control, navigation, vision or manipulation program in 100 lines of code
 
     <div class="content_body">
       <div id="menu">
-        <a class="top" href="index.html">TRS</a> <a class="submenu" href="index.html#events">Events</a> <a class="submenu" href="index.html#mot">Motivation</a> <a class="submenu" href="index.html#get">What You Get</a> <a class="submenu" href="index.html#use">How to Use</a> <a class="submenu" href="index.html#contact">Authors</a> <a href="setup.html">Setup</a> <a class="submenu" href="setup.html#com">Components</a> <a class="submenu" href="setup.html#install">Install</a> <a class="submenu" class="bottom" href="setup.html#shoot">Troubleshoot</a> <a href="project.html">Project</a> <a class="submenu" href="project.html#def">Definition</a>
+        <a class="top" href="index.html">TRS</a>
+        <a class="submenu" href="index.html#events">Events</a>
+        <a class="submenu" href="index.html#mot">Motivation</a>
+        <a class="submenu" href="index.html#get">What You Get</a>
+        <a class="submenu" href="index.html#use">How to Use</a>
+        <a class="submenu" href="index.html#contact">Authors</a>
+        <a href="setup.html">Setup</a>
+        <a class="submenu" href="setup.html#com">Components</a>
+        <a class="submenu" href="setup.html#install">Install</a>
+        <a class="submenu" href="setup.html#simulator">Simulator</a>
+        <a class="submenu" href="setup.html#shoot">Troubleshoot</a>
+        <a href="project.html">Project</a>
+        <a class="submenu" href="project.html#def">Definition</a>
         <a class="submenu" href="project.html#prog">Programming</a>
         <a class="submenu" href="project.html#doc">Documentation</a>
         <a class="submenu" href="project.html#api">API</a>
-        <a class="submenu" href="project.html#mtips">Matlab Tips</a>
+        <a class="submenu" href="project.html#mtips">MATLAB Tips</a>
         <a class="submenu" href="project.html#ytips">YouBot Tips</a>
         <a class="submenu bottom" href="project.html#shoot">Troubleshoot</a>
       </div>
@@ -42,7 +54,7 @@ write a control, navigation, vision or manipulation program in 100 lines of code
       <div class="content">
         <img style="float: right;" src="http://renaud-detry.net/raster/ulg-logo82.jpg" alt="ULg" />
       
-        <a id="def" name="def"></a>
+        <a id="def"></a>
         <h1 style="margin-top: 0">Project Definition</h1>
 
 <p>The goal of the project is to program a youBot to put away groceries. You have control of one youBot that can move around a virtual house. Groceries are waiting in the hall. You need to provide the youBot with a program that allows it to move the groceries to their appropriate storing locations.</p>
@@ -50,10 +62,10 @@ write a control, navigation, vision or manipulation program in 100 lines of code
 <div class="figure" style="width: 580px"><div><img style="border: 1px solid black; width: 560px" src="raster/vrep-house.jpg" alt="house" /></div></div>
 
 
-<p>Object are either cylindrical or box-shaped. The bases of boxes and cylinders are fixed, only their height varies. The base of box-like objects is 50mm by 50mm. The diameter of the base of cylinders is 50mm. The color of objects varies. Objects are initially placed on two tables facing the youBot's starting position. (The two tables are visible with the Hokuyo sensor from the youBot's starting position. No other cylindrical objects are within sight of the Hokuyo from the youBot's starting position.) One one table, objects are placed upright. On the other table, objects are not necessarily placed upright &ndash; they may be laid down or tilted.</p>
+<p>Object are either cylindrical or box-shaped. The bases of boxes and cylinders are fixed, only their height varies. The base of box-like objects is 50mm by 50mm. The diameter of the base of cylinders is 50mm. The color of objects varies. Objects are initially placed on two tables facing the youBot's starting position. (The two tables are visible with the Hokuyo sensor from the youBot's starting position. No other cylindrical objects are within sight of the Hokuyo from the youBot's starting position.) On one table, objects are placed upright. On the other table, objects are not necessarily placed upright &ndash; they may be laid down or tilted.</p>
 
 
-<p>The size of the house is fixed (see <code>house.ttt</code>). However, the youBot does not know the layout of the house a priori. All obstacles are high enough to be detectable with the Hokuyo sensor. There are no holes or open doors leading outside the house. There are five baskets around the house, whose location is not fixed, although they are always close to room/hallway corners. Baskets and tables are cylinders, 800mm in diameter, and 185mm in height. The tables and baskets are the only cylindrical objects resting on the floor. Next to each basket is a landmark  object (of approximately the same size as the youBot), that allows the youBot to identify the room in which it is located. For instance, one basket could be placed next to a bike (garage), or next to a computer (office). The youBot has access to a list of instructions consisting of pairs of object descriptors (green box, blue cylinder, ...) and images. Instructions are accessed via <code>load instructions.mat inst</code>. This structure follows the following schema:</p>
+<p>The size of the house is fixed (see <code>house.ttt</code>). However, the youBot does not know the layout of the house a priori. All obstacles are high enough to be detectable with the Hokuyo sensor. There are no holes or open doors leading outside the house. There are five baskets around the house, whose location is not fixed, although they are always close to room/hallway corners. Baskets and tables are cylinders, 800mm in diameter, and 185mm in height. The tables and baskets are the only cylindrical objects resting on the floor. Next to each basket is a landmark  object (of approximately the same size as the youBot), that allows the youBot to identify the room in which it is located. For instance, one basket could be placed next to a bike (garage), or next to a computer (office). The youBot has access to a list of instructions consisting of pairs of object descriptors (green box, blue cylinder…) and images. Instructions are accessed via <code>load instructions.mat inst</code>. This structure follows the following schema:</p>
 <ul>
 <li><code>inst(1).shape</code>: shape of the first object (either <code>box</code> or <code>cylinder</code>).</li>
 <li><code>inst(1).color</code>: color of the first object (R, G, B values).</li>
@@ -61,7 +73,7 @@ write a control, navigation, vision or manipulation program in 100 lines of code
 <li><code>inst(2).shape</code>: shape of the second object (either <code>box</code> or <code>cylinder</code>).</li>
 <li><code>inst(2).color</code>: color of the second object (R, G, B values).</li>
 <li><code>inst(2).picture</code>: path to an image of the landmark next to which is located the basket in which object 2 must go.</li>
-<li>...</li>
+<li>…</li>
 </ul>
 
 <p>The goal of the project is to move each object to the appropriate basket. At most one object can be stored on the platform of the youBot. The image below illustrates the layout explained above. A V-REP file similar to the one on which projects will be tested is available in the Git repository (see directory <code>youbot</code>).</p>
@@ -116,7 +128,7 @@ write a control, navigation, vision or manipulation program in 100 lines of code
 -->
 
 
-        <a id="prog" name="prog"></a>
+        <a id="prog"></a>
 <h1>Programming the youBot</h1>
 
 <p>First, follow the <a href="setup.html">setup procedure</a> to get your laptop ready.</p>
@@ -126,7 +138,7 @@ write a control, navigation, vision or manipulation program in 100 lines of code
 <p>The <a href="https://github.com/ULgRobotics/trs/blob/master/youbot/youbot.m">example script</a> is located in the directory <code>youbot</code> of the <a href="#git">course's Git repository</a>. To run the example:</p>
 <ol>
 <li>Open the file <code>house.ttt</code> in V-REP, and <!--The simulation should be run in realtime. Make sure that the menu <em>Simulation &gt; Real-time simulation</em> is checked,--> hit the <em>start simulation</em> button <img src="raster/simulation1.jpg" alt="start" class="txt">.</li>
-<li>In Matlab, cd to the <code>youbot</code> directory, and start the <code>youbot</code> script.</li>
+<li>In MATLAB, cd to the <code>youbot</code> directory, and start the <code>youbot</code> script.</li>
 </ol>
 
 
@@ -156,7 +168,7 @@ write a control, navigation, vision or manipulation program in 100 lines of code
 
 <p>The RGB camera is controlled in the same way with <code>handle_rgb_sensor</code>. The signal <code>handle_xy_sensor</code> controls <em>both</em> <code>fastHokuyo_sensor1</code> and <code>fastHokuyo_sensor2</code>.</p>
 
-<p>The three signals <code>handle_xyz_sensor</code>, <code>handle_xy_sensor</code> and <code>handle_rgb_sensor</code> only control whether V-REP is computing what the sensors see. Setting one of these signals to 1 or 2 will <b>not</b> make V-REP send the data over to Matlab. Whether and how the data is sent to Matlab is controlled via <a href="#simxReadVisionSensor">simxReadVisionSensor</a> or <a href="#simxGetVisionSensorImage2">simxGetVisionSensorImage2</a> and <a href="http://www.coppeliarobotics.com/helpFiles/en/remoteApiConstants.htm#operationModes">remote operation modes</a> (such as <em>streaming</em>, <em>oneshot</em>, etc.).
+<p>The three signals <code>handle_xyz_sensor</code>, <code>handle_xy_sensor</code> and <code>handle_rgb_sensor</code> only control whether V-REP is computing what the sensors see. Setting one of these signals to 1 or 2 will <b>not</b> make V-REP send the data over to MATLAB. Whether and how the data is sent to MATLAB is controlled via <a href="#simxReadVisionSensor">simxReadVisionSensor</a> or <a href="#simxGetVisionSensorImage2">simxGetVisionSensorImage2</a> and <a href="http://www.coppeliarobotics.com/helpFiles/en/remoteApiConstants.htm#operationModes">remote operation modes</a> (such as <em>streaming</em>, <em>oneshot</em>, etc.).
 
 <p>It is generally ok to leave the Hokuyo sensor continuously on, and ok to get its data with the <em> streaming</em> operation mode (see the <a href="https://github.com/ULgRobotics/trs/blob/master/youbot/youbot.m">example script</a>). The RGB and depth cameras however are  expensive to run. They slow down V-REP, and clog the network. It is advised to turn the two cameras on only when needed, by setting their signal to 1, and recovering the generated image or point cloud with the <em>oneshot</em> or <em>oneshot_wait</em> operation mode (see the <a href="https://github.com/ULgRobotics/trs/blob/master/youbot/youbot.m">example script</a>).</p>
 
@@ -183,7 +195,7 @@ write a control, navigation, vision or manipulation program in 100 lines of code
 
 
 
-        <a id="doc" name="doc"></a>
+        <a id="doc"></a>
 <h1>Documentation And Useful Links</h1>
 
 
@@ -196,12 +208,12 @@ write a control, navigation, vision or manipulation program in 100 lines of code
 <li>The <a href="http://www.v-rep.eu/helpFiles/en/remoteApiOverview.htm">Remote API</a>, that allows you to speak to V-REP through the network:
   <ul>
     <!--<li><a href="http://www.v-rep.eu/helpFiles/en/remoteApiClientSide.htm">Enabling the Remote API - client side</a></li>-->
-    <li><a href="http://www.v-rep.eu/helpFiles/en/remoteApiServerSide.htm">Enabling the Remote API - server side</a>: Read if you want to enable the <em>continuous</em> service, for instance to allow Matlab to start/stop the simulation. <b>Do not enable the <em>syncSimTrigger</em> option, as you will not be allowed to do so during the project evaluation.</b></li>
+    <li><a href="http://www.v-rep.eu/helpFiles/en/remoteApiServerSide.htm">Enabling the Remote API - server side</a>: Read if you want to enable the <em>continuous</em> service, for instance to allow MATLAB to start/stop the simulation. <b>Do not enable the <em>syncSimTrigger</em> option, as you will not be allowed to do so during the project evaluation.</b></li>
     <li><a href="http://www.v-rep.eu/helpFiles/en/remoteApiModusOperandi.htm">Remote API modus operandi</a>: Explains  the network-related client-server issues.</li>
     <li><a href="http://www.v-rep.eu/helpFiles/en/remoteApiConstants.htm">Remote API constants</a></li>
     <li><a href="http://www.v-rep.eu/helpFiles/en/remoteApiFunctions.htm">Remote API functions (C/C++)</a></li>
     <li><a href="http://www.v-rep.eu/helpFiles/en/remoteApiFunctionsPython.htm">Remote API functions (Python)</a></li>
-    <li><a href="http://www.v-rep.eu/helpFiles/en/remoteApiFunctionsMatlab.htm">Remote API functions (Matlab)</a></li>
+    <li><a href="http://www.v-rep.eu/helpFiles/en/remoteApiFunctionsMatlab.htm">Remote API functions (MATLAB)</a></li>
   </ul>
 </li>
 </ul>
@@ -212,7 +224,7 @@ write a control, navigation, vision or manipulation program in 100 lines of code
 </ul>
 
 
-        <a id="api" name="api"></a>
+        <a id="api"></a>
 <h1>V-REP Remote API: Authorized Calls</h1>
 
 <p>In your project, you will be allowed to use only a subset of the V-REP API. Off-limits functions are, for instance, functions that change the environment (adding/removing/moving objects), functions that access information that would not be available to the robot in a real setup, or functions that move the robot in an unrealistic way.</p>
@@ -278,6 +290,7 @@ write a control, navigation, vision or manipulation program in 100 lines of code
   <tr><td>youBot_gripperOrientationTip</td><td>Rectangle22</td><td>all except B.4</td></tr>
   <tr><td>youBot_gripperOrientationTarget</td><td>Rectangle22</td><td>all except B.4</td></tr>
   </table>
+  <p>In particular, to get the position of the arm, you must use <code>youBot_ref</code> as reference. Using the world (<code>-1</code>) will return inconsistent results. </p>
 </li>
 <li class="vrep_denied"><a class="anchor" id="simxGetObjectParent"></a><a class="api_selector"  href="http://www.v-rep.eu/helpFiles/en/remoteApiFunctionsMatlab.htm#simxGetObjectParent" >simxGetObjectParent</a></li>
 <li class="vrep_allowed"><a class="anchor" id="simxGetObjectPosition"></a><a class="api_selector"  href="http://www.v-rep.eu/helpFiles/en/remoteApiFunctionsMatlab.htm#simxGetObjectPosition" >simxGetObjectPosition</a><p>See <a href="#simxGetObjectOrientation">simxGetObjectOrientation</a>.</p> 
@@ -362,20 +375,20 @@ write a control, navigation, vision or manipulation program in 100 lines of code
 </ul>
 
 
-        <a id="mtips" name="mtips"></a>
-<h1>Matlab Tips</h1>
+        <a id="mtips"></a>
+<h1>MATLAB Tips</h1>
 
 <h2>Avoiding Loops</h2>
 
-<p>Matlab is an interpreted language. Despite recent progress in the JIT accelerator, running loops in Matlab is still <em>much</em> slower than running loops in native code. Since most Matlab functions rely on a C implementation of large loops, it is good practice to always prefer calling a function over writing a loop when handling large datatypes. In your project, the two datatypes that you need to handle with care are images and point clouds (from the RGB camera, or from the 2D/3D laser scanners). <b>Handling images and point clouds with Matlab functions or MEX functions instead of Matlab loops will often make your code 100 times faster.</b></p>
+<p>MATLAB is an interpreted language. Despite recent progress in the JIT accelerator, running loops in MATLAB is still <em>much</em> slower than running loops in native code. Since most MATLAB functions rely on a C implementation of large loops, it is good practice to always prefer calling a function over writing a loop when handling large datatypes. In your project, the two datatypes that you need to handle with care are images and point clouds (from the RGB camera, or from the 2D/3D laser scanners). <b>Handling images and point clouds with MATLAB functions or MEX functions instead of MATLAB loops will often make your code 100 times faster.</b></p>
 
-<p>An example of the computational cost of flipping an image with a loop vs. a Matlab function is provided <a href="https://github.com/ULgRobotics/trs/blob/master/matlab/test_loop_vs_native.m">here</a>.</p>
+<p>An example of the computational cost of flipping an image with a loop vs. a MATLAB function is provided <a href="https://github.com/ULgRobotics/trs/blob/master/matlab/test_loop_vs_native.m">here</a>.</p>
 
 <h2>Running Code from Files</h2>
 
-<p>The Matlab JIT accelerator doesn't optimize code typed into the console. To verify this behavior, run the function above by typing <code>test_loop_vs_native</code> in the console, then by copy-pasting the contents of the <code>test_loop_vs_native</code> function directly into the console. As a result of this behavior, always run your code from <code>.m</code> files.</p>
+<p>The MATLAB JIT accelerator doesn't optimize code typed into the console. To verify this behavior, run the function above by typing <code>test_loop_vs_native</code> in the console, then by copy-pasting the contents of the <code>test_loop_vs_native</code> function directly into the console. As a result of this behavior, always run your code from <code>.m</code> files.</p>
 
-        <a id="ytips" name="ytips"></a>
+        <a id="ytips"></a>
 <h1>YouBot Tips</h1>
 
 <h2>Unintentional Movements</h2>
@@ -388,29 +401,29 @@ We recommend using the ODE engine.
 
 <h2>Use the Toolbox!</h2>
 
-There's plenty of functions in the Matlab Robot Toolbox that will help you with high-level algorithms (path planning, vision, ...), but also low-level computations (pose transformation, angle distance, ...). Don't forget to use them!
+There's plenty of functions in the MATLAB Robotics Toolbox that will help you with high-level algorithms (path planning, vision…), but also low-level computations (pose transformation, angle distance…). Don't forget to use them!
 
 <h2>Useful Functions/Tools</h2>
 
 <ul>
-<li>The Matlab <code>inpolygon</code> function</li>
+<li>The MATLAB <code>inpolygon</code> function</li>
 </ul>
 
 
 
 
 
-        <a id="shoot" name="shoot"></a>
+        <a id="shoot"></a>
 <h1>Troubleshooting V-REP</h1>
 
 <h2>Avoiding Mysteriously Dangerous Calls</h2>
 
 <p>For a mysterious reason, calling</p>
 <code class="block">res = vrep.simxReadVisionSensor(id, hokuyo1Handle, vrep.simx_opmode_buffer);</code>
-<p>with only <b>one return value</b> crashes some versions of Matlab. Always use the multi-return call instead:</p>
+<p>with only <b>one return value</b> crashes some versions of MATLAB. Always use the multi-return call instead:</p>
 <code class="block">[res det auxData auxPacketInfo] = vrep.simxReadVisionSensor(id, hokuyo1Handle, vrep.simx_opmode_buffer);</code>
 
-<h2>V-REP Crashing at Startup, or Matlab Cannot Connect to VREP</h2>
+<h2>V-REP Crashing at Startup, or MATALB Cannot Connect to VREP</h2>
 
 <p>When VREP quits, the port that it was using to listen for connexions is not freed immediately. If your VREP crashes when you try to start it up, or if you cannot connect to VREP from matlab, quit VREP, wait a few dozen seconds, and try again.</p>
 
