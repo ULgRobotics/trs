@@ -142,14 +142,14 @@ write a control, navigation, vision or manipulation program in 100 lines of code
 
 <h2>Names of V-REP Components</h2>
 
-<p>The V-REP names of the youBot's components are listed below. You can get a programmatic handle to these components via the <a href="#simxGetObjectHandle">simxGetObjectHandle</a> method.</p>
+<p>The V-REP names of the youBot's components are listed below. You can get a programmatic handle to these components via the <a href="#simxGetObjectHandle">simxGetObjectHandle</a> method. It is automatically done when you use the <code>youbot_init</code> script: the fields of the returned structure have slightly different names, they are given between parentheses.</p>
 
 <ul>
-<li><code>youBot_ref</code>: a point on the rotation axis of the first arm joint.</li>
-<li><code>youBot_center</code>: the center of the youBot's frame.</li>
-<li><code>rollingJoint_fl</code>, <code>rollingJoint_rl</code>, <code>rollingJoint_rr</code>, <code>rollingJoint_fr</code>: the four wheel joints.</li>
-<li><code>rgbdSensor</code>: the box containing the depth and photometric cameras.</li>
-<li><code>xyzSensor</code>, <code>rgbSensor</code>, <code>fastHokuyo_sensor1</code>, <code>fastHokuyo_sensor2</code>: the depth and photometric cameras, and the two 120&ndash;degree Hokuyo sensors.</li>
+<li><code>youBot_ref</code> (<code>armRef</code>): a point on the rotation axis of the first arm joint.</li>
+<li><code>youBot_center</code> (<code>ref</code>) the center of the youBot's frame.</li>
+<li><code>rollingJoint_fl</code> (<code>wheelJoints(1)</code>), <code>rollingJoint_rl</code> (<code>wheelJoints(2)</code>), <code>rollingJoint_rr</code> (<code>wheelJoints(3)</code>), <code>rollingJoint_fr</code> (<code>wheelJoints(4)</code>): the four wheel joints.</li>
+<li><code>rgbdSensor</code> (<code>rgbdCasing</code>): the box containing the depth and photometric cameras.</li>
+<li><code>xyzSensor (<code>xyzSensor</code>)</code>, <code>rgbSensor</code> (<code>rgbSensor</code>), <code>fastHokuyo_sensor1</code> (<code>hokuyo1</code>), <code>fastHokuyo_sensor2</code> (<code>hokuyo2</code>): the depth and photometric cameras, and the two 120&ndash;degree Hokuyo sensors.</li>
 </ul>
 
 <h2>Signals for Controlling the youBot's Sensors and Gripper</h2>
@@ -166,28 +166,27 @@ write a control, navigation, vision or manipulation program in 100 lines of code
 
 <p>The three signals <code>handle_xyz_sensor</code>, <code>handle_xy_sensor</code> and <code>handle_rgb_sensor</code> only control whether V-REP is computing what the sensors see. Setting one of these signals to 1 or 2 will <b>not</b> make V-REP send the data over to MATLAB. Whether and how the data is sent to MATLAB is controlled via <a href="#simxReadVisionSensor">simxReadVisionSensor</a> or <a href="#simxGetVisionSensorImage2">simxGetVisionSensorImage2</a> and <a href="http://www.coppeliarobotics.com/helpFiles/en/remoteApiConstants.htm#operationModes">remote operation modes</a> (such as <em>streaming</em>, <em>oneshot</em>, etc.).
 
-<p>It is generally ok to leave the Hokuyo sensor continuously on, and ok to get its data with the <em> streaming</em> operation mode (see the <a href="https://github.com/ULgRobotics/trs/blob/master/youbot/youbot.m">example script</a>). The RGB and depth cameras however are  expensive to run. They slow down V-REP, and clog the network. It is advised to turn the two cameras on only when needed, by setting their signal to 1, and recovering the generated image or point cloud with the <em>oneshot</em> or <em>oneshot_wait</em> operation mode (see the <a href="https://github.com/ULgRobotics/trs/blob/master/youbot/youbot.m">example script</a>).</p>
+<p>It generally presents no problem to leave the Hokuyo sensor continuously on, and to get its data with the <em>streaming</em> operation mode (see the <a href="https://github.com/ULgRobotics/trs/blob/master/youbot/youbot.m">example script</a>). However, the RGB and depth cameras however are expensive to run. They slow down V-REP, and clog the network. It is advised to turn the two cameras on only when needed, by setting their signal to 1, and recovering the generated image or point cloud with the <em>oneshot</em> or <em>oneshot_wait</em> operation mode (see the <a href="https://github.com/ULgRobotics/trs/blob/master/youbot/youbot.m">main example script</a> and the focused examples for the <a href="https://github.com/ULgRobotics/trs/blob/master/youbot/focused/youbot_photo.m">RGB</a> and <a href="https://github.com/ULgRobotics/trs/blob/master/youbot/focused/youbot_3dpointcloud.m">depth</a> cameras).</p>
 
 <p>The view angle of the depth camera and the RGB camera can be controlled via a signal named <code>rgbd_sensor_scan_angle</code>:</p>
 <code class="block">res = vrep.simxSetFloatSignal(id, 'rgbd_sensor_scan_angle', pi/8, vrep.simx_opmode_oneshot_wait); check(vrep, res);</code>
-<p>The default angle is <code>pi/4</code>.
-</p>
+<p>The default angle is <code>pi/4</code>.</p>
 
-<p>The <code>gripper_open</code> signal controls the gripper:</p>
+<p id="gripper_open">The <code>gripper_open</code> signal controls the gripper:</p>
 <ul>
-<li><code>gripper_open</code> set to 1 or unset: the gripper opens.</li>
-<li><code>gripper_open</code> set to 0: the gripper closes and applies a constant force inwards.</li>
+  <li><code>gripper_open</code> set to 1 or unset: the gripper opens.</li>
+  <li><code>gripper_open</code> set to 0: the gripper closes and applies a constant force inwards (it is not possible to control it).</li>
 </ul>
 
-<p>The <code>km_mode</code> signal turns the robot's inverse kinematics mode on or off:</p>
+<p id="km_mode">The <code>km_mode</code> signal turns the robot's inverse kinematics mode on or off:</p>
 <ul>
-<li><code>km_mode</code> set to 0 or unset: the arm joints are in position-control mode. Use <a href="#simxSetJointTargetPosition">simxSetJointTargetPosition</a> to change the arm's configuration. </li>
-<li><code>km_mode</code> set to 1: activates a controller that attempts to move the tip of the gripper to the <em>position</em> of <code>youBot_gripperPositionTarget</code>. Use <a href="#simxSetObjectPosition">simxSetObjectPosition</a> on <code>youBot_gripperPositionTarget</code> to move the tip of the arm to a position in the youBot's frame.</li>
-<li><code>km_mode</code> set to 2: activates a controller that attempts to move the tip of the gripper to the position of <code>youBot_gripperPositionTarget</code>, and to partially align the gripper to the orientation of <code>youBot_gripperPositionTarget</code>. Since the youBot's arm has only five DOFs, it cannot reach any arbitrary orientation. This controller only changes the orientation of the gripper around the axis of the second/third/fourth joint. Use <a href="#simxSetObjectPosition">simxSetObjectPosition</a> on <code>youBot_gripperPositionTarget</code> to move the tip of the arm to a position in the youBot's frame, and <a href="#simxSetObjectOrientation">simxSetObjectOrientation</a> on <code>youBot_gripperOrientationTarget</code> to partially orient the tip of the arm to an angle in the frame of the first link of the arm. See example below for details.</li>
+  <li><code>km_mode</code> set to 0 or unset: the arm joints are in position-control mode. Use <a href="#simxSetJointTargetPosition">simxSetJointTargetPosition</a> to change the arm's configuration. </li>
+  <li><code>km_mode</code> set to 1: activates a controller that attempts to move the tip of the gripper to the <em>position</em> of <code>youBot_gripperPositionTarget</code>. Use <a href="#simxSetObjectPosition">simxSetObjectPosition</a> on <code>youBot_gripperPositionTarget</code> to move the tip of the arm to a position in the youBot's frame.</li>
+  <li><code>km_mode</code> set to 2: activates a controller that attempts to move the tip of the gripper to the position of <code>youBot_gripperPositionTarget</code>, and to partially align the gripper to the orientation of <code>youBot_gripperPositionTarget</code>. Since the youBot's arm has only five DOFs, it cannot reach any arbitrary orientation. This controller only changes the orientation of the gripper around the axis of the second/third/fourth joint. Use <a href="#simxSetObjectPosition">simxSetObjectPosition</a> on <code>youBot_gripperPositionTarget</code> to move the tip of the arm to a position in the youBot's frame, and <a href="#simxSetObjectOrientation">simxSetObjectOrientation</a> on <code>youBot_gripperOrientationTarget</code> to partially orient the tip of the arm to an angle in the frame of the first link of the arm. See example below for details.</li>
 </ul>
 
 
-<p>The <code>displaylasers</code> signal turns the V-REP laser display on or off. When <code>displaylasers</code> is set (whatever its value), V-REP displays red rays along the scanning lines of the Hokuyo, or red dots at the scanning points of the depth sensor. The only purpose served by this signal is illustration, and displaying the lasers slows V-REP down. You will generally want to keep this function off.</p>
+<p id="displaylasers">The <code>displaylasers</code> signal turns the V-REP laser display on or off. When <code>displaylasers</code> is set (whatever its value), V-REP displays red rays along the scanning lines of the Hokuyo, or red dots at the scanning points of the depth sensor. The only purpose served by this signal is illustration, and displaying the lasers slows V-REP down. You will generally want to keep this function off.</p>
 
 
 
@@ -238,7 +237,7 @@ write a control, navigation, vision or manipulation program in 100 lines of code
 <li class="vrep_allowed"><a class="anchor" id="simxAuxiliaryConsoleShow"></a><a class="api_selector"  href="http://www.v-rep.eu/helpFiles/en/remoteApiFunctionsMatlab.htm#simxAuxiliaryConsoleShow" >simxAuxiliaryConsoleShow</a></li>
 <li class="vrep_denied"><a class="anchor" id="simxBreakForceSensor"></a><a class="api_selector"  href="http://www.v-rep.eu/helpFiles/en/remoteApiFunctionsMatlab.htm#simxBreakForceSensor" >simxBreakForceSensor</a></li>
 <li class="vrep_denied"><a class="anchor" id="simxClearFloatSignal"></a><a class="api_selector"  href="http://www.v-rep.eu/helpFiles/en/remoteApiFunctionsMatlab.htm#simxClearFloatSignal" >simxClearFloatSignal</a></li>
-<li class="vrep_allowed"><a class="anchor" id="simxClearIntegerSignal"></a><a class="api_selector"  href="http://www.v-rep.eu/helpFiles/en/remoteApiFunctionsMatlab.htm#simxClearIntegerSignal" >simxClearIntegerSignal</a><p>Only on the following signals: <code>displaylasers</code>, <code>handle_xyz_sensor</code>, <code>handle_xy_sensor</code>, <code>handle_rgb_sensor</code>, <code>gripper_open</code>, <code>km_mode</code>.</p></li>
+<li class="vrep_allowed"><a class="anchor" id="simxClearIntegerSignal"></a><a class="api_selector"  href="http://www.v-rep.eu/helpFiles/en/remoteApiFunctionsMatlab.htm#simxClearIntegerSignal" >simxClearIntegerSignal</a><p>Only on the following signals: <a href="#displaylasers"><code>displaylasers</code></a>, <code>handle_xyz_sensor</code>, <code>handle_xy_sensor</code>, <code>handle_rgb_sensor</code>, <a href="#gripper_open"><code>gripper_open</code></a>, <a href="#km_mode"><code>km_mode</code></a>.</p></li>
 <li class="vrep_denied"><a class="anchor" id="simxClearStringSignal"></a><a class="api_selector"  href="http://www.v-rep.eu/helpFiles/en/remoteApiFunctionsMatlab.htm#simxClearStringSignal" >simxClearStringSignal</a></li>
 <li class="vrep_denied"><a class="anchor" id="simxCloseScene"></a><a class="api_selector"  href="http://www.v-rep.eu/helpFiles/en/remoteApiFunctionsMatlab.htm#simxCloseScene" >simxCloseScene</a></li>
 <li class="vrep_denied"><a class="anchor" id="simxCopyPasteObjects"></a><a class="api_selector"  href="http://www.v-rep.eu/helpFiles/en/remoteApiFunctionsMatlab.htm#simxCopyPasteObjects" >simxCopyPasteObjects</a></li>
@@ -260,7 +259,7 @@ write a control, navigation, vision or manipulation program in 100 lines of code
 <li class="vrep_denied"><a class="anchor" id="simxGetFloatSignal"></a><a class="api_selector"  href="http://www.v-rep.eu/helpFiles/en/remoteApiFunctionsMatlab.htm#simxGetFloatSignal" >simxGetFloatSignal</a></li>
 <li class="vrep_denied"><a class="anchor" id="simxGetInMessageInfo"></a><a class="api_selector"  href="http://www.v-rep.eu/helpFiles/en/remoteApiFunctionsMatlab.htm#simxGetInMessageInfo" >simxGetInMessageInfo</a></li>
 <li class="vrep_denied"><a class="anchor" id="simxGetIntegerParameter"></a><a class="api_selector"  href="http://www.v-rep.eu/helpFiles/en/remoteApiFunctionsMatlab.htm#simxGetIntegerParameter" >simxGetIntegerParameter</a></li>
-<li class="vrep_allowed"><a class="anchor" id="simxGetIntegerSignal"></a><a class="api_selector"  href="http://www.v-rep.eu/helpFiles/en/remoteApiFunctionsMatlab.htm#simxGetIntegerSignal" >simxGetIntegerSignal</a><p>Only on the following signals: <code>displaylasers</code>, <code>handle_xyz_sensor</code>, <code>handle_xy_sensor</code>, <code>handle_rgb_sensor</code>, <code>gripper_open</code>, <code>km_mode</code>.</p></li>
+<li class="vrep_allowed"><a class="anchor" id="simxGetIntegerSignal"></a><a class="api_selector"  href="http://www.v-rep.eu/helpFiles/en/remoteApiFunctionsMatlab.htm#simxGetIntegerSignal" >simxGetIntegerSignal</a><p>Only on the following signals: <a href="#displaylasers"><code>displaylasers</code></a>, <code>handle_xyz_sensor</code>, <code>handle_xy_sensor</code>, <code>handle_rgb_sensor</code>, <a href="#gripper_open"><code>gripper_open</code></a>, <a href="#km_mode"><code>km_mode</code></a>.</p></li>
 <li class="vrep_allowed"><a class="anchor" id="simxGetJointMatrix"></a><a class="api_selector"  href="http://www.v-rep.eu/helpFiles/en/remoteApiFunctionsMatlab.htm#simxGetJointMatrix" >simxGetJointMatrix</a><p>Only on the robot's joints.</p></li>
 <li class="vrep_allowed"><a class="anchor" id="simxGetJointPosition"></a><a class="api_selector"  href="http://www.v-rep.eu/helpFiles/en/remoteApiFunctionsMatlab.htm#simxGetJointPosition" >simxGetJointPosition</a><p>Only on the robot's joints.</p></li>
 <li class="vrep_allowed"><a class="anchor" id="simxGetLastCmdTime"></a><a class="api_selector"  href="http://www.v-rep.eu/helpFiles/en/remoteApiFunctionsMatlab.htm#simxGetLastCmdTime" >simxGetLastCmdTime</a></li>
@@ -274,17 +273,17 @@ write a control, navigation, vision or manipulation program in 100 lines of code
 <li class="vrep_allowed"><a class="anchor" id="simxGetObjectOrientation"></a><a class="api_selector"  href="http://www.v-rep.eu/helpFiles/en/remoteApiFunctionsMatlab.htm#simxGetObjectOrientation" >simxGetObjectOrientation</a><p>
   Only with the following handle arguments, as in the simulator (the values between parentheses indicate the corresponding field of the structure returned by <code>youbot_init</code>):</p>
   <table class="vrep">
-  <tr><th>objectHandle</th><th>relativeToObjectHandle</th><th>Milestone</th></tr>
-  <tr><td>rgbdSensor (<code>rgbdCasing</code>)</td><td>youBot_ref (<code>armRef</code>), youBot_center (<code>ref</code>)</td><td>all except E</td></tr>
-  <tr><td>xyzSensor (<code>xyzSensor</code>)</td><td>rgbdSensor (<code>rgbdCasing</code>)</td><td>(any)</td></tr>
-  <tr><td>rgbSensor (<code>rgbSensor</code>)</td><td>rgbdSensor (<code>rgbdCasing</code>)</td><td>(any)</td></tr>
-  <tr><td>fastHokuyo_sensor1 (<code>hokuyo1</code>)</td><td>youBot_ref (<code>armRef</code>), youBot_center (<code>ref</code>)</td><td>(any)</td></tr>
-  <tr><td>fastHokuyo_sensor2 (<code>hokuyo2</code>)</td><td>youBot_ref (<code>armRef</code>), youBot_center (<code>ref</code>)</td><td>(any)</td></tr>
-  <tr><td>youBot_ref (<code>armRef</code>), youBot_center (<code>ref</code>)</td><td>-1</td><td>all except A.2</td></tr>
-  <tr><td>youBot_gripperPositionTip (<code>ptip</code>)</td><td>youBot_ref (<code>armRef</code>)</td><td>all except B.4</td></tr>
-  <tr><td>youBot_gripperPositionTarget (<code>ptarget</code>)</td><td>youBot_ref (<code>armRef</code>)</td><td>all except B.4</td></tr>
-  <tr><td>youBot_gripperOrientationTip (<code>otip</code>)</td><td>Rectangle22 (<code>r22</code>)</td><td>all except B.4</td></tr>
-  <tr><td>youBot_gripperOrientationTarget (<code>otarget</code>)</td><td>Rectangle22 (<code>r22</code>)</td><td>all except B.4</td></tr>
+    <tr><th>objectHandle</th><th>relativeToObjectHandle</th><th>Milestone</th></tr>
+    <tr><td>rgbdSensor (<code>rgbdCasing</code>)</td><td>youBot_ref (<code>armRef</code>), youBot_center (<code>ref</code>)</td><td>all except E</td></tr>
+    <tr><td>xyzSensor (<code>xyzSensor</code>)</td><td>rgbdSensor (<code>rgbdCasing</code>)</td><td>(any)</td></tr>
+    <tr><td>rgbSensor (<code>rgbSensor</code>)</td><td>rgbdSensor (<code>rgbdCasing</code>)</td><td>(any)</td></tr>
+    <tr><td>fastHokuyo_sensor1 (<code>hokuyo1</code>)</td><td>youBot_ref (<code>armRef</code>), youBot_center (<code>ref</code>)</td><td>(any)</td></tr>
+    <tr><td>fastHokuyo_sensor2 (<code>hokuyo2</code>)</td><td>youBot_ref (<code>armRef</code>), youBot_center (<code>ref</code>)</td><td>(any)</td></tr>
+    <tr><td>youBot_ref (<code>armRef</code>), youBot_center (<code>ref</code>)</td><td>-1</td><td>all except A.2</td></tr>
+    <tr><td>youBot_gripperPositionTip (<code>ptip</code>)</td><td>youBot_ref (<code>armRef</code>)</td><td>all except B.4</td></tr>
+    <tr><td>youBot_gripperPositionTarget (<code>ptarget</code>)</td><td>youBot_ref (<code>armRef</code>)</td><td>all except B.4</td></tr>
+    <tr><td>youBot_gripperOrientationTip (<code>otip</code>)</td><td>Rectangle22 (<code>r22</code>)</td><td>all except B.4</td></tr>
+    <tr><td>youBot_gripperOrientationTarget (<code>otarget</code>)</td><td>Rectangle22 (<code>r22</code>)</td><td>all except B.4</td></tr>
   </table>
   <p>In particular, in order to get the position of the arm, you must use <code>youBot_ref</code> as reference. Using the world (<code>-1</code>) will return inconsistent results. </p>
 </li>
@@ -328,7 +327,7 @@ write a control, navigation, vision or manipulation program in 100 lines of code
 <li class="vrep_denied"><a class="anchor" id="simxSetFloatingParameter"></a><a class="api_selector"  href="http://www.v-rep.eu/helpFiles/en/remoteApiFunctionsMatlab.htm#simxSetFloatingParameter" >simxSetFloatingParameter</a></li>
 <li class="vrep_denied"><a class="anchor" id="simxSetFloatSignal"></a><a class="api_selector"  href="http://www.v-rep.eu/helpFiles/en/remoteApiFunctionsMatlab.htm#simxSetFloatSignal" >simxSetFloatSignal</a></li>
 <li class="vrep_denied"><a class="anchor" id="simxSetIntegerParameter"></a><a class="api_selector"  href="http://www.v-rep.eu/helpFiles/en/remoteApiFunctionsMatlab.htm#simxSetIntegerParameter" >simxSetIntegerParameter</a></li>
-<li class="vrep_allowed"><a class="anchor" id="simxSetIntegerSignal"></a><a class="api_selector"  href="http://www.v-rep.eu/helpFiles/en/remoteApiFunctionsMatlab.htm#simxSetIntegerSignal" >simxSetIntegerSignal</a><p>Only on the following signals: <code>displaylasers</code>, <code>handle_xyz_sensor</code>, <code>handle_xy_sensor</code>, <code>handle_rgb_sensor</code>, <code>gripper_open</code>, <code>km_mode</code>.</p></li>
+<li class="vrep_allowed"><a class="anchor" id="simxSetIntegerSignal"></a><a class="api_selector"  href="http://www.v-rep.eu/helpFiles/en/remoteApiFunctionsMatlab.htm#simxSetIntegerSignal" >simxSetIntegerSignal</a><p>Only on the following signals: <a href="#displaylasers"><code>displaylasers</code></a>, <code>handle_xyz_sensor</code>, <code>handle_xy_sensor</code>, <code>handle_rgb_sensor</code>, <a href="#gripper_open"><code>gripper_open</code></a>, <a href="#km_mode"><code>km_mode</code></a>.</p></li>
 <li class="vrep_denied"><a class="anchor" id="simxSetJointForce"></a><a class="api_selector"  href="http://www.v-rep.eu/helpFiles/en/remoteApiFunctionsMatlab.htm#simxSetJointForce" >simxSetJointForce</a></li>
 <li class="vrep_denied"><a class="anchor" id="simxSetJointPosition"></a><a class="api_selector"  href="http://www.v-rep.eu/helpFiles/en/remoteApiFunctionsMatlab.htm#simxSetJointPosition" >simxSetJointPosition</a></li>
 <li class="vrep_allowed"><a class="anchor" id="simxSetJointTargetPosition"></a><a class="api_selector"  href="http://www.v-rep.eu/helpFiles/en/remoteApiFunctionsMatlab.htm#simxSetJointTargetPosition" >simxSetJointTargetPosition</a><p>
