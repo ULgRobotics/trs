@@ -276,21 +276,21 @@ write a control, navigation, vision or manipulation program in 100 lines of code
 <li class="vrep_allowed"><a class="anchor" id="simxGetObjectHandle"></a><a class="api_selector"  href="http://www.v-rep.eu/helpFiles/en/remoteApiFunctionsMatlab.htm#simxGetObjectHandle" >simxGetObjectHandle</a><p>Only for objects that are part of the robot.</p></li>
 <li class="vrep_denied"><a class="anchor" id="simxGetObjectIntParameter"></a><a class="api_selector"  href="http://www.v-rep.eu/helpFiles/en/remoteApiFunctionsMatlab.htm#simxGetObjectIntParameter" >simxGetObjectIntParameter</a></li>
 <li class="vrep_allowed"><a class="anchor" id="simxGetObjectOrientation"></a><a class="api_selector"  href="http://www.v-rep.eu/helpFiles/en/remoteApiFunctionsMatlab.htm#simxGetObjectOrientation" >simxGetObjectOrientation</a><p>
-  Only with the following arguments:</p>
+  Only with the following handle arguments, as in the simulator (the values between parentheses indicate the corresponding field of the structure returned by <code>youbot_init</code>):</p>
   <table class="vrep">
   <tr><th>objectHandle</th><th>relativeToObjectHandle</th><th>Milestone</th></tr>
-  <tr><td>rgbdSensor</td><td>youBot_ref, youBot_center</td><td>all except E</td></tr>
-  <tr><td>xyzSensor</td><td>rgbdSensor</td><td>(any)</td></tr>
-  <tr><td>rgbSensor</td><td>rgbdSensor</td><td>(any)</td></tr>
-  <tr><td>fastHokuyo_sensor1</td><td>youBot_ref, youBot_center</td><td>(any)</td></tr>
-  <tr><td>fastHokuyo_sensor1</td><td>youBot_ref, youBot_center</td><td>(any)</td></tr>
-  <tr><td>youBot_ref, youBot_center</td><td>-1</td><td>all except A.2</td></tr>
-  <tr><td>youBot_gripperPositionTip</td><td>youBot_ref</td><td>all except B.4</td></tr>
-  <tr><td>youBot_gripperPositionTarget</td><td>youBot_ref</td><td>all except B.4</td></tr>
-  <tr><td>youBot_gripperOrientationTip</td><td>Rectangle22</td><td>all except B.4</td></tr>
-  <tr><td>youBot_gripperOrientationTarget</td><td>Rectangle22</td><td>all except B.4</td></tr>
+  <tr><td>rgbdSensor (<code>rgbdCasing</code>)</td><td>youBot_ref (<code>armRef</code>), youBot_center (<code>ref</code>)</td><td>all except E</td></tr>
+  <tr><td>xyzSensor (<code>xyzSensor</code>)</td><td>rgbdSensor (<code>rgbdCasing</code>)</td><td>(any)</td></tr>
+  <tr><td>rgbSensor (<code>rgbSensor</code>)</td><td>rgbdSensor (<code>rgbdCasing</code>)</td><td>(any)</td></tr>
+  <tr><td>fastHokuyo_sensor1 (<code>hokuyo1</code>)</td><td>youBot_ref (<code>armRef</code>), youBot_center (<code>ref</code>)</td><td>(any)</td></tr>
+  <tr><td>fastHokuyo_sensor2 (<code>hokuyo2</code>)</td><td>youBot_ref (<code>armRef</code>), youBot_center (<code>ref</code>)</td><td>(any)</td></tr>
+  <tr><td>youBot_ref (<code>armRef</code>), youBot_center (<code>ref</code>)</td><td>-1</td><td>all except A.2</td></tr>
+  <tr><td>youBot_gripperPositionTip (<code>ptip</code>)</td><td>youBot_ref (<code>armRef</code>)</td><td>all except B.4</td></tr>
+  <tr><td>youBot_gripperPositionTarget (<code>ptarget</code>)</td><td>youBot_ref (<code>armRef</code>)</td><td>all except B.4</td></tr>
+  <tr><td>youBot_gripperOrientationTip (<code>otip</code>)</td><td>Rectangle22 (<code>r22</code>)</td><td>all except B.4</td></tr>
+  <tr><td>youBot_gripperOrientationTarget (<code>otarget</code>)</td><td>Rectangle22 (<code>r22</code>)</td><td>all except B.4</td></tr>
   </table>
-  <p>In particular, to get the position of the arm, you must use <code>youBot_ref</code> as reference. Using the world (<code>-1</code>) will return inconsistent results. </p>
+  <p>In particular, in order to get the position of the arm, you must use <code>youBot_ref</code> as reference. Using the world (<code>-1</code>) will return inconsistent results. </p>
 </li>
 <li class="vrep_denied"><a class="anchor" id="simxGetObjectParent"></a><a class="api_selector"  href="http://www.v-rep.eu/helpFiles/en/remoteApiFunctionsMatlab.htm#simxGetObjectParent" >simxGetObjectParent</a></li>
 <li class="vrep_allowed"><a class="anchor" id="simxGetObjectPosition"></a><a class="api_selector"  href="http://www.v-rep.eu/helpFiles/en/remoteApiFunctionsMatlab.htm#simxGetObjectPosition" >simxGetObjectPosition</a><p>See <a href="#simxGetObjectOrientation">simxGetObjectOrientation</a>.</p> 
