@@ -116,7 +116,7 @@ write a control, navigation, vision or manipulation program in 100 lines of code
 </li>
 <li>Calibration: Computing the transformation between the frame of the vision sensor, and the frame of the robot. (Without <code>simxGetObjectOrientation</code> on <code>rgbdSensor</code>.)
 </li>
-<li><span style="color: red">Bonus Milestone: create a video of your work!</span> Ideally including a view from the simulator, and of the robot process (for instance the map being constructed). In VREP, the menu <em>Tools</em> has a <em>Video Recorder</em> option that allows you to save the simulator's image stream to disk.</li>
+<li><span style="color: red">Bonus Milestone: create a video of your work!</span> Ideally including a view from the simulator, and of the robot process (for instance the map being constructed). In V-REP, the menu <em>Tools</em> has a <em>Video Recorder</em> option that allows you to save the simulator's image stream to disk.</li>
 </ol>
 
 <!--
@@ -386,7 +386,7 @@ write a control, navigation, vision or manipulation program in 100 lines of code
 
 <h2>Running Code from Files</h2>
 
-<p>The MATLAB JIT accelerator doesn't optimize code typed into the console. To verify this behavior, run the function above by typing <code>test_loop_vs_native</code> in the console, then by copy-pasting the contents of the <code>test_loop_vs_native</code> function directly into the console. As a result of this behavior, always run your code from <code>.m</code> files.</p>
+<p>The MATLAB JIT accelerator doesn't optimize code typed into the console, even though recent versions of MATLAB have greatly improved in terms of performance. To verify this behavior, run the function above by typing <code>test_loop_vs_native</code> in the console, then by copy-pasting the contents of the <code>test_loop_vs_native</code> function directly into the console. As a result of this behavior, always run your code from <code>.m</code> files.</p>
 
         <a id="ytips"></a>
 <h1>YouBot Tips</h1>
@@ -399,9 +399,11 @@ write a control, navigation, vision or manipulation program in 100 lines of code
 
 We recommend using the ODE engine.
 
-<h2>Use the Toolbox!</h2>
+<h2>Use the Toolboxes!</h2>
 
-There are plenty of functions in the MATLAB Robotics Toolbox that will help you with high-level algorithms (path planning, vision…), but also low-level computations (pose transformation, angle distance…). Don't forget to use them!
+<p>There are plenty of functions in Peter Corke's Robotics Toolbox that will help you with high-level algorithms (path planning, vision…), but also low-level computations (pose transformation, angle distance…). Don't forget to use them!</p>
+
+<p>If you have them, MATLAB also has many interesting toolboxes for this project: for computer vision (<a href="https://fr.mathworks.com/products/image.html">MATLAB Image Processing Toolbox</a>, <a href="https://www.mathworks.com/products/computer-vision.html">MATLAB Computer Vision System</a>), machine learning (<a href="https://www.mathworks.com/products/statistics.html">Statistics and Machine Learning</a>), and robotics (<a href="https://www.mathworks.com/products/robotics.html">Robotics System</a>), more specifically. Pay attention that not all of them are included in the student version of MATLAB. </p>
 
 <h2>Useful Functions/Tools</h2>
 
@@ -423,11 +425,9 @@ There are plenty of functions in the MATLAB Robotics Toolbox that will help you 
 <p>with only <b>one return value</b> crashes some versions of MATLAB. Always use the multi-return call instead:</p>
 <code class="block">[res det auxData auxPacketInfo] = vrep.simxReadVisionSensor(id, hokuyo1Handle, vrep.simx_opmode_buffer);</code>
 
-<h2>V-REP Crashing at Startup, or MATALB Cannot Connect to VREP</h2>
+<h2>V-REP Crashing at Startup, or MATALB Cannot Connect to V-REP</h2>
 
-<p>When VREP quits, the port that it was using to listen for connexions is not freed immediately. If your VREP crashes when you try to start it up, or if you cannot connect to VREP from matlab, quit VREP, wait a few dozen seconds, and try again.</p>
-
-
+<p>When V-REP quits, the port that it was using to listen for connexions is not freed immediately. If your V-REP crashes when you try to start it up, or if you cannot connect to V-REP from MATLAB, quit V-REP, wait a few dozen seconds, and try again.</p>
 
 
       </div>
