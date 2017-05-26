@@ -88,13 +88,15 @@ write a control, navigation, vision or manipulation program in 100 lines of code
 <h2>Milestones</h2>
 
 <ol style="list-style-type: upper-alpha;">
-<li>Navigation: Building a map of the house (a map of the walls and other obstacles).
+<li><strong>Navigation</strong><br/>
+  Building a map of the house (a map of the walls and other obstacles).
   <ol>
-  <li>Using accurate localization (via <code>simxGetObjectPosition</code> on <code>youBot_ref</code> or <code>youBot_center</code>)</li>
-  <li>Without using <code>simxGetObjectPosition</code> on <code>youBot_ref</code> or <code>youBot_center</code>.</li>
+  <li>Using accurate localization (via <a href="#simxGetObjectPosition"><code>simxGetObjectPosition</code></a> on <code>youBot_ref</code> or <code>youBot_center</code>)</li>
+  <li>Without using <a href="#simxGetObjectPosition"><code>simxGetObjectPosition</code></a> on <code>youBot_ref</code> or <code>youBot_center</code>.</li>
   </ol>
 </li>
-<li>Manipulation: Picking up objects and moving them to any room of the house (except the room where the objects start in) (not necessarily in a basket).
+<li><strong>Manipulation</strong><br/>
+  Picking up objects and moving them to any room of the house (except the room where the objects start in), not necessarily in a basket.
   <ol>
   <li>Moving only the objects from the first table (where objects stand upright), using V-REP IK. Objects can fall on the floor.</li>
   <li>Moving all the objects (both tables), using V-REP IK. Objects can fall on the floor.</li>
@@ -102,21 +104,24 @@ write a control, navigation, vision or manipulation program in 100 lines of code
   <li>Moving all the objects (both tables), <em>without</em> using V-REP IK. Objects <em>cannot</em> fall on the floor.</li>
   </ol>
 </li>
-<li>Vision: Finding and identifying the baskets.
+<li><strong>Vision</strong><br/>
+  Finding and identifying the baskets.
   <ol>
   <li>Finding the baskets and the tables.</li>
   <li>Recognizing the landmark objects accompanying the baskets, based on the data from <code>instructions.mat</code>.</li>
   </ol>
 </li>
-<li>Manipulation+Vision
+<li><strong>Manipulation and Vision</strong>
   <ol>
   <li>Placing the objects into arbitrary baskets (as long as there is the same number of objects in each basket). (Requires at least B.1 and C.1.)</li>
   <li>Placing the objects into the appropriate basket, as indicated by <code>instructions.mat</code>. (Requires at least B.1 and C.2.)</li>
   </ol>
 </li>
-<li>Calibration: Computing the transformation between the frame of the vision sensor, and the frame of the robot. (Without <code>simxGetObjectOrientation</code> on <code>rgbdSensor</code>.)
+<li><strong>Calibration</strong><br/>
+  Computing the transformation between the frame of the vision sensor, and the frame of the robot. (Without <code>simxGetObjectOrientation</code> on <code>rgbdSensor</code>.)
 </li>
-<li><span style="color: red">Bonus Milestone: create a video of your work!</span> Ideally including a view from the simulator, and of the robot process (for instance the map being constructed). In V-REP, the menu <em>Tools</em> has a <em>Video Recorder</em> option that allows you to save the simulator's image stream to disk.</li>
+<li><span style="color: red">Bonus Milestone: create a video of your work!</span><br/>
+  Ideally including a view from the simulator, and of the robot process (for instance, the map being constructed). In V-REP, the menu <em>Tools</em> has a <em>Video Recorder</em> option that allows you to save the simulator's image stream to disk.</li>
 </ol>
 
         <a id="prog"></a>
@@ -140,7 +145,7 @@ write a control, navigation, vision or manipulation program in 100 lines of code
 <p>The V-REP names of the youBot's components are listed below. You can get a programmatic handle to these components via the <a href="#simxGetObjectHandle">simxGetObjectHandle</a> method.</p>
 
 <ul>
-<li><code>youBot_ref</code>: A point on the rotation axis of the first arm joint.</li>
+<li><code>youBot_ref</code>: a point on the rotation axis of the first arm joint.</li>
 <li><code>youBot_center</code>: the center of the youBot's frame.</li>
 <li><code>rollingJoint_fl</code>, <code>rollingJoint_rl</code>, <code>rollingJoint_rr</code>, <code>rollingJoint_fr</code>: the four wheel joints.</li>
 <li><code>rgbdSensor</code>: the box containing the depth and photometric cameras.</li>
