@@ -12,7 +12,7 @@ body {
   margin-right: auto;
   margin-top: 10px;
   margin-bottom: 10px;
-  max-width: 900px;
+  max-width: 950px;
   border: 1px solid #646464;
 }
 
@@ -296,5 +296,11 @@ code, tt {
   padding: 0 5px;
   border: 1px solid #eaeaea;
   background-color: #f8f8f8;
-  border-radius: 3px; }
+  border-radius: 3px; 
+}
+
+table.vrep code {
+  margin: 0; 
+  padding: 0; 
+}
 
