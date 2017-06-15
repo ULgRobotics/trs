@@ -1,6 +1,5 @@
-function youbot_armMoving()
-    % The aim of this code is to show small examples of controlling the arm
-    % of the robot in V REP
+function youbot_arm()
+    % The aim of this code is to show small examples of controlling the arm of the robot in V-REP. 
 
     % (C) Copyright Renaud Detry 2013, Mathieu Baijot 2017.
     % Distributed under the GNU General Public License.
@@ -37,41 +36,32 @@ function youbot_armMoving()
     h = youbot_init(vrep, id);
     h = youbot_hokuyo_init(vrep, h);
 
-    % Make sure everything is settled before we start. 
+    % Make sure everything is settled before we start (wait for the simulation to start). 
     pause(.2);
 
-    % Youbot constants
+    % The time step the simulator is using (your code should run close to it). 
     timestep = .05;
-
-    %% Additional informations for the robot arm.
-    
-    % Minimum and maximum angles for all joints. Only useful to implement custom IK. 
-    armJointRanges = [-2.9496064186096, 2.9496064186096;
-                      -1.5707963705063, 1.308996796608;
-                      -2.2863812446594, 2.2863812446594;
-                      -1.7802357673645, 1.7802357673645;
-                      -1.5707963705063, 1.5707963705063 ];
-    % Definition of the starting pose of the arm.
-    startingJoints = [-90, 30.91 * pi / 180, 52.42 * pi / 180, 72.68 * pi / 180, 0];
     
     %% Preset values for the demo. 
+    % Definition of the starting pose of the arm (the angle to impose at each joint to be in the rest position).
+    startingJoints = [-90, 30.91 * pi / 180, 52.42 * pi / 180, 72.68 * pi / 180, 0];
     
-    % Set the arm to its starting configuration. 
+    % Set the arm to its starting configuration. Several orders are sent sequentially, but they must be followed 
+    % by the simulator without being interrupted by other computations (hence the enclosing simxPauseCommunication 
+    % calls). 
     res = vrep.simxPauseCommunication(id, true); % Send order to the simulator through vrep object. 
-    vrchk(vrep, res); % Check the return value and exit in case of error. 
+    vrchk(vrep, res); % Check the return value from the previous V-REP call (res) and exit in case of error.
+    
     for i = 1:5
         res = vrep.simxSetJointTargetPosition(id, h.armJoints(i), startingJoints(i), vrep.simx_opmode_oneshot);
         vrchk(vrep, res, true);
     end
+    
     res = vrep.simxPauseCommunication(id, false); 
     vrchk(vrep, res);
 
     % Make sure everything is settled before we start. 
     pause(2);
-
-    % Get the initial position of the gripper.
-    [res, homeGripperPosition] = vrep.simxGetObjectPosition(id, h.ptip, h.armRef, vrep.simx_opmode_buffer);
-    vrchk(vrep, res, true);
     
     % Initialise the state machine. 
     fsm = 'noIK';
@@ -86,10 +76,11 @@ function youbot_armMoving()
 
         %% Apply the state machine. 
         
-        % First example : move the arm without using the IK solver.
+        % First example: move the arm without using the IK (inverse kinematics) solver, by explicitly setting the value 
+        % for each of the joints. 
         if strcmp(fsm, 'noIK')
             % Define each angle of the robot arm.
-            chooseAngle = [180*pi/180, -25*pi/180, 75*pi/180, -17*pi/180, 90*pi/180];
+            chooseAngle = [180 * pi / 180, - 25 * pi / 180, 75 * pi / 180, - 17 * pi / 180, 90 * pi / 180];
             
             % Apply the value to each articulation.
             for i = 1:5
@@ -101,57 +92,72 @@ function youbot_armMoving()
             pause(5);
             fsm = 'useIK';
             
-        % Second example : move the arm by using the IK solver.
+        % Second example: move the arm by using the IK solver, so that you only have to specify the position of 
+        % the arm tip. With this, you can move the point between the two tongs of the gripper so that it coincides with
+        % the object to grasp (the tip): the gripper will magically be at the right position. 
         elseif strcmp(fsm, 'useIK')
-            % Get the arm position. 
+            % Get the arm tip position. 
             [res, tpos] = vrep.simxGetObjectPosition(id, h.ptip, h.armRef, vrep.simx_opmode_buffer);
             vrchk(vrep, res, true);
             
-            % Set the inverse kinematics (IK) mode to position AND orientation (KM_mode = 2). 
+            % Set the inverse kinematics (IK) mode to position AND orientation (km_mode = 2). The solver will decide the
+            % values for the joint angles so that the arm tip is at the given position with the given orientation (given
+            % with a later simulator call). 
             res = vrep.simxSetIntegerSignal(id, 'km_mode', 2, vrep.simx_opmode_oneshot_wait);
             vrchk(vrep, res, true);
             
-            % Set the new position wwanted for the gripper.
+            % Set the new position to the expected one for the gripper (predetermined value).
             tpos = [tpos(1) - 0.1, tpos(2) + 0.3, tpos(3) - 0.3];
             res = vrep.simxSetObjectPosition(id, h.ptarget, h.armRef, tpos, vrep.simx_opmode_oneshot);
             vrchk(vrep, res, true);
+            % You could do the same with the orientation using vrep.simxSetObjectOrientation. The details are in the
+            % documentation: 
+            % http://www.coppeliarobotics.com/helpFiles/en/remoteApiFunctionsMatlab.htm#simxSetObjectOrientation
             
             % Wait long enough so that the tip is at the right position and go on to the next state. 
             pause(5);
             fsm = 'rotGrip';
         
-        % Make only the tip to rotate :
-        % Since the tip joint is one joint of the arm, you just have to specified which joint to modified.
+        % Rotate the tip. It can be actuated as any joint of the arm. 
         elseif strcmp(fsm, 'rotGrip')
-            % Remove the inverse kinematics (IK) mode.
+            % Remove the inverse kinematics (IK) mode so that joint angles can be set individually (it was reenabled by
+            % the previous state). 
             res = vrep.simxSetIntegerSignal(id, 'km_mode', 0, vrep.simx_opmode_oneshot_wait);
-            % Set the new gripper angle to "0".
+            vrchk(vrep, res, true);
+            
+            % Set the new gripper angle to 0°.
             res = vrep.simxSetJointTargetPosition(id, h.armJoints(5), 0, vrep.simx_opmode_oneshot);
             vrchk(vrep, res, true);
             
-            % Wait long enough so that the tip is at the right position and go on to the next state. 
+            % Make MATLAB wait long enough so that the tip is at the right position and go on to the next state. 
+            % This value was determined by experiments. 
             pause(5);
             fsm = 'grasp';
             
-        % Close the gripper
+        % Close the gripper. It is not possible to determine the force to apply and the object will sometimes slip 
+        % from the gripper!
         elseif strcmp(fsm, 'grasp')
             res = vrep.simxSetIntegerSignal(id, 'gripper_open', 0, vrep.simx_opmode_oneshot_wait);
             vrchk(vrep, res);
             
+            % Make MATLAB wait for the gripper to be closed. This value was determined by experiments. 
             pause(3);
             fsm = 'release';
         
-        % Open the gripper
+        % Open the gripper.
         elseif strcmp(fsm, 'release')
             res = vrep.simxSetIntegerSignal(id, 'gripper_open', 1, vrep.simx_opmode_oneshot_wait);
             vrchk(vrep, res);
+            
+            % Make MATLAB wait for the gripper to be opened. This value was determined by experiments. 
             pause(5);
             fsm = 'finished';
    
+        % Demo done: exit the function. 
         elseif strcmp(fsm, 'finished')
-            %% Demo done: exit the function. 
             pause(3);
             break;
+            
         else
             error('Unknown state %s.', fsm);
         end
@@ -164,5 +170,4 @@ function youbot_armMoving()
         end
     end
 
-end % main function
-   
+end 
