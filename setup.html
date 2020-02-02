@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
 <head>
   <meta content="text/html; charset=utf-8" http-equiv="content-type">
   <link href="favicon.ico" rel="shortcut icon">
@@ -30,11 +30,23 @@ write a control, navigation, vision or manipulation program in 100 lines of code
 
     <div class="content_body">
       <div id="menu">
-        <a class="top" href="index.html">TRS</a> <a class="submenu" href="index.html#events">Events</a> <a class="submenu" href="index.html#mot">Motivation</a> <a class="submenu" href="index.html#get">What You Get</a> <a class="submenu" href="index.html#use">How to Use</a> <a class="submenu" href="index.html#contact">Authors</a> <a href="setup.html">Setup</a> <a class="submenu" href="setup.html#com">Components</a> <a class="submenu" href="setup.html#install">Install</a> <a class="submenu" class="bottom" href="setup.html#shoot">Troubleshoot</a> <a href="project.html">Project</a> <a class="submenu" href="project.html#def">Definition</a>
+        <a class="top" href="index.html">TRS</a>
+        <a class="submenu" href="index.html#events">Events</a>
+        <a class="submenu" href="index.html#mot">Motivation</a>
+        <a class="submenu" href="index.html#get">What You Get</a>
+        <a class="submenu" href="index.html#use">How to Use</a>
+        <a class="submenu" href="index.html#contact">Authors</a>
+        <a href="setup.html">Setup</a>
+        <a class="submenu" href="setup.html#com">Components</a>
+        <a class="submenu" href="setup.html#install">Install</a>
+        <a class="submenu" href="setup.html#simulator">Simulator</a>
+        <a class="submenu" href="setup.html#shoot">Troubleshoot</a>
+        <a href="project.html">Project</a>
+        <a class="submenu" href="project.html#def">Definition</a>
         <a class="submenu" href="project.html#prog">Programming</a>
         <a class="submenu" href="project.html#doc">Documentation</a>
         <a class="submenu" href="project.html#api">API</a>
-        <a class="submenu" href="project.html#mtips">Matlab Tips</a>
+        <a class="submenu" href="project.html#mtips">MATLAB Tips</a>
         <a class="submenu" href="project.html#ytips">YouBot Tips</a>
         <a class="submenu bottom" href="project.html#shoot">Troubleshoot</a>
       </div>
@@ -42,34 +54,34 @@ write a control, navigation, vision or manipulation program in 100 lines of code
       <div class="content">
         <img style="float: right;" src="http://renaud-detry.net/raster/ulg-logo82.jpg" alt="ULg" />
       
-        <a id="set" name="set"></a>
+        <a id="set"></a>
         <h1 style="margin-top: 0">Components</h1>
 
 <p>This page details the installation and configuration of the following items:</p>
 <ul>
 <li>Peter Corke's RVC toolbox,</li>
 <li>The V-REP simulator,</li>
-<li>The Matlab bindings for V-REP.</li>
+<li>The MATLAB bindings for V-REP.</li>
 </ul>
 
 <h2>Requirements</h2>
 
-TRS requires a fairly recent version of Matlab. Matlab versions older than 2011 are know to cause problems.
+TRS requires a fairly recent version of MATLAB. MATLAB versions older than 2011 are know to cause problems.
 
 <h2>Notes</h2>
 
-<p>Before installing VREP and RVC, please take the time to read the tips below:</p>
+<p>Before installing V-REP and RVC, please take the time to read the tips below:</p>
 
 <ul>
 
-  <li>The installation process needs to be slightly adapted to your platform (Linux, Mac, Win), and to your Matlab version. At each step of the install procedure, I provide a set of commands that are tailored to a 64-bit Linux machine. If you use a different setup, you may have to adapt these commands.</li>
+  <li>The installation process needs to be slightly adapted to your platform (Linux, Mac, Win), and to your MATLAB version. At each step of the install procedure, I provide a set of commands that are tailored to a 64-bit Linux machine. If you use a different setup, you may have to adapt these commands.</li>
 
-  <li>If you are using Windows, you can pretty much follow the directives below. However, to ease the process, I suggest you install everything in <code>C:/trs</code> instead of your home directory.<br>
-  In the instructions below, the tilde <code>~</code> character stands for the home directory. If you are using Windows, use <code>C:/</code> instead of <code>~</code>. If you decide to go against this recommendation, please make sure that the path where you install the project stuff does not contain spaces, accented characters, or other non-letter characters. Letters and numbers only please.</li>
+  <li>If you are using Windows, you can pretty much follow the directives below. However, to ease the process, I suggest you install everything in <code>C:/trs</code> instead of your home directory.
+  <p>In the instructions below, the tilde <code>~</code> character stands for the home directory. If you are using Windows, you may use <code>C:/</code> instead of <code>~</code>. If you decide to go against this recommendation, please make sure that the path where you install the project stuff does not contain spaces, accented characters, or other non-letter characters. Letters and numbers only please.</li>
 
 </ul>
 
-        <a id="install" name="install"></a>
+        <a id="install"></a>
 <h1>Install Procedure</h1>
 
 <p>The recommended procedure for setting up your computer is listed below:</p>
@@ -77,41 +89,46 @@ TRS requires a fairly recent version of Matlab. Matlab versions older than 2011 
 <ol class="steps">
 
   <li>
-    <a class="anchor" id="git"></a><p>Project-related files are published through Git. Download a Git client from the <a href="http://git-scm.com/downloads">git-scm.com</a> webiste. If you are unfamiliar with Git, <a href="http://www.sourcetreeapp.com">SourceTree</a> is a cool GUI for Mac and Windows.<br>Clone the Git repo <code>https://github.com/ULgRobotics/trs.git</code> onto your machine, for instance in your home directory. On a UNIX machine:</p>
+    <a class="anchor" id="git"></a>Project-related files are published through Git. Download a Git client from the <a href="http://git-scm.com/downloads">git-scm.com</a> website. If you are unfamiliar with Git, <a href="http://www.sourcetreeapp.com">SourceTree</a> is a cool GUI for Mac and Windows.
+    <p>Clone the Git repository <a href="https://github.com/ULgRobotics/trs.git"><code>https://github.com/ULgRobotics/trs.git</code></a> onto your machine; this tutorial will consider you do it in your home directory <code>~</code>. On a UNIX machine:
     <code class="block">cd ~
 git clone https://github.com/ULgRobotics/trs.git</code>
-    <p><b>Do not modify the files within that directory, as they may be updated by me server-side.</b> Remember to regularly pull from the Git repository to get updates.</p>
-    <p>If you have trouble downloading the project files with Git, you can download a <a href="https://github.com/ULgRobotics/trs/archive/master.zip">ZIP snapshot</a> of the current state of the Git repo. The ZIP file behind this link is kept up-to-date, but <b>you must re-download it often to make sure you get all the updates to the project files</b>.</p>
+    <p><strong>Do not modify the files within that directory</strong>, as they may be updated in the repository. Remember to regularly pull from the Git repository to get updates.</p>
+    <p>If you have trouble downloading the project files with Git, you can download a <a href="https://github.com/ULgRobotics/trs/archive/master.zip">ZIP snapshot</a> of the current state of the Git repo. The ZIP file behind this link is kept up-to-date, but <strong>you must re-download it often to make sure you get all the updates to the project files</strong>.</p>
   </li>
   <li>
-    Download <a href="http://coppeliarobotics.com/downloads.html">V-REP PRO EDU</a>.
-    When you're done downloading VREP, unpack it, for instance in your home directory.
+    Download <a href="http://coppeliarobotics.com/downloads.html">V-REP PRO EDU</a>. When you have downloaded V-REP, unpack it, for instance in your home directory.
+    <p>If your firewall asks you whether V-REP should be allowed, always answer yes: the communication between MATLAB and V-REP will take place via the network (internal to your computer). Otherwise, you will face problems later on. 
   </li>
   <li>
-    Install the VREP bindings for Matlab:
+    Install the V-REP bindings for MATLAB:
     <ol>
-      <li>You must copy three files from the directory of the V-REP app (downloaded at the previous step) to the directory named <code>youbot</code> within your local copy of the GitHub repository. The three files you need to copy are named
+      <li>You must copy three files from the directory of the V-REP app (downloaded at the previous step) to the directory named <code>youbot</code> within your local copy of the GitHub repository. The three files you need to copy are named: 
         <ul>
           <li><code>remApi.m</code></li>
           <li><code>remoteApiProto.m</code></li>
-          <li><code>remoteApi.so</code> (if you use Linux) <strong>or</strong> <code>remoteApi.dll</code> (if you use Windows) <strong>or</strong> <code>remoteApi.dylib</code> (if you use a Mac). <strong>If you have a choice between a 32-bit or 64-bit remoteApi, pick the one that corresponds to your Matlab install (32-bit Matlab or 64-bit Matlab). If you have 32-bit Matlab, pick the 32-bit remoteApi, even if your kernel is 64-bit.</strong></li>
+          <li><code>remoteApi.so</code> (if you use Linux) <strong>or</strong> <code>remoteApi.dll</code> (if you use Windows) <strong>or</strong> <code>remoteApi.dylib</code> (if you use a Mac). <strong>If you have a choice between a 32-bit or 64-bit remoteApi, pick the one that corresponds to your MATLAB install (32-bit MATLAB or 64-bit MATLAB). If you have 32-bit MATLAB, pick the 32-bit remoteApi, even if your kernel is 64-bit.</strong></li>
         </ul>
-        You will find these files in the directory containing the V-REP app. Look in the <code>programming/remoteApiBindings/lib/lib</code> and <code>programming/remoteApiBindings/matlab/matlab</code> subdirectories of the VREP app directory (although this can change from version to version). You must copy these files to the <code>youbot</code> directory within your copy of the GitHub repo. If you closely followed the instructions above, the <code>youbot</code> directory is at <code>~/trs/youbot</code> (Linux/Mac) or <code>C:/trs/youbot</code> (Windows).
+        You will find these files in the directory containing the V-REP app. Look in the <code>programming/remoteApiBindings/lib/lib</code> and <code>programming/remoteApiBindings/matlab/matlab</code> subdirectories of the V-REP app directory (although this can change from version to version). You must copy these files to the <code>youbot</code> directory within your copy of the GitHub repo. If you closely followed the instructions above, the <code>youbot</code> directory is at <code>~/trs/youbot</code> (Linux/Mac) or <code>C:/trs/youbot</code> (Windows).
+        <p>Note that, when you run any MATLAB script using V-REP, you will be warned to use the right version of the remote API file (<code>remoteApi.so/dll/dylib</code>); this is perfectly normal. The message should look like this: 
+        <code class="block">Note: always make sure you use the corresponding remoteApi library
+(i.e. 32bit Matlab will not work with 64bit remoteApi, and vice-versa)</code>
       </li>
       
       <li>
-        In Matlab, change to the <code>youbot</code> directory. On Linux/Mac:
+        In MATLAB, change to the <code>youbot</code> directory. On Linux/Mac:
         <code class="block">cd ~/trs/youbot</code>
-        Then type
+        Then perform a first connection test by typing: 
         <code class="block">vrep=remApi('remoteApi');
 vrep.delete();</code>
-        <p>If there is no error, the Matlab bindings to V-REP are loaded! If there is an error, check the steps above, check the Troubleshooting section below, and read <a href="http://www.coppeliarobotics.com/helpFiles/en/remoteApiClientSide.htm">V-REP's Matlab bindings help</a>. The V-REP developers are actively supporting TRS. If you cannot solve this issue, post a question on the <a href="http://www.forum.coppeliarobotics.com">V-REP forums</a>.</p>
+        <p>If there is no error, the MATLAB bindings to V-REP are loaded! If there is an error, check the steps above, check the Troubleshooting section below, and read <a href="http://www.coppeliarobotics.com/helpFiles/en/remoteApiClientSide.htm">V-REP's MATLAB bindings help</a>. The V-REP developers are actively supporting TRS. If you cannot solve this issue, post a question on the <a href="http://www.forum.coppeliarobotics.com">V-REP forums</a>.
       </li>
       <li>
-        Startup V-REP (Linux: <code>./vrep.sh</code> from within V-REP's directory), use the menu "File/Open Scene", and open <code>~/trs/youbot/binding_test.ttt</code>. Hit "Start Simulation" in the Simulation menu. Then, back in Matlab, type
-        <code class="block">cd ~/trs/youbot
-binding_test();</code>
-        If you see Matlab replying <em>Number of objects in the scene: 19</em>, everything works! If not, as recommended above, post a question on the <a href="http://www.forum.coppeliarobotics.com">V-REP forums</a>.
+        Startup V-REP (Linux: <code>./vrep.sh</code> from within V-REP's directory; Windows: in your Start menu), use the menu "File/Open Scene", and open <code>~/trs/youbot/binding_test.ttt</code>. <strong>Hit "Start Simulation" in the Simulation menu</strong>. Then, back in MATLAB, go to the <code>youbot</code> folder. On Linux/Mac:
+        <code class="block">cd ~/trs/youbot</code>
+        Then run the <code>binding_test</code> script: 
+        <code class="block">binding_test();</code>
+        If you see MATLAB replying <em>Number of objects in the scene: 19</em>, everything works! If not, as recommended above, post a question on the <a href="http://www.forum.coppeliarobotics.com">V-REP forums</a> (the most common cause of errors is forgetting to start the simulation).
       </li>
       
     </ol>
@@ -120,19 +137,34 @@ binding_test();</code>
 
   
   <li>
-    In Matlab, run the <code>startup_robot.m</code> file provided via the Git repository. If you cloned the Git repository in your home directory, run:
-    <code class="block">run('~/trs/matlab/startup_robot.m');</code>
-    <p>This line needs to be run every time Matlab restarts. You may want to add it to your Matlab startup file.</p>
-    <p><strong>Test that the RVC toolbox works:</strong> In Matlab, type
+    <p>In MATLAB, run the <code>startup_robot.m</code> file provided via the Git repository. If you cloned the Git repository in your home directory (<code>~</code> under Linux and macOS), run:
+    <code class="block">run('~/trs/matlab/startup_robot.m');</code></p>
+    <p><strong>This line needs to be run every time MATLAB restarts</strong>. You may want to add it to your MATLAB startup file. This first first checks whether P. Corke's RVC toolbox is downloaded (and downloads it if it's not), and then updates MATLAB's path so that it can find the toolbox functions and the V-REP binding. </p>
+    <p><strong>Test that the RVC toolbox works:</strong> In MATLAB, type
         <code class="block">rotx(1)</code>
-        If there is no error, P. Corke's RVC toolbox is working! If there is an error, check the steps above and read the toolbox's <a href="http://petercorke.com/Robotics_Toolbox.html">install doc</a>.</p>
+        If there is no error, P. Corke's RVC toolbox is working! If there is an error, check the steps above and read the toolbox' <a href="http://petercorke.com/Robotics_Toolbox.html">install documentation</a>.</p>
 
   </li>
   
 
 </ol>
 
-        <a id="shoot" name="shoot"></a>
+        <a id="simulator"></a>
+<h1>Discovering the simulator</h1>
+
+<p>Here are a few videos to help you get familiar with the simulator. </p>
+<div style="margin: 0 auto; width: 560px;">
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/6Oq55YYLwQs" allowfullscreen="allowfullscreen"></iframe>
+    <p><a href="http://www.montefiore.ulg.ac.be/~tcuvelier/files/info0948-2016/V-REP%20overall.mp4">Back-up link</a></p>
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/SgUfqFveJwQ" allowfullscreen="allowfullscreen"></iframe>
+    <p><a href="http://www.montefiore.ulg.ac.be/~tcuvelier/files/info0948-2016/V-REP%20simulation.mp4">Back-up link</a></p>
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/FRN_Gj_lSqU" allowfullscreen="allowfullscreen"></iframe>
+    <p><a href="http://www.montefiore.ulg.ac.be/~tcuvelier/files/info0948-2016/V-REP%20camera.mp4">Back-up link</a></p>
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/O8HNW9cXY6Q" allowfullscreen="allowfullscreen"></iframe>
+    <p><a href="http://www.montefiore.ulg.ac.be/~tcuvelier/files/info0948-2016/V-REP%20objects.mp4">Back-up link</a></p>
+</div>
+
+        <a id="shoot"></a>
 <h1>Troubleshooting</h1>
 
 <ul>

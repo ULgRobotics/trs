@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
 <head>
   <meta content="text/html; charset=utf-8" http-equiv="content-type">
   <link href="favicon.ico" rel="shortcut icon">
@@ -25,11 +25,23 @@
 
     <div class="content_body">
       <div id="menu">
-        <a class="top" href="index.html">TRS</a> <a class="submenu" href="index.html#events">Events</a> <a class="submenu" href="index.html#mot">Motivation</a> <a class="submenu" href="index.html#get">What You Get</a> <a class="submenu" href="index.html#use">How to Use</a> <a class="submenu" href="index.html#contact">Authors</a> <a href="setup.html">Setup</a> <a class="submenu" href="setup.html#com">Components</a> <a class="submenu" href="setup.html#install">Install</a> <a class="submenu" class="bottom" href="setup.html#shoot">Troubleshoot</a> <a href="project.html">Project</a> <a class="submenu" href="project.html#def">Definition</a>
+        <a class="top" href="index.html">TRS</a>
+        <a class="submenu" href="index.html#events">Events</a>
+        <a class="submenu" href="index.html#mot">Motivation</a>
+        <a class="submenu" href="index.html#get">What You Get</a>
+        <a class="submenu" href="index.html#use">How to Use</a>
+        <a class="submenu" href="index.html#contact">Authors</a>
+        <a href="setup.html">Setup</a>
+        <a class="submenu" href="setup.html#com">Components</a>
+        <a class="submenu" href="setup.html#install">Install</a>
+        <a class="submenu" href="setup.html#simulator">Simulator</a>
+        <a class="submenu" href="setup.html#shoot">Troubleshoot</a>
+        <a href="project.html">Project</a>
+        <a class="submenu" href="project.html#def">Definition</a>
         <a class="submenu" href="project.html#prog">Programming</a>
         <a class="submenu" href="project.html#doc">Documentation</a>
         <a class="submenu" href="project.html#api">API</a>
-        <a class="submenu" href="project.html#mtips">Matlab Tips</a>
+        <a class="submenu" href="project.html#mtips">MATLAB Tips</a>
         <a class="submenu" href="project.html#ytips">YouBot Tips</a>
         <a class="submenu bottom" href="project.html#shoot">Troubleshoot</a>
       </div>
@@ -39,7 +51,7 @@
         <img style="float: right;" src="http://renaud-detry.net/raster/ulg-logo82.jpg" alt="ULg" />
 
 
-        <a id="events" name="events"></a>
+        <a id="events"></a>
         <h1 style="margin-top: 0">Events</h1>
 
         Tutorials and workshops related to TRS are regularly organized:
@@ -62,10 +74,10 @@
         </ul>
         
       
-        <a id="mot" name="mot"></a>
+        <a id="mot"></a>
         <h1>Motivation</h1>
 
-        <p style="font-weight: bold">TRS is an open-source recipe for organizing a master-level robotics project. It relies on a cross-platform robot development and simulation environment that can be installed in five minutes and that allows students to write control, navigation, vision or manipulation algorithms in a hundred lines of Matlab or Python code. TRS contains a project structure (documentation, objectives, milestones), and the software skeleton for running the project (simulator models, Matlab code examples, install instructions). It is freely available and extendable.</p>
+        <p style="font-weight: bold">TRS is an open-source recipe for organizing a master-level robotics project. It relies on a cross-platform robot development and simulation environment that can be installed in five minutes and that allows students to write control, navigation, vision or manipulation algorithms in a hundred lines of MATLAB or Python code. TRS contains a project structure (documentation, objectives, milestones), and the software skeleton for running the project (simulator models, MATLAB code examples, install instructions). It is freely available and extendable.</p>
 
 
 
@@ -80,48 +92,49 @@
         </div>
 
 
-        <p>Software development is another major challenge in robot development. TRS is based on the <a href="http://petercorke.com/Robotics_Toolbox.html">Robotics Toolbox for MATLAB</a> (RTB), a library of robot-oriented software building blocks. Its Matlab implementation makes it accessible to branches of engineering where fluency in C++ is not expected.</p>
+        <p>Software development is another major challenge in robot development. TRS is based on the <a href="http://petercorke.com/Robotics_Toolbox.html">Robotics Toolbox for MATLAB</a> (RTB), a library of robot-oriented software building blocks. Its MATLAB implementation makes it accessible to branches of engineering where fluency in C++ is not expected.</p>
 
-        <p>TRS is an environment, based on V-REP and RTB, that allows students to control a robot from Matlab. The environment consists of a set of Matlab scripts, and a V-REP file modeling a mobile robot and a building floor. Running a single Matlab command establishes a connection between Matlab and V-REP. The user is then able to recover sensor data (images, scans, odometry), process those data, and send commands to the robot's actuators. The robot's sensors and actuators are accessed via Matlab functions:</p>
+        <p>TRS is an environment, based on V-REP and RTB, that allows students to control a robot from MATLAB. The environment consists of a set of MATLAB scripts, and a V-REP file modeling a mobile robot and a building floor. Running a single MATLAB command establishes a connection between MATLAB and V-REP. The user is then able to recover sensor data (images, scans, odometry), process those data, and send commands to the robot's actuators. The robot's sensors and actuators are accessed via MATLAB functions:</p>
 
         <p><code class="block">vrep.simxSetJointTargetVelocity(id, wheel1, 10);</code></p>
 
-        <p>An understanding of the simulator itself is not required, as all the programming is done through the Matlab interface.</p>
+        <p>An understanding of the simulator itself is not required, as all the programming is done through the MATLAB interface.</p>
 
         <div class="figure" style="width: 588px">
           <div>
             <video controls="controls" height="336" poster="http://renaud-detry.net/teaching/info0948/private/youbot_poster.jpg" preload="metadata" width="588"><source src="http://renaud-detry.net/teaching/info0948/raster/youbot.mp4" type="video/mp4"> <source src="http://renaud-detry.net/teaching/info0948/raster/youbot.webm" type="video/webm"> <iframe height="336" src="http://www.youtube.com/embed/bPSdZCewp7Y" width="588"></iframe></video>
           </div>
 
-          <p>The behavior of the youBot shown in this video is coded in Matlab in 500 lines of code. The youBot explores and maps its environment, and it detects and marks rounded baskets. The code runs in quasi-realtime on a standard laptop. Download this video in <a href="http://renaud-detry.net/teaching/info0948/raster/youbot.mp4">MP4/H.264</a> or <a href="http://renaud-detry.net/teaching/info0948/raster/youbot.webm">WebM/VP8</a>, or <a href="javascript:%20window.open('https://www.youtube.com/watch?v=bPSdZCewp7Y')">view it on Youtube</a>.</p>
+          <p>The behavior of the youBot shown in this video is coded in MATLAB in 500 lines of code. The youBot explores and maps its environment, and it detects and marks rounded baskets. The code runs in quasi-realtime on a standard laptop. Download this video in <a href="http://renaud-detry.net/teaching/info0948/raster/youbot.mp4">MP4/H.264</a> or <a href="http://renaud-detry.net/teaching/info0948/raster/youbot.webm">WebM/VP8</a>, or <a href="javascript:%20window.open('https://www.youtube.com/watch?v=bPSdZCewp7Y')">view it on Youtube</a>.</p>
         </div>
 
-        <a id="get" name="get"></a>
+        <a id="get"></a>
         <h1>What You Get</h1>
 
         <p>TRS provides a recipe for organizing a Master-level robotics project. The project consists in using a mobile robot to pickup groceries from a table and move them to different baskets distributed across a house. The project involves control, navigation, mapping, vision and manipulation. The recipe is composed of:</p>
 
         <ul>
-          <li>a page that explains how to <a href="setup.html">setup</a> a laptop to work on the project,</li>
+          <li>a page that explains how to <a href="setup.html">setup</a> a laptop to work on the project</li>
 
-          <li>a page that presents the <a href="project.html">project definition</a>: objectives, milestones, a description of the robot and the documentation of the Matlab functions that access the robot's sensors and actuators,</li>
+          <li>a page that presents the <a href="project.html">project definition</a>: objectives, milestones, a description of the robot and the documentation of the MATLAB functions that access the robot's sensors and actuators</li>
 
-          <li>a Matlab script that illustrates access the robot's sensors and actuators</li>
+          <li>a MATLAB script that illustrates access the robot's sensors and actuators</li>
 
-          <li>a V-REP model of a building floor, and a few Matlab scripts that make programming easier.</li>
+          <li>a V-REP model of a building floor, and a few MATLAB scripts that make programming easier</li>
         </ul>
-        <a id="use" name="use"></a>
+        <a id="use"></a>
         <h1>How to Use</h1>
 
         <p>TRS is intended primarily for teachers, but students are welcome to use it for personal projects.</p>
 
         <p>The TRS recipe is freely distributed via a <a href="https://github.com/ULgRobotics/trs">GitHub repository</a> (<code>https://github.com/ULgRobotics/trs.git</code>). The code and the V-REP models are in the <a href="https://github.com/ULgRobotics/trs/tree/master">master branch</a>), and the doc is in the <a href="https://github.com/ULgRobotics/trs/tree/gh-pages">gh-pages</a> branch. The page that you are reading now is generated by the GitHub Pages service from the <a href="https://github.com/ULgRobotics/trs/tree/gh-pages">gh-pages</a> branch — in other words, everything you see on this website can be obtained by cloning the whole TRS repository. By cloning the repository, you can quickly adapt both the code and the web doc to your own likings.</p>
 
-        <p>All of the TRS material (code and documentation) is published under open licenses. The code is published under GPL, and the documentation (the pages published on this website) are CC. These licenses allow anyone to copy, improve, and hopefully contribute back, to provide robotics students with an excellent learning experience.</p><a id="contact" name="contact"></a>
-
+        <p>All of the TRS material (code and documentation) is published under open licenses. The code is published under GPL, and the documentation (the pages published on this website) are CC. These licenses allow anyone to copy, improve, and hopefully contribute back, to provide robotics students with an excellent learning experience.</p>
+        
+        <a id="contact"></a>
         <h1>Authors</h1>
 
-        <p>TRS was created by <a href="http://renaud-detry.net/">Renaud Detry</a> for a <a href="http://renaud-detry.net/teaching/info0948/">course taught at the University of Liège</a>, with lots of help from <a href="http://coppeliarobotics.com">Coppelia Robotics</a> and <a href="http://petercorke.com">Peter Corke</a>.</p>
+        <p>TRS was created by <a href="http://renaud-detry.net/">Renaud Detry</a> for a <a href="http://renaud-detry.net/teaching/info0948/">course taught at the University of Liège</a>, with lots of help from <a href="http://coppeliarobotics.com">Coppelia Robotics</a>, <a href="http://petercorke.com">Peter Corke</a>, and <a href="http://www.montefiore.ulg.ac.be/~tcuvelier/">Thibaut Cuvelier</a> (videos and copy editing). </p>
       </div>
 
       <div class="trailer_body">
